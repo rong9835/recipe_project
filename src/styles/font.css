@@ -1,0 +1,19 @@
+/* SUIT 베리어블 폰트 */
+@import url(https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css);
+
+/* 나눔 아인맘 폰트*/
+@font-face {
+	font-family: 'Ainmom';
+	src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/naverfont_01@1.0/Ainmom.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+/* 사용 예시 
+body {
+	font-family: 'SUIT Variable', sans-serif;
+}
+
+a {
+	font-family: 'Ainmom';
+} */
