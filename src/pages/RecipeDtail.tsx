@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react';
 
 export default function RecipeDtail() {
-    return <div>RecipeDtail</div>;
+	return <div>RecipeDtail</div>;
 }
