@@ -1,24 +1,13 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
-import CustomButton, {
-	ButtonType,
-} from './components/custombutton/CustomButton';
+import Login from './pages/Login'; // Login 컴포넌트의 실제 경로에 맞게 수정하세요
 
 function App() {
-	return (
-		<>
-			<CustomButton
-				btnType={ButtonType.Plus}
-				size="large"
-				color="orange"
-				shape="circle"
-			>
-				+
-			</CustomButton>
-		</>
-	);
+  return (
+    <>
+      <Login />
+    </>
+  );
 }
 
 export default App;
