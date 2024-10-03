@@ -1,89 +1,141 @@
 import styled from './RecipeDetail.module.css';
 import react from '../../assets/react.svg';
+import backIcon from '../../assets/icon_back.png';
+import heartIcon from '../../assets/icon_heart.png';
+import viewIcon from '../../assets/icon_view.png';
+import CustomButton, {
+	ButtonType,
+} from '../../components/custombutton/CustomButton';
+import sampleImage from '../../assets/sample_img.jpg';
 
 export default function RecipeDetail() {
 	return (
 		<>
-			<section>
+			<section className={styled.recipeDetailPage}>
 				<h2 className={styled.srOnly}>레시피 디테일 페이지</h2>
 
 				<nav>
-					<span></span>
-					<ul>
-						<li>Special Cooking Recipe</li>
-						<li>아인맘 's 레시피</li>
+					<img src={backIcon} alt="뒤로 가기" />
+					<ul className={styled.pageTitle}>
+						<li className={styled.pointFont}>Special Cooking Recipe</li>
+						<li>
+							<em>아인맘 's</em> 레시피
+						</li>
 					</ul>
-					<button type="button">수정하기</button>
+					<CustomButton
+						btnType={ButtonType.Edit}
+						size="medium"
+						color="orange"
+						shape="rad10"
+					>
+						수정하기
+					</CustomButton>
 				</nav>
 
-				<section className={styled.title}>
-					<h3>치즈 홍가라비 오븐 찜</h3>
+				<section className={styled.recipeTitle}>
+					<h3>치즈 홍가리비 오븐 찜</h3>
 
 					<ul>
 						<li>2024 / 09 / 24</li>
 						<li>
-							<span></span>2359
+							<img src={viewIcon} alt="조회수 아이콘" />
+							2359
 						</li>
 						<li>
-							<span></span>582
+							<img src={heartIcon} alt="좋아요 아이콘" />
+							582
 						</li>
 					</ul>
 
-					<img src={react} />
+					<img src={sampleImage} />
 				</section>
 
 				<section className={styled.contents}>
 					<h3 className={styled.srOnly}>레시피 디테일 콘텐츠</h3>
 
-					<ul>
-						<li>조리시간 | Cooking time</li>
-						<li>40분</li>
-						<li>난이도 | Dirriculty level</li>
-						<li>Lv 2</li>
-					</ul>
+					<div className={styled.cookingInfo}>
+						<div>
+							<h4 className={styled.pointFont}>
+								조리시간 <em>Cooking time</em>
+							</h4>
+							<p>40분</p>
+						</div>
 
-					<h4>레시피 | Recipe</h4>
-					<div>
-						<ul>
-							<li>
-								홍가리비<span>1kg</span>
-							</li>
-							<li>
-								홍가리비<span>1kg</span>
-							</li>
-							<li>
-								홍가리비<span>1kg</span>
-							</li>
-							<li>
-								홍가리비<span>1kg</span>
-							</li>
-							<li>
-								홍가리비<span>1kg</span>
-							</li>
-							<li>
-								홍가리비<span>1kg</span>
-							</li>
-						</ul>
-						<ul>
-							<li>
-								홍가리비<span>1kg</span>
-							</li>
-							<li>
-								홍가리비<span>1kg</span>
-							</li>
-							<li>
-								홍가리비<span>1kg</span>
-							</li>
-							<li>
-								홍가리비<span>1kg</span>
-							</li>
-							<li>
-								홍가리비<span>1kg</span>
-							</li>
-							<li>
-								홍가리비<span>1kg</span>
-							</li>
-						</ul>
+						<div>
+							<h4 className={styled.pointFont}>
+								난이도 <em>Difficulty level</em>
+							</h4>
+							<p>Lv 2</p>
+						</div>
+					</div>
+
+					<div className={styled.cookingList}>
+						<h4 className={styled.pointFont}>
+							레시피 <em>Recipe</em>
+						</h4>
+
+						<div className={styled.cookingIngredientList}>
+							<ul>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+							</ul>
+							<ul>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+							</ul>
+							<ul>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+								<li>
+									홍가리비<span>1kg</span>
+								</li>
+							</ul>
+						</div>
 					</div>
 
 					<div>
