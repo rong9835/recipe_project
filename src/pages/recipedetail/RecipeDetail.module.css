@@ -116,3 +116,199 @@ h4 em::before {
 }
 
 /* 레시피 쿠킹 정보 스타일 끝 */
+
+.cookingList {
+	margin-top: 100px;
+}
+
+/* 레시피 재료 리스트 스타일 시작 */
+.cookingIngredientList {
+	font-size: 20px;
+
+	background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%23C9532FFF' stroke-width='4' stroke-dasharray='10' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
+	border-radius: 10px;
+	margin-top: 50px;
+	padding: 20px 50px 40px 50px;
+
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.cookingIngredientList ul {
+	margin-top: 20px;
+	position: relative;
+}
+
+/* 2개의 ul일 때 */
+.cookingIngredientList ul:first-child:nth-last-child(2),
+.cookingIngredientList ul:first-child:nth-last-child(2) ~ ul {
+	width: 50%;
+}
+
+/* 3개 이상의 ul일 때 */
+.cookingIngredientList ul:first-child:nth-last-child(n + 3),
+.cookingIngredientList ul:first-child:nth-last-child(n + 3) ~ ul {
+	width: calc(33.333% - 20px);
+	margin-right: 30px;
+}
+
+.cookingIngredientList ul:first-child:nth-last-child(n + 3) ~ ul:nth-child(3n),
+.cookingIngredientList ul:first-child:nth-last-child(n + 3):nth-child(3n) {
+	margin-right: 0;
+}
+
+.cookingIngredientList ul::before {
+	content: '';
+	position: absolute;
+	left: -26px;
+	top: 0;
+	width: 1px;
+	height: 100%;
+	background-color: var(--main-color);
+}
+
+/* 첫 번째 ul의 before 막대기 제거 */
+.cookingIngredientList ul:first-child::before {
+	display: none;
+}
+
+/* 4번째 ul의 before 막대기 제거 */
+.cookingIngredientList ul:nth-child(4)::before {
+	display: none;
+}
+
+/* ul이 2개일 때는 두 번째 ul에만 before 막대기 적용 */
+.cookingIngredientList ul:first-child:nth-last-child(2) ~ ul::before {
+	display: block;
+	left: -15px;
+}
+
+.cookingIngredientList ul li {
+	font-size: 20px;
+	text-align: left;
+	position: relative;
+	margin-top: 10px;
+	padding-right: 50px;
+}
+
+.cookingIngredientList ul li span {
+	position: absolute;
+	right: 30px;
+	opacity: 60%;
+}
+/* 레시피 재료 리스트 스타일 끝 */
+
+/* 레시피 리스트 스타일 시작 */
+.cookingList {
+	text-align: left;
+	margin-top: 50px;
+}
+
+.cookingList ol li {
+	display: flex;
+	align-items: flex-start;
+	gap: 20px;
+	margin-top: 50px;
+}
+
+.cookingList ol li > :first-child {
+	flex-shrink: 0;
+}
+
+.cookingList ol li div {
+	flex-grow: 1;
+	font-size: 24px;
+	line-height: 60px;
+	min-width: 660px;
+	margin-top: -5px;
+
+	text-decoration-line: underline;
+	text-decoration-color: var(--main-color);
+	text-underline-offset: 10px;
+}
+
+.cookingList ol li > img {
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	border-radius: 10px;
+
+	flex-shrink: 0;
+}
+/* 레시피 리스트 스타일 끝 */
+
+/* 레시피 팁 스타일 시작 */
+.recipeTip {
+	margin-top: 100px;
+	text-align: left;
+}
+
+.recipeTip h4 {
+	color: var(--main-color);
+	font-size: 28px;
+}
+
+.recipeTip > div {
+	font-size: 24px;
+	min-height: 300px;
+	border: 1px solid var(--main-color);
+	border-radius: 10px;
+
+	padding: 30px;
+	margin-top: 16px;
+}
+
+/* 레시피 팁 스타일 끝 */
+
+/* 댓글 스타일 시작 */
+.comment {
+	text-align: left;
+	margin-top: 100px;
+}
+
+.comment::before {
+	content: '';
+	display: block;
+	width: 100%;
+	height: 1px;
+	background-color: var(--main-color);
+	margin-bottom: 50px;
+}
+
+.comment > h3 {
+	color: var(--main-color);
+	font-size: 28px;
+}
+
+.commentInput {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 50px;
+}
+
+.commentInput label textarea {
+	font-size: 24px;
+	line-height: 35px;
+
+	width: 860px;
+	height: 140px;
+	border: 1px solid var(--main-color);
+	border-radius: 10px;
+
+	padding: 30px;
+}
+
+.commentInput label textarea::placeholder {
+	font-family: 'SUIT Variable', sans-serif;
+}
+
+.commentInput button {
+	color: #fff;
+	font-size: 24px;
+
+	background-color: var(--main-color);
+	border-radius: 10px;
+	width: 90px;
+	height: 200px;
+}
+/* 댓글 스타일 끝 */

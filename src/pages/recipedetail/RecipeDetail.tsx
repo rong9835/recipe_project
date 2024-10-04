@@ -114,52 +114,52 @@ export default function RecipeDetail() {
 									홍가리비<span>1kg</span>
 								</li>
 							</ul>
-							<ul>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-							</ul>
 						</div>
 					</div>
 
-					<div>
+					<div className={styled.cookingList}>
 						<ol>
 							<li>
-								<span>01</span>
+								<CustomButton
+									btnType={ButtonType.Level}
+									size="medium"
+									color="orange"
+									shape="circle"
+								>
+									01
+								</CustomButton>
 								<div>
 									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기 사립문이
 									내 눈앞에 와있는 나오질 않았습니다 그리고 그 있고 노라드
 									아주머니는 휴가를 별나라에서 일어나는 일을 더 귀여운 천국의
 									목자였습니다
 								</div>
-								<img />
+								<img src={sampleImage} />
 							</li>
 							<li>
-								<span>01</span>
+								<CustomButton
+									btnType={ButtonType.Level}
+									size="medium"
+									color="orange"
+									shape="circle"
+								>
+									01
+								</CustomButton>
 								<div>
 									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기 사립문이
 									내 눈앞에 와있는 나오질 않았습니다 그리고 그 있고 노라드
 									아주머니는 휴가를 별나라에서 일어나는 일을 더 귀여운 천
 								</div>
-								<img />
 							</li>
 							<li>
-								<span>01</span>
+								<CustomButton
+									btnType={ButtonType.Level}
+									size="medium"
+									color="orange"
+									shape="circle"
+								>
+									01
+								</CustomButton>
 								<div>
 									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기 사립문이
 									내 눈앞에 와있는 나오질 않았습니다 그리고 그 있고 노라드
@@ -167,18 +167,30 @@ export default function RecipeDetail() {
 									목자였습니다 어머나 따라 성호를 긋고는 잠시 나란히 앉아
 									있었습니다
 								</div>
-								<img />
 							</li>
 							<li>
-								<span>01</span>
+								<CustomButton
+									btnType={ButtonType.Level}
+									size="medium"
+									color="orange"
+									shape="circle"
+								>
+									01
+								</CustomButton>
 								<div>
 									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기
 									사립문이내 눈앞에 와있는 나오질
 								</div>
-								<img />
 							</li>
 							<li>
-								<span>01</span>
+								<CustomButton
+									btnType={ButtonType.Level}
+									size="medium"
+									color="orange"
+									shape="circle"
+								>
+									01
+								</CustomButton>
 								<div>
 									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기 사립문이
 									내 눈앞에 와있는 나오질 않았습니다 그리고 그 있고 노라드
@@ -186,23 +198,22 @@ export default function RecipeDetail() {
 									목자였습니다 어머나 따라 성호를 긋고는 잠시 나란히 앉아
 									있었습니다
 								</div>
-								<img />
 							</li>
 						</ol>
 					</div>
 
-					<div>
+					<div className={styled.recipeTip}>
 						<h4>레시피 팁 | Recipe Tip</h4>
 						<div>추가 설명이 없습니다.</div>
 					</div>
 				</section>
 
-				<section>
+				<section className={styled.comment}>
 					<h3>댓글 | Comment</h3>
-					<div>
+					<div className={styled.commentInput}>
 						<label htmlFor="comment">
-							<input
-								type="text"
+							<textarea
+								id="comment"
 								placeholder="특별한 레시피를 남겨준 `@{user}` 에게 따듯한 댓글을 남겨주세요 ♥"
 							/>
 						</label>
