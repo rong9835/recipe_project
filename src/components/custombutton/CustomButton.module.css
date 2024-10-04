@@ -70,8 +70,3 @@ export default CustomButton; */
 	height: 80px;
 	font-size: 40px;
 }
-
-.rad10 {
-	padding: 10px 15px;
-	border-radius: 10px;
-}
