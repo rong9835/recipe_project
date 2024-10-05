@@ -2,6 +2,8 @@ import backIcon from '../../assets/icon_back.png';
 import heartIcon from '../../assets/icon_heart.png';
 import viewIcon from '../../assets/icon_view.png';
 import sampleImage from '../../assets/sample_img.jpg';
+import heartEmpty from '../../assets/icon_heart_empty.png';
+import heartPull from '../../assets/icon_heart_pull.png';
 import CustomButton, {
 	ButtonType,
 } from '../../components/custombutton/CustomButton';
@@ -21,12 +23,7 @@ export default function RecipeDetail() {
 							<em>아인맘 's</em> 레시피
 						</li>
 					</ul>
-					<CustomButton
-						btnType={ButtonType.Edit}
-						size="medium"
-						color="orange"
-						shape="rad10"
-					>
+					<CustomButton btnType={ButtonType.Edit} color="orange" shape="rad10">
 						수정하기
 					</CustomButton>
 				</nav>
@@ -221,37 +218,46 @@ export default function RecipeDetail() {
 						<button type="submit">등록</button>
 					</div>
 
-					<div>
-						<ul>
-							<li>
-								<ul>
-									<li>diayhew5869</li>
-									<li>2024/09/24 11:32</li>
-									<li>
-										<button type="button">수정</button>
-									</li>
-									<li>
-										<button type="button">삭제</button>
-									</li>
-								</ul>
-							</li>
-							<li>
-								고개를 들고 하늘을 쳐다보며 맨 꼬리가 되었어요 그래 실린
-								버들고리 사이에 의젓이 어머나 저렇게 많아 참 것이었습니다
-								이때까지 밤하늘이 그렇게도 정기와 소나기 뒤에 싸늘하게
-								바라보아도 내 눈은 지칠 지팡이를 냅다 던졌어요 프로방스의
-								언덕배기에서 나를 부르는 소리가 뒤척이는 서슬에 짚이
-								버스럭거리며 선뜻 나오질 않았습니다 그리고 줄을 몰랐습니다
-								그때까지 그렇게
-							</li>
+					<div className={styled.commentList}>
+						<ul className={styled.commentWriterInfo}>
+							<li>diayhew5869</li>
+							<li>2024/09/24 11:32</li>
 						</ul>
+						<div className={styled.commentSettingsBtn}>
+							<CustomButton
+								btnType={ButtonType.Edit}
+								color="orange"
+								shape="rad30"
+							>
+								수정
+							</CustomButton>
+							<CustomButton
+								btnType={ButtonType.Delete}
+								color="white"
+								shape="rad30"
+							>
+								삭제
+							</CustomButton>
+						</div>
+						<p>
+							고개를 들고 하늘을 쳐다보며 맨 꼬리가 되었어요 그래 실린 버들고리
+							사이에 의젓이 어머나 저렇게 많아 참 것이었습니다 이때까지 밤하늘이
+							그렇게도 정기와 소나기 뒤에 싸늘하게 바라보아도 내 눈은 지칠
+							지팡이를 냅다 던졌어요 프로방스의 언덕배기에서 나를 부르는 소리가
+							뒤척이는 서슬에 짚이 버스럭거리며 선뜻 나오질 않았습니다 그리고
+							줄을 몰랐습니다 그때까지 그렇게
+						</p>
 					</div>
 
-					<div>
+					<div className={styled.pagenation}>
 						<span></span> 1 2 3 4 5 <span></span>
 					</div>
 				</section>
 			</section>
+
+			<aside className={styled.stickyHeartIcon}>
+				<img src={heartEmpty} alt="비어있는 좋아요 아이콘" />
+			</aside>
 		</>
 	);
 }
