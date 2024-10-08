@@ -1,0 +1,104 @@
+body, #root {
+  background-color: #FFF9E9; 
+}
+
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #FFF9E9;
+}
+
+.loginBox {
+  background-color: #FFF9E9; 
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  border: none;
+  box-shadow: none;
+}
+
+
+.title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #C9532F;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.error {
+  color: #C9532F;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.googleButton,
+.loginButton {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.googleButton {
+  background-color: #FFF9E9;
+  color: black;
+  border: 1px solid #e0e0e0;
+}
+
+.googleButton img {
+  margin-right: 0.5rem;
+  width: 18px;
+  height: 18px;
+}
+
+.loginButton {
+  background-color: #C9532F;
+  color: white;
+}
+
+.loginButton:hover {
+  background-color: #ef5350;
+}
+
+.links {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.links a {
+  color: #757575;
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+
+.signup {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #757575;
+}
+
+.signup a {
+  color: #757575;
+  text-decoration: none;
+  font-weight: bold;
+}

@@ -8,34 +8,18 @@ function Login() {
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
 
-  const validateInputs = () => {
-    if (!email && !password) {
-      setLoginError('이메일 또는 비밀번호를 입력해주세요');
-      return false;
-    }
-    if (!email) {
-      setLoginError('이메일을 입력해주세요');
-      return false;
-    }
-    if (!password) {
-      setLoginError('비밀번호를 입력해주세요');
-      return false;
-    }
-    return true;
-  };
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError('');
 
-    if (!validateInputs()) {
+    if (!email || !password) {
+      setLoginError('아이디 또는 비밀번호를 입력해주세요');
       return;
     }
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log('로그인 성공');
-      // 여기에 로그인 성공 후 처리 로직을 추가할 수 있습니다.
     } catch (error) {
       console.error('로그인 실패:', error.message);
       setLoginError('아이디 또는 비밀번호가 올바르지 않습니다');
@@ -47,7 +31,6 @@ function Login() {
     try {
       await signInWithPopup(auth, provider);
       console.log('구글 로그인 성공');
-      // 여기에 구글 로그인 성공 후 처리 로직을 추가할 수 있습니다.
     } catch (error) {
       console.error('구글 로그인 실패:', error.message);
       setLoginError('구글 로그인에 실패했습니다. 다시 시도해주세요.');
@@ -73,9 +56,9 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
             className={styles.input}
           />
-          {loginError && <p className={styles.warning}>{loginError}</p>}
-          <button onClick={handleGoogleLogin} className={styles.googleButton}>
-            <img src="/path-to-google-icon.png" alt="Google" /> 구글로 로그인하기
+          {loginError && <p className={styles.error}>{loginError}</p>}
+          <button type="button" onClick={handleGoogleLogin} className={styles.googleButton}>
+            <img src="/google-icon.png" alt="Google" /> 구글로 로그인하기
           </button>
           <button type="submit" className={styles.loginButton}>로그인하기</button>
         </form>
