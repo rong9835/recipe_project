@@ -1,1 +1,6 @@
 /* 전역 스타일 추가 */
+
+:root {
+	--main-color: #c9532f;
+	--sub-color: #fff9e9;
+}
