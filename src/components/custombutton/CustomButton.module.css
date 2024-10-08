@@ -1,5 +1,4 @@
-/* import styles from './CustomButton.module.css';
-
+/*
 enum ButtonType {
 	Search = 'search',
 	Plus = 'plus',
@@ -11,21 +10,7 @@ enum ButtonType {
 	Level = 'level',
 }
 
-interface ButtonProps {
-	btnType: ButtonType;
-	size?: 'small' | 'medium' | 'large';
-	color?: 'orange' | 'gray' | 'white' | 'ivory';
-	shape?: 'circle' | 'rad10' | 'rad20' | 'rad30';
-	onClick?: () => void;
-}
-
 const CustomButton = ({
-	btnType,
-	size,
-	color,
-	shape,
-	onClick,
-}: ButtonProps) => {
 	const buttonStyles: Record<ButtonType, string> = {
 		[ButtonType.Search]: styles.searchBtn,
 		[ButtonType.Plus]: styles.addBtn,
@@ -35,30 +20,7 @@ const CustomButton = ({
 		[ButtonType.Delete]: styles.deleteBtn,
 		[ButtonType.Save]: styles.saveBtn,
 		[ButtonType.Level]: styles.levelBtn,
-	};
-
-	// size가 undefined일 경우에 빈 문자열 반환
-	const sizeClass = size ? styles[size] : '';
-
-	// color가 undefined일 경우에 빈 문자열 반환
-	const colorClass = color ? styles[color] : '';
-
-	// shape가 undefined일 경우에 빈 문자열 반환
-	const shapeClass = shape ? styles[shape] : '';
-
-	return (
-		<button
-			className={`${buttonStyles[btnType]} ${sizeClass} ${colorClass} ${shapeClass}`}
-			onClick={onClick}
-		></button>
-	);
-};
-
-export default CustomButton; */
-
-.circle {
-	border-radius: 50%;
-}
+	}; */
 
 /* 컬러 스타일 시작 */
 .orange {
@@ -98,7 +60,11 @@ export default CustomButton; */
 }
 /* 사이즈 스타일 끝 */
 
-/* 래디언스 스타일 시작 */
+/* 모양 스타일 시작 */
+.circle {
+	border-radius: 50%;
+}
+
 .rad10 {
 	border-radius: 10px;
 }
@@ -110,7 +76,7 @@ export default CustomButton; */
 .rad30 {
 	border-radius: 30px;
 }
-/* 래디언스 스타일 끝 */
+/* 모양 스타일 끝 */
 
 /* 타입별 스타일 시작 */
 .editBtn {
