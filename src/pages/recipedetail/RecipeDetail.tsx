@@ -9,7 +9,80 @@ import CustomButton, {
 } from '../../components/custombutton/CustomButton';
 import styled from './RecipeDetail.module.css';
 
+import { getFirestore, getDoc, doc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+interface RecipeTime {
+	hours: number;
+	minutes: number;
+}
+
+interface RecipeIngredients {
+	name: string;
+	volume: number | string;
+}
+
+interface RecipeSteps {
+	step_description: string;
+	step_image_url: string | number;
+}
+
+interface RecipeCreateTime {
+	seconds: number;
+	nanoseconds: number;
+}
+
+interface Recipe {
+	recipe_name: string;
+	recipe_time: RecipeTime;
+	recipe_difficulty: string | number;
+	recipe_steps: RecipeSteps;
+	recipe_tips: string;
+	recipe_ingredients: RecipeIngredients;
+	recipe_create_time: RecipeCreateTime;
+
+	image_url: string;
+	hearted: boolean;
+	hearts: number;
+	views: number;
+}
+
 export default function RecipeDetail() {
+	const [recipeData, setRecipeData] = useState<Recipe | null>(null);
+
+	const db = getFirestore();
+	const auth = getAuth();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const getRecipe = async () => {
+			try {
+				const docRef = doc(db, 'recipes', 'ClSPjrXxycVbzNW8ZXrR');
+				const recipeDoc = await getDoc(docRef);
+
+				if (recipeDoc.exists()) {
+					setRecipeData(recipeDoc.data() as Recipe);
+				} else {
+					navigate('/404');
+				}
+			} catch (error) {
+				navigate('/404');
+				console.log('데이터를 가져오지 못함', error);
+			}
+		};
+
+		getRecipe();
+	}, [db, navigate]);
+
+	// 레시피 팁 데이터의 여부를 확인하고 있으면 데이터를 넣고, 없으면 문구를 넣는다.
+	const recipeTip: () => string = () => {
+		return recipeData?.recipe_tips
+			? recipeData.recipe_tips
+			: '추가 설명이 없습니다.';
+	};
+
 	return (
 		<>
 			<section className={styled.recipeDetailPage}>
@@ -29,21 +102,21 @@ export default function RecipeDetail() {
 				</nav>
 
 				<section className={styled.recipeTitle}>
-					<h3>치즈 홍가리비 오븐 찜</h3>
+					<h3>{recipeData?.recipe_name}</h3>
 
 					<ul>
-						<li>2024 / 09 / 24</li>
+						<li>date</li>
 						<li>
 							<img src={viewIcon} alt="조회수 아이콘" />
-							2359
+							{recipeData?.views}
 						</li>
 						<li>
 							<img src={heartIcon} alt="좋아요 아이콘" />
-							582
+							{recipeData?.hearts}
 						</li>
 					</ul>
 
-					<img src={sampleImage} />
+					<img src={recipeData?.image_url} alt="레시피 메인 이미지" />
 				</section>
 
 				<section className={styled.contents}>
@@ -54,14 +127,17 @@ export default function RecipeDetail() {
 							<h4 className={styled.pointFont}>
 								조리시간 <em>Cooking time</em>
 							</h4>
-							<p>40분</p>
+							<p>
+								{recipeData?.recipe_time.hours}시간{' '}
+								{recipeData?.recipe_time.minutes}분{' '}
+							</p>
 						</div>
 
 						<div>
 							<h4 className={styled.pointFont}>
 								난이도 <em>Difficulty level</em>
 							</h4>
-							<p>Lv 2</p>
+							<p>{recipeData?.recipe_difficulty}</p>
 						</div>
 					</div>
 
@@ -201,7 +277,7 @@ export default function RecipeDetail() {
 
 					<div className={styled.recipeTip}>
 						<h4>레시피 팁 | Recipe Tip</h4>
-						<div>추가 설명이 없습니다.</div>
+						<div>{recipeTip()}</div>
 					</div>
 				</section>
 
