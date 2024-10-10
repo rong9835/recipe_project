@@ -13,13 +13,14 @@ import { getFirestore, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import GroupedIngredientList from '../../components/recipedetailpage/GroupedIngredientList';
 
 interface RecipeTime {
 	hours: number;
 	minutes: number;
 }
 
-interface RecipeIngredients {
+interface RecipeIngredient {
 	name: string;
 	volume: number | string;
 }
@@ -40,7 +41,7 @@ interface Recipe {
 	recipe_difficulty: string | number;
 	recipe_steps: RecipeSteps;
 	recipe_tips: string;
-	recipe_ingredients: RecipeIngredients;
+	recipe_ingredients: RecipeIngredient[];
 	recipe_create_time: RecipeCreateTime;
 
 	image_url: string;
@@ -69,12 +70,33 @@ export default function RecipeDetail() {
 				}
 			} catch (error) {
 				navigate('/404');
-				console.log('데이터를 가져오지 못함', error);
+				console.log('데이터 전송 오류', error);
 			}
 		};
 
 		getRecipe();
 	}, [db, navigate]);
+
+	console.log(recipeData);
+
+	// 작성한 날짜 데이터 받아오기
+	function createTime(seconds: number | undefined): string {
+		if (typeof seconds === 'undefined') {
+			return '비어있는 값입니다.';
+		}
+		const date = new Date(seconds * 1000);
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+
+		return `${year}-${month}-${day}`;
+	}
+
+	const times = {
+		seconds: recipeData?.recipe_create_time.seconds,
+		nanoseconds: recipeData?.recipe_create_time.nanoseconds,
+	};
+	const formatDay = createTime(times.seconds);
 
 	// 레시피 팁 데이터의 여부를 확인하고 있으면 데이터를 넣고, 없으면 문구를 넣는다.
 	const recipeTip: () => string = () => {
@@ -105,7 +127,7 @@ export default function RecipeDetail() {
 					<h3>{recipeData?.recipe_name}</h3>
 
 					<ul>
-						<li>date</li>
+						<li>{formatDay}</li>
 						<li>
 							<img src={viewIcon} alt="조회수 아이콘" />
 							{recipeData?.views}
@@ -146,47 +168,13 @@ export default function RecipeDetail() {
 							레시피 <em>Recipe</em>
 						</h4>
 
-						<div className={styled.cookingIngredientList}>
-							<ul>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-							</ul>
-							<ul>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-								<li>
-									홍가리비<span>1kg</span>
-								</li>
-							</ul>
+						<div>
+							{recipeData && (
+								<GroupedIngredientList
+									ingredients={recipeData.recipe_ingredients}
+									className={styled.cookingIngredientList}
+								/>
+							)}
 						</div>
 					</div>
 
