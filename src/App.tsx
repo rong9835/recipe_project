@@ -12,11 +12,13 @@ function App() {
 			<Layout>
 				<Routes>
 					<Route path="/" element="" />
+					<Route path="/profile" element={<Profile />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<SignUp />} />
 					<Route path="/recipedetail" element={<RecipeDetail />} />
 				</Routes>
-			</Layout>ss
+			</Layout>
+			ss
 		</>
 	);
 }
