@@ -146,6 +146,11 @@ h4 em::before {
 	position: relative;
 }
 
+/* 1개의 ul일 때 */
+.cookingIngredientList ul:first-child {
+	width: 100%;
+}
+
 /* 2개의 ul일 때 */
 .cookingIngredientList ul:first-child:nth-last-child(2),
 .cookingIngredientList ul:first-child:nth-last-child(2) ~ ul {
