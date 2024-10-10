@@ -15,6 +15,7 @@ section.recipeDetailPage {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	width: 100%;
 }
 
 .recipeDetailPage nav img {
@@ -23,6 +24,7 @@ section.recipeDetailPage {
 }
 
 .pageTitle {
+	margin: auto;
 	font-size: 28px;
 }
 
@@ -117,7 +119,7 @@ h4 em::before {
 
 .cookingInfo div p {
 	font-size: 40px;
-	padding: 30px 190px;
+	padding: 30px 150px;
 }
 
 /* 레시피 쿠킹 정보 스타일 끝 */
@@ -142,6 +144,11 @@ h4 em::before {
 .cookingIngredientList ul {
 	margin-top: 20px;
 	position: relative;
+}
+
+/* 1개의 ul일 때 */
+.cookingIngredientList ul:first-child {
+	width: 100%;
 }
 
 /* 2개의 ul일 때 */
