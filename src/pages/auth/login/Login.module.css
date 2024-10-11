@@ -1,0 +1,98 @@
+body,
+#root {
+	background-color: #fff9e9;
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.loginContainer {
+	width: 100%;
+	max-width: 517px;
+	padding: 20px;
+	box-sizing: border-box;
+}
+.title {
+	text-align: center;
+	color: #c9532f;
+	font-size: 24px;
+	margin-bottom: 60px;
+}
+.input {
+	width: 100%;
+	height: 75px;
+	margin-bottom: 33px;
+	border: none;
+	border-bottom: 1px solid #c9532f;
+	font-size: 24px;
+	padding-left: 1rem;
+	color: rgba(0, 0, 0, 0.5);
+	box-sizing: border-box;
+}
+.googleButton,
+.loginButton {
+	width: 100%;
+	height: 80px;
+	padding: 0.75rem;
+	border: none;
+	border-radius: 20px;
+	font-size: 24px;
+	cursor: pointer;
+	margin-bottom: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.googleButton {
+	background-color: #fff9e9;
+	color: black;
+	border: 1px solid #444444;
+	margin-top: 33px;
+}
+.googleButton img {
+	margin-right: 0.5rem;
+	width: 24px;
+	height: 24px;
+}
+.loginButton {
+	background-color: #c9532f;
+	color: white;
+}
+.error {
+	color: #c9532f;
+	font-size: 14px;
+	margin-top: 5px;
+	text-align: left;
+	margin-bottom: 15px;
+	display: flex;
+	align-items: center;
+}
+.errorIcon {
+	width: 16px;
+	height: 16px;
+	margin-right: 8px;
+}
+.links {
+	text-align: center;
+	font-size: 24px;
+	margin-bottom: 105px;
+	margin-top: 60px;
+}
+.links a {
+	color: rgba(0, 0, 0, 0.3);
+	text-decoration: none;
+}
+.signup {
+	text-align: center;
+	font-size: 24px;
+	color: rgba(0, 0, 0, 0.5);
+}
+.signup a {
+	color: rgba(0, 0, 0, 0.3);
+	text-decoration: none;
+	display: block;
+	margin-top: 20px;
+}
