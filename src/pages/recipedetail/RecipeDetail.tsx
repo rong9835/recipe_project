@@ -14,6 +14,7 @@ import { getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GroupedIngredientList from '../../components/recipedetailpage/GroupedIngredientList';
+import RecipeSteps from './../../components/recipedetailpage/RecipeSteps';
 
 interface RecipeTime {
 	hours: number;
@@ -25,7 +26,7 @@ interface RecipeIngredient {
 	volume: number | string;
 }
 
-interface RecipeSteps {
+interface RecipeStep {
 	step_description: string;
 	step_image_url: string | number;
 }
@@ -37,12 +38,12 @@ interface RecipeCreateTime {
 
 interface Recipe {
 	recipe_name: string;
+	recipe_create_time: RecipeCreateTime;
 	recipe_time: RecipeTime;
 	recipe_difficulty: string | number;
-	recipe_steps: RecipeSteps;
-	recipe_tips: string;
 	recipe_ingredients: RecipeIngredient[];
-	recipe_create_time: RecipeCreateTime;
+	recipe_steps: RecipeStep[];
+	recipe_tips: string;
 
 	image_url: string;
 	hearted: boolean;
@@ -97,6 +98,9 @@ export default function RecipeDetail() {
 		nanoseconds: recipeData?.recipe_create_time.nanoseconds,
 	};
 	const formatDay = createTime(times.seconds);
+
+	// 레시피 순서
+	// const { recipe_steps } = recipeData;
 
 	// 레시피 팁 데이터의 여부를 확인하고 있으면 데이터를 넣고, 없으면 문구를 넣는다.
 	const recipeTip: () => string = () => {
@@ -179,88 +183,7 @@ export default function RecipeDetail() {
 					</div>
 
 					<div className={styled.cookingList}>
-						<ol>
-							<li>
-								<CustomButton
-									btnType={ButtonType.Level}
-									size="medium"
-									color="orange"
-									shape="circle"
-								>
-									01
-								</CustomButton>
-								<div>
-									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기 사립문이
-									내 눈앞에 와있는 나오질 않았습니다 그리고 그 있고 노라드
-									아주머니는 휴가를 별나라에서 일어나는 일을 더 귀여운 천국의
-									목자였습니다
-								</div>
-								<img src={sampleImage} />
-							</li>
-							<li>
-								<CustomButton
-									btnType={ButtonType.Level}
-									size="medium"
-									color="orange"
-									shape="circle"
-								>
-									01
-								</CustomButton>
-								<div>
-									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기 사립문이
-									내 눈앞에 와있는 나오질 않았습니다 그리고 그 있고 노라드
-									아주머니는 휴가를 별나라에서 일어나는 일을 더 귀여운 천
-								</div>
-							</li>
-							<li>
-								<CustomButton
-									btnType={ButtonType.Level}
-									size="medium"
-									color="orange"
-									shape="circle"
-								>
-									01
-								</CustomButton>
-								<div>
-									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기 사립문이
-									내 눈앞에 와있는 나오질 않았습니다 그리고 그 있고 노라드
-									아주머니는 휴가를 별나라에서 일어나는 일을 더 귀여운 천 국의
-									목자였습니다 어머나 따라 성호를 긋고는 잠시 나란히 앉아
-									있었습니다
-								</div>
-							</li>
-							<li>
-								<CustomButton
-									btnType={ButtonType.Level}
-									size="medium"
-									color="orange"
-									shape="circle"
-								>
-									01
-								</CustomButton>
-								<div>
-									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기
-									사립문이내 눈앞에 와있는 나오질
-								</div>
-							</li>
-							<li>
-								<CustomButton
-									btnType={ButtonType.Level}
-									size="medium"
-									color="orange"
-									shape="circle"
-								>
-									01
-								</CustomButton>
-								<div>
-									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기 사립문이
-									내 눈앞에 와있는 나오질 않았습니다 그리고 그 있고 노라드
-									아주머니는 휴가를 별나라에서 일어나는 일을 더 귀여운 천 국의
-									목자였습니다 어머나 따라 성호를 긋고는 잠시 나란히 앉아
-									있었습니다
-								</div>
-							</li>
-						</ol>
+						{/* <RecipeSteps recipeSteps={recipe_steps} /> */}
 					</div>
 
 					<div className={styled.recipeTip}>
