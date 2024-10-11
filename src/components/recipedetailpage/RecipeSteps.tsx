@@ -3,40 +3,49 @@ import CustomButton, {
 	ButtonType,
 } from '../../components/custombutton/CustomButton';
 
-interface RecipeStep {
-	step_description: string;
-	step_image_url?: string | number;
+interface RecipeData {
+	recipe_steps: {
+		step_description: string;
+		step_image_url: string | number | null;
+	}[];
 }
 
 interface RecipeStepsProps {
-	recipeSteps: RecipeStep[];
+	recipeData: RecipeData;
+	className?: string;
 }
 
-const RecipeSteps: React.FC<RecipeStepsProps> = ({ recipeSteps }) => {
+const RecipeSteps: React.FC<RecipeStepsProps> = ({ recipeData }) => {
+	const steps = recipeData.recipe_steps;
+
 	return (
-		<div className="cookingList">
-			<ol>
-				{recipeSteps.map((step, index) => (
-					<li key={index}>
-						<CustomButton
-							btnType={ButtonType.Level}
-							size="medium"
-							color="orange"
-							shape="circle"
-						>
-							{(index + 1).toString().padStart(2, '0')}
-						</CustomButton>
-						<div>{step.step_description}</div>
-						{step.step_image_url && (
-							<img
-								src={step.step_image_url.toString()}
-								alt={`Step ${index + 1}`}
-							/>
-						)}
-					</li>
-				))}
-			</ol>
-		</div>
+		// <div className={className}>
+		<ol>
+			{steps.map((step, index) => (
+				<li key={index}>
+					<CustomButton
+						btnType={ButtonType.Level}
+						size="medium"
+						color="orange"
+						shape="circle"
+					>
+						{index + 1}
+					</CustomButton>
+					<div>{step.step_description}</div>
+					{step.step_image_url && (
+						<img
+							src={
+								typeof step.step_image_url === 'number'
+									? String(step.step_image_url)
+									: step.step_image_url
+							}
+							alt={`레시피 단계 ${index + 1} 이미지`}
+						/>
+					)}
+				</li>
+			))}
+		</ol>
+		// </div>
 	);
 };
 

@@ -21,6 +21,11 @@ interface RecipeTime {
 	minutes: number;
 }
 
+interface RecipeCreateTime {
+	seconds: number;
+	nanoseconds: number;
+}
+
 interface RecipeIngredient {
 	name: string;
 	volume: number | string;
@@ -29,11 +34,6 @@ interface RecipeIngredient {
 interface RecipeStep {
 	step_description: string;
 	step_image_url: string | number;
-}
-
-interface RecipeCreateTime {
-	seconds: number;
-	nanoseconds: number;
 }
 
 interface Recipe {
@@ -98,9 +98,6 @@ export default function RecipeDetail() {
 		nanoseconds: recipeData?.recipe_create_time.nanoseconds,
 	};
 	const formatDay = createTime(times.seconds);
-
-	// 레시피 순서
-	// const { recipe_steps } = recipeData;
 
 	// 레시피 팁 데이터의 여부를 확인하고 있으면 데이터를 넣고, 없으면 문구를 넣는다.
 	const recipeTip: () => string = () => {
@@ -183,7 +180,7 @@ export default function RecipeDetail() {
 					</div>
 
 					<div className={styled.cookingList}>
-						{/* <RecipeSteps recipeSteps={recipe_steps} /> */}
+						<RecipeSteps recipeData={recipeData || { recipe_steps: [] }} />
 					</div>
 
 					<div className={styled.recipeTip}>
