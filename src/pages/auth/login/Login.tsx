@@ -1,19 +1,17 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './Login.module.css';
-import { auth } from '../../../firebase/config';
-import {
-	signInWithEmailAndPassword,
-	signInWithPopup,
-	GoogleAuthProvider,
-} from 'firebase/auth';
 import errorIcon from '../../assets/icon_error.png';
+import { useAuth } from '../../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [loginError, setLoginError] = useState('');
+	const { login, googleLogin } = useAuth(); // AuthContext에서 로그인 함수 가져오기
+	const navigate = useNavigate();
 
-	const handleLogin = async (e: any) => {
+	const handleLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setLoginError('');
 
@@ -23,20 +21,21 @@ const Login = () => {
 		}
 
 		try {
-			await signInWithEmailAndPassword(auth, email, password);
+			await login(email, password); // 이메일/비밀번호 로그인
 			console.log('로그인 성공');
-		} catch (error) {
+			navigate('/'); // 로그인 성공 시 메인 페이지로 리디렉션
+		} catch (error: any) {
 			console.error('로그인 실패:', error.message);
 			setLoginError('아이디 또는 비밀번호가 올바르지 않습니다');
 		}
 	};
 
 	const handleGoogleLogin = async () => {
-		const provider = new GoogleAuthProvider();
 		try {
-			await signInWithPopup(auth, provider);
+			await googleLogin(); // 구글 로그인
 			console.log('구글 로그인 성공');
-		} catch (error) {
+			navigate('/'); // 구글 로그인 성공 시 메인 페이지로 리디렉션
+		} catch (error: any) {
 			console.error('구글 로그인 실패:', error.message);
 			setLoginError('구글 로그인에 실패했습니다. 다시 시도해주세요.');
 		}
