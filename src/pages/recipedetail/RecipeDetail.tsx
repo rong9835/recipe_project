@@ -20,13 +20,16 @@ import { getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GroupedIngredientList from '../../components/recipedetailpage/GroupedIngredientList';
+
 import RecipeSteps from './../../components/recipedetailpage/RecipeSteps';
 import Comments from '../../components/recipedetailpage/Comments';
+
 
 interface RecipeTime {
 	hours: number;
 	minutes: number;
 }
+
 
 interface RecipeCreateTime {
 	seconds: number;
@@ -51,7 +54,6 @@ interface Recipe {
 	recipe_ingredients: RecipeIngredient[];
 	recipe_steps: RecipeStep[];
 	recipe_tips: string;
-
 	image_url: string;
 	hearted: boolean;
 	hearts: number;
