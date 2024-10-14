@@ -361,13 +361,18 @@ h4 em::before {
 	margin-left: 10px;
 }
 
-.commentList > p {
+.commentBlock {
+	margin-top: 50px;
+	position: relative;
+}
+
+.commentBlock > p {
 	font-size: 18px;
 	line-height: 35px;
 	margin-top: 20px;
 }
 
-.commentList::after {
+.commentBlock::after {
 	content: '';
 	display: block;
 	width: 100%;

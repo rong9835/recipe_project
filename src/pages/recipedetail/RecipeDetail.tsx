@@ -1,7 +1,6 @@
 import backIcon from '../../assets/icon_back.png';
 import heartIcon from '../../assets/icon_heart.png';
 import viewIcon from '../../assets/icon_view.png';
-import sampleImage from '../../assets/sample_img.jpg';
 import heartEmpty from '../../assets/icon_heart_empty.png';
 import heartPull from '../../assets/icon_heart_pull.png';
 import CustomButton, {
@@ -9,12 +8,20 @@ import CustomButton, {
 } from '../../components/custombutton/CustomButton';
 import styled from './RecipeDetail.module.css';
 
-import { getFirestore, getDoc, doc } from 'firebase/firestore';
+import {
+	getFirestore,
+	getDoc,
+	doc,
+	collection,
+	addDoc,
+	updateDoc,
+} from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GroupedIngredientList from '../../components/recipedetailpage/GroupedIngredientList';
 import RecipeSteps from './../../components/recipedetailpage/RecipeSteps';
+import Comments from '../../components/recipedetailpage/Comments';
 
 interface RecipeTime {
 	hours: number;
@@ -53,9 +60,14 @@ interface Recipe {
 
 export default function RecipeDetail() {
 	const [recipeData, setRecipeData] = useState<Recipe | null>(null);
+	const [newComment, setNewComment] = useState<string>('');
+	const [isHearted, setIsHearted] = useState<boolean>(false);
+
+	const recipeId = 'ClSPjrXxycVbzNW8ZXrR';
 
 	const db = getFirestore();
 	const auth = getAuth();
+	const currentUser = auth.currentUser;
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -65,7 +77,9 @@ export default function RecipeDetail() {
 				const recipeDoc = await getDoc(docRef);
 
 				if (recipeDoc.exists()) {
-					setRecipeData(recipeDoc.data() as Recipe);
+					const recipe = recipeDoc.data() as Recipe;
+					setRecipeData(recipe);
+					setIsHearted(recipe.hearted);
 				} else {
 					navigate('/404');
 				}
@@ -104,6 +118,50 @@ export default function RecipeDetail() {
 		return recipeData?.recipe_tips
 			? recipeData.recipe_tips
 			: '추가 설명이 없습니다.';
+	};
+
+	// 댓글 등록하기
+	const addComment = async () => {
+		if (newComment.trim()) {
+			if (!currentUser) {
+				alert('로그인이 필요한 작업입니다 :)');
+				setNewComment('');
+				return;
+			}
+
+			try {
+				await addDoc(collection(db, 'recipes', recipeId, 'comment'), {
+					comment_description: newComment,
+					user_nickname: currentUser?.displayName,
+					comment_create_time: new Date(),
+				});
+				setNewComment('');
+			} catch (eorror) {
+				console.error('오류입니다.');
+			}
+		} else {
+			alert('댓글을 입력해주세요!');
+		}
+	};
+
+	const toggleHeart = async () => {
+		const newHearted = !isHearted;
+		setIsHearted(newHearted);
+
+		const currentHearts = recipeData?.hearts || 0;
+
+		const updatedHeartCount = newHearted
+			? currentHearts + 1
+			: currentHearts - 1;
+
+		try {
+			await updateDoc(doc(db, 'recipes', recipeId), {
+				hearted: newHearted,
+				hearts: updatedHeartCount,
+			});
+		} catch (error) {
+			console.error('하트 업데이트 오류');
+		}
 	};
 
 	return (
@@ -195,43 +253,20 @@ export default function RecipeDetail() {
 						<label htmlFor="comment">
 							<textarea
 								id="comment"
+								value={newComment}
+								onChange={(e) => setNewComment(e.target.value)}
 								placeholder="특별한 레시피를 남겨준 `@{user}` 에게 따듯한 댓글을 남겨주세요 ♥"
 							/>
 						</label>
 
-						<button type="submit">등록</button>
+						<button onClick={addComment}>등록</button>
 					</div>
 
-					<div className={styled.commentList}>
-						<ul className={styled.commentWriterInfo}>
-							<li>diayhew5869</li>
-							<li>2024/09/24 11:32</li>
-						</ul>
-						<div className={styled.commentSettingsBtn}>
-							<CustomButton
-								btnType={ButtonType.Edit}
-								color="orange"
-								shape="rad30"
-							>
-								수정
-							</CustomButton>
-							<CustomButton
-								btnType={ButtonType.Delete}
-								color="white"
-								shape="rad30"
-							>
-								삭제
-							</CustomButton>
-						</div>
-						<p>
-							고개를 들고 하늘을 쳐다보며 맨 꼬리가 되었어요 그래 실린 버들고리
-							사이에 의젓이 어머나 저렇게 많아 참 것이었습니다 이때까지 밤하늘이
-							그렇게도 정기와 소나기 뒤에 싸늘하게 바라보아도 내 눈은 지칠
-							지팡이를 냅다 던졌어요 프로방스의 언덕배기에서 나를 부르는 소리가
-							뒤척이는 서슬에 짚이 버스럭거리며 선뜻 나오질 않았습니다 그리고
-							줄을 몰랐습니다 그때까지 그렇게
-						</p>
-					</div>
+					<section className={styled.commentList}>
+						<h3 className={styled.srOnly}>댓글 리스트</h3>
+
+						<Comments />
+					</section>
 
 					<div className={styled.pagenation}>
 						<span></span> 1 2 3 4 5 <span></span>
@@ -239,8 +274,8 @@ export default function RecipeDetail() {
 				</section>
 			</section>
 
-			<aside className={styled.stickyHeartIcon}>
-				<img src={heartEmpty} alt="비어있는 좋아요 아이콘" />
+			<aside className={styled.stickyHeartIcon} onClick={toggleHeart}>
+				<img src={isHearted ? heartPull : heartEmpty} alt="좋아요 아이콘" />
 			</aside>
 		</>
 	);
