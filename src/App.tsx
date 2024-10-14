@@ -7,6 +7,7 @@ import Layout from './layout/Layout';
 import RecipeList from './pages/recipelist/RecipeList';
 import Home from './pages/home/Home';
 import { AuthProvider } from './context/AuthContext';
+import Profile from './pages/auth/profile/Profile';
 
 function App() {
 	return (
