@@ -9,6 +9,9 @@ const Header = () => {
 			<div>
 				<Link to={'/login'} />
 			</div>
+			<div>
+				<Link to={'/signup'}>회원가입 페이지</Link>
+			</div>
 		</>
 	);
 };

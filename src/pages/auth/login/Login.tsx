@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './Login.module.css';
-import errorIcon from '../../assets/icon_error.png';
+import errorIcon from '../../../assets/icon_error.png';
 import { useAuth } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 

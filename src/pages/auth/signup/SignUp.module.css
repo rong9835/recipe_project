@@ -1,0 +1,56 @@
+.container{
+	font-family: 'SUIT Variable', sans-serif;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.logo{
+    text-align: center;
+    margin-bottom: 125px;
+}
+
+.input{
+    display: flex;
+    width: 500px;
+    height: 75px;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #C9532F;
+    font-size: 24px;
+    padding-left: 1.25rem;
+    box-sizing: border-box;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+}
+.input::placeholder{
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.signupBtn {
+    width: 500px;
+    height: 100px;
+    background-color: #C9532F;
+    display: flex;            
+    justify-content: center;  
+    align-items: center;      
+    border: none;           
+    border-radius: 20px;  
+    margin-top: 80px;
+}
+
+.signupBtn span{
+    font-size: 38px;
+    color: white;
+}
+
+.pageLogin{
+    display: block;
+    margin-top: 44px;
+    margin-bottom: 112px;
+}
+.pageLogin a {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.3);
+    font-size: 24px;
+}
