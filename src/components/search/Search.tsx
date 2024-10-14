@@ -65,8 +65,8 @@ const Search = () => {
 				{isOpen && (
 					<ul className={styles.dropDownMenu}>
 						{options
-							.filter((option) => option !== selectedOption)
-							.map((option) => (
+							.filter((option: string) => option !== selectedOption)
+							.map((option: string) => (
 								<li
 									key={option}
 									onClick={() => handleOptionSelect(option)}

@@ -1,0 +1,53 @@
+.recommendCardSection {
+	margin-top: 30px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.recommendCardImg1,
+.recommendCardImg2 {
+	width: 300px;
+	height: 400px;
+}
+
+.recommendCardImg1 {
+	background: url('../../assets/test1.png') no-repeat center center;
+}
+
+.recommendCardImg2 {
+	background: url('../../assets/test2.png') no-repeat center center;
+}
+
+.recommendCardArticle {
+	width: 592px;
+	height: 470px;
+}
+
+.recommendCardImg {
+	position: relative;
+}
+
+.outerCircle {
+	width: 67.89px;
+	height: 67.89px;
+	background-color: white;
+	border-radius: 50%;
+	position: relative; /* 변경: absolute에서 relative로 */
+	top: 10px;
+	left: 10px;
+	display: flex; /* 추가 */
+	justify-content: center; /* 추가 */
+	align-items: center; /* 추가 */
+}
+
+.innerCircle {
+	width: 62px; /* 주황색 원의 크기 */
+	height: 62px; /* 주황색 원의 크기 */
+	background-color: #c9532f; /* 주황색 배경 */
+	border-radius: 50%; /* 원 모양 */
+	display: flex; /* 추가 */
+	justify-content: center; /* 추가 */
+	align-items: center; /* 추가 */
+	color: white; /* 글자 색상 */
+	font-size: 20px;
+}

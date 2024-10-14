@@ -1,15 +1,34 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CustomButton, {
 	ButtonType,
 } from '../../components/custombutton/CustomButton';
 import RecommendCard from '../../components/recommendcard/RecommendCard';
 import styles from './Home.module.css';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
 	const [isOpen, setIsOpen] = useState(false);
+	const plusRef = useRef<HTMLUListElement>(null);
 
-	const options = ['레시피 작성하기', 'AI 추천 레시피', '마이페이지'];
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (plusRef.current && !plusRef.current.contains(event.target as Node)) {
+				setIsOpen(false);
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
+
+	const options = [
+		{ label: '레시피 작성하기', path: '/' },
+		{ label: 'AI 추천 레시피', path: '/' },
+		{ label: '마이페이지', path: '/profile' },
+	];
 
 	const renderPlusAndCloseBtn = () => {
 		return isOpen ? <CloseOutlined /> : <PlusOutlined />;
@@ -34,10 +53,7 @@ const Home = () => {
 					내 레시피 공유하기
 				</CustomButton>
 			</article>
-			<div>
-				추천 컴포넌트
-				<RecommendCard />
-			</div>
+			<RecommendCard />
 			<CustomButton
 				btnType={ButtonType.Plus}
 				shape="circle"
@@ -47,11 +63,18 @@ const Home = () => {
 			>
 				{renderPlusAndCloseBtn()}
 			</CustomButton>
-			<ul className={styles.plusMenu}>
-				{options.map((option: string) => (
-					<li>{option}</li>
-				))}
-			</ul>
+			{isOpen && (
+				<ul className={styles.plusMenu} ref={plusRef}>
+					{/* 각 옵션을 Link로 감싸 경로를 추가 */}
+					{options.map((option) => (
+						<li key={option.label}>
+							<Link className={styles.plusMenuList} to={option.path}>
+								{option.label}
+							</Link>
+						</li>
+					))}
+				</ul>
+			)}
 		</div>
 	);
 };
