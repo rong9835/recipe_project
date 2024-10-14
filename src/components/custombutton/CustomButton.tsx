@@ -10,6 +10,7 @@ export enum ButtonType {
 	Delete = 'delete',
 	Save = 'save',
 	Level = 'level',
+	Share = 'share',
 }
 
 export interface ButtonProps {
@@ -38,6 +39,7 @@ const CustomButton = ({
 		[ButtonType.Delete]: styles.deleteBtn,
 		[ButtonType.Save]: styles.saveBtn,
 		[ButtonType.Level]: styles.levelBtn,
+		[ButtonType.Share]: styles.shareBtn,
 	};
 
 	// size가 undefined일 경우에 빈 문자열 반환

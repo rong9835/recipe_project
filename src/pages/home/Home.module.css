@@ -1,0 +1,25 @@
+.homeBanner {
+	background-image: url('../../assets/home_banner.png');
+	background-size: cover;
+	height: 400px;
+	margin-top: 85px;
+}
+
+.bannerText {
+	font-size: 18px;
+	line-height: 35px;
+	padding-top: 80px;
+	margin-bottom: 70px;
+}
+
+.plusMenu {
+	position: fixed;
+	bottom: 136px;
+	right: 100px;
+	background-color: #c9532f;
+	border: 1px solid #c9532f;
+	border-radius: 10px;
+	width: 206px;
+	height: 225px;
+	font-size: 20px;
+}

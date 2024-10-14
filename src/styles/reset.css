@@ -133,7 +133,6 @@ a {
 }
 
 button {
-	background: inherit;
 	border: none;
 	box-shadow: none;
 	border-radius: 0;
@@ -152,4 +151,14 @@ button {
 	clip-path: inset(50%);
 	border: 0;
 	clip: rect(0 0 0 0);
+}
+
+input {
+	margin: 0; /* 기본 마진 제거 */
+	padding: 0; /* 기본 패딩 제거 */
+	border: none; /* 기본 테두리 제거 */
+	outline: none; /* 포커스 시 기본 아웃라인 제거 */
+	font-size: 16px; /* 기본 폰트 크기 설정 */
+	font-family: inherit; /* 부모 요소의 폰트 패밀리 상속 */
+	box-sizing: border-box; /* 박스 모델을 border-box로 설정 */
 }
