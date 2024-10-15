@@ -20,7 +20,7 @@ export interface ButtonProps {
 	shape?: 'circle' | 'rad10' | 'rad20' | 'rad30';
 	onClick?: () => void;
 	children?: ReactNode;
-	disabled: boolean;
+	disabled?: boolean;
 }
 
 const CustomButton = ({
