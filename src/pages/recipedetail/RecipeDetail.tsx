@@ -20,7 +20,9 @@ import GroupedIngredientList from '../../components/recipedetailpage/GroupedIngr
 
 import RecipeSteps from './../../components/recipedetailpage/RecipeSteps';
 import Comments from '../../components/recipedetailpage/Comments';
-import CustomButton, { ButtonType } from '../../components/custombutton/CustomButton';
+import CustomButton, {
+	ButtonType,
+} from '../../components/custombutton/CustomButton';
 
 interface RecipeTime {
 	hours: number;

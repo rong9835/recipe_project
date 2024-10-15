@@ -51,3 +51,12 @@
 	color: white; /* 글자 색상 */
 	font-size: 20px;
 }
+
+.recommendRecipe {
+	display: flex;
+}
+
+.heartImg {
+	width: 20px;
+	height: 18px;
+}

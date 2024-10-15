@@ -77,15 +77,20 @@
 	height: 50px;
 }
 
-.levelBtn {
-	font-size: 20px;
-	font-weight: 800;
-	font-family: 'SUIT Variable', sans-serif;
-}
-
-.plusBtn {
+.menuBtn {
 	position: fixed;
 	bottom: 45px;
 	right: 100px;
+}
+
+.plusBtn {
+	font-size: 28px;
+	color: #fff9e9;
+}
+
+.backBtn {
+	width: 226px;
+	height: 70px;
+	font-size: 24px;
 }
 /* 타입별 스타일 끝 */
