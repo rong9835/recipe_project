@@ -21,5 +21,23 @@
 	border-radius: 10px;
 	width: 206px;
 	height: 225px;
+	padding: 32.5px 3px 42.5px 3px;
+}
+
+.plusMenuList {
+	display: block;
 	font-size: 20px;
+	color: white;
+	line-height: 50px;
+	width: 100%;
+}
+
+.plusMenuList:hover {
+	color: #c9532f;
+	background-color: #fff9e9;
+	border-radius: 10px;
+}
+
+a:visited {
+	color: inherit;
 }

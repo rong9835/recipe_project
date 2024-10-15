@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from './Login.module.css';
 import errorIcon from '../../../assets/icon_error.png';
 import { useAuth } from '../../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
 	const [email, setEmail] = useState('');
@@ -84,7 +84,7 @@ const Login = () => {
 					<a href="#">아이디 찾기</a> | <a href="#">비밀번호 찾기</a>
 				</div>
 				<p className={styles.signup}>
-					아직 회원이 아니신가요? <a href="#">회원가입</a>
+					아직 회원이 아니신가요? <Link to={'/signup'}>회원가입</Link>
 				</p>
 			</div>
 		</div>
