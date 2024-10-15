@@ -2,6 +2,10 @@
 	font-family: 'SUIT Variable', sans-serif;
     width: 100%;
     min-height: 100vh;
+    display: flex;              
+    justify-content: center;    
+    align-items: center;        
+    flex-direction: column; 
 }
 
 .logo{
@@ -37,11 +41,9 @@
     border: none;           
     border-radius: 20px;  
     margin-top: 80px;
-}
-
-.signupBtn span{
-    font-size: 38px;
     color: white;
+    font-size: 38px;
+    cursor: pointer;
 }
 
 .pageLogin{

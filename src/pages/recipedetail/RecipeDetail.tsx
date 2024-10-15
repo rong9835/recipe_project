@@ -3,9 +3,6 @@ import heartIcon from '../../assets/icon_heart.png';
 import viewIcon from '../../assets/icon_view.png';
 import heartEmpty from '../../assets/icon_heart_empty.png';
 import heartPull from '../../assets/icon_heart_pull.png';
-import CustomButton, {
-	ButtonType,
-} from '../../components/custombutton/CustomButton';
 import styled from './RecipeDetail.module.css';
 
 import {
@@ -23,6 +20,9 @@ import GroupedIngredientList from '../../components/recipedetailpage/GroupedIngr
 
 import RecipeSteps from './../../components/recipedetailpage/RecipeSteps';
 import Comments from '../../components/recipedetailpage/Comments';
+import CustomButton, {
+	ButtonType,
+} from '../../components/custombutton/CustomButton';
 
 interface RecipeTime {
 	hours: number;
@@ -60,8 +60,7 @@ interface Recipe {
 
 export default function RecipeDetail() {
 	const [recipeData, setRecipeData] = useState<Recipe | null>(null);
-	const [newComment, setNewComment] = useState<string>('');
-	const [isHearted, setIsHearted] = useState<boolean>(false);
+	const [isHearted, setIsHearted] = useState<boolean>(recipeData?.hearted!);
 
 	const recipeId = 'ClSPjrXxycVbzNW8ZXrR';
 
@@ -70,25 +69,24 @@ export default function RecipeDetail() {
 	const currentUser = auth.currentUser;
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		const getRecipe = async () => {
-			try {
-				const docRef = doc(db, 'recipes', 'ClSPjrXxycVbzNW8ZXrR');
-				const recipeDoc = await getDoc(docRef);
+	const getRecipe = async () => {
+		try {
+			const docRef = doc(db, 'recipes', recipeId);
+			const recipeDoc = await getDoc(docRef);
 
-				if (recipeDoc.exists()) {
-					const recipe = recipeDoc.data() as Recipe;
-					setRecipeData(recipe);
-					setIsHearted(recipe.hearted);
-				} else {
-					navigate('/404');
-				}
-			} catch (error) {
+			if (recipeDoc.exists()) {
+				const recipe = recipeDoc.data() as Recipe;
+				setRecipeData(recipe);
+				setIsHearted(recipe.hearted);
+			} else {
 				navigate('/404');
-				console.log('데이터 전송 오류', error);
 			}
-		};
-
+		} catch (error) {
+			navigate('/404');
+			console.log('데이터 전송 오류', error);
+		}
+	};
+	useEffect(() => {
 		getRecipe();
 	}, [db, navigate]);
 
@@ -120,35 +118,14 @@ export default function RecipeDetail() {
 			: '추가 설명이 없습니다.';
 	};
 
-	// 댓글 등록하기
-	const addComment = async () => {
-		if (newComment.trim()) {
-			if (!currentUser) {
-				alert('로그인이 필요한 작업입니다 :)');
-				setNewComment('');
-				return;
-			}
-
-			try {
-				await addDoc(collection(db, 'recipes', recipeId, 'comment'), {
-					comment_description: newComment,
-					user_nickname: currentUser?.displayName,
-					comment_create_time: new Date(),
-				});
-				setNewComment('');
-			} catch (eorror) {
-				console.error('오류입니다.');
-			}
-		} else {
-			alert('댓글을 입력해주세요!');
-		}
-	};
-
+	// 다시 짜기
+	// 상세페이지 자체에 좋아요를 누르면 다른 유저들의 좋아요를 핸들링이 불가하므로
+	// 하트의 필드를 따로 두고 각 유저마다 이 페이지에서 좋아요를 누른지를 확인해야한다.
 	const toggleHeart = async () => {
 		const newHearted = !isHearted;
 		setIsHearted(newHearted);
 
-		const currentHearts = recipeData?.hearts || 0;
+		const currentHearts = recipeData?.hearts!;
 
 		const updatedHeartCount = newHearted
 			? currentHearts + 1
@@ -159,6 +136,7 @@ export default function RecipeDetail() {
 				hearted: newHearted,
 				hearts: updatedHeartCount,
 			});
+			getRecipe();
 		} catch (error) {
 			console.error('하트 업데이트 오류');
 		}
@@ -248,25 +226,7 @@ export default function RecipeDetail() {
 				</section>
 
 				<section className={styled.comment}>
-					<h3>댓글 | Comment</h3>
-					<div className={styled.commentInput}>
-						<label htmlFor="comment">
-							<textarea
-								id="comment"
-								value={newComment}
-								onChange={(e) => setNewComment(e.target.value)}
-								placeholder="특별한 레시피를 남겨준 `@{user}` 에게 따듯한 댓글을 남겨주세요 ♥"
-							/>
-						</label>
-
-						<button onClick={addComment}>등록</button>
-					</div>
-
-					<section className={styled.commentList}>
-						<h3 className={styled.srOnly}>댓글 리스트</h3>
-
-						<Comments />
-					</section>
+					<Comments recipeId={recipeId} />
 
 					<div className={styled.pagenation}>
 						<span></span> 1 2 3 4 5 <span></span>
