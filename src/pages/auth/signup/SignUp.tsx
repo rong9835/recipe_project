@@ -7,12 +7,12 @@ import { Link } from 'react-router-dom';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 interface SignUpValues {
-    email: string;
-    password: string;
-    confirmPassword: string;
-    name: string;
-    nickname: string;
-    phone: string;
+	email: string;
+	password: string;
+	confirmPassword: string;
+	name: string;
+	nickname: string;
+	phone: string;
 }
 
 export default function SignUp() {
@@ -30,13 +30,14 @@ export default function SignUp() {
     const [nicknameAvailable, setNicknameAvailable] = useState<boolean | null>(null);
     const [phoneAvailable, setPhoneAvailable] = useState<boolean | null>(null);
 
-    const signUpInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setSignUpValues({
-            ...signUpValues,
-            [name]: value,
-        });
-    };
+
+	const signUpInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setSignUpValues({
+			...signUpValues,
+			[name]: value,
+		});
+	};
 
     const checkEmailAvailability = async () => {
         const q = query(collection(db, 'users'), where('email', '==', signUpValues.email));
