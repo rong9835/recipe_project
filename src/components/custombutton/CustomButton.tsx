@@ -20,6 +20,7 @@ export interface ButtonProps {
 	shape?: 'circle' | 'rad10' | 'rad20' | 'rad30';
 	onClick?: () => void;
 	children?: ReactNode;
+	disabled: boolean;
 }
 
 const CustomButton = ({
@@ -29,6 +30,7 @@ const CustomButton = ({
 	shape,
 	onClick,
 	children,
+	disabled,
 }: ButtonProps) => {
 	const buttonStyles: Record<ButtonType, string> = {
 		[ButtonType.Search]: styles.searchBtn,
@@ -55,6 +57,7 @@ const CustomButton = ({
 		<button
 			className={`${buttonStyles[btnType]} ${sizeClass} ${colorClass} ${shapeClass}`}
 			onClick={onClick}
+			disabled={disabled}
 		>
 			{children}
 		</button>
