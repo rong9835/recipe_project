@@ -15,6 +15,7 @@ interface SignUpValues {
 }
 
 export default function SignUp() {
+    
     const [signUpValues, setSignUpValues] = useState<SignUpValues>({
         email: '',
         password: '',
@@ -23,8 +24,6 @@ export default function SignUp() {
         nickname:'',
         phone:''
     });
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [errMsg, setErrMsg] = useState<string>("");
 
     const signUpInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -34,42 +33,11 @@ export default function SignUp() {
         });
     };
 
-    const signUpFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const signUpFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setErrMsg("");        
-        
-        if (isLoading || 
-            signUpValues.email === "" || 
-            signUpValues.password === "" || 
-            signUpValues.confirmPassword === "" || 
-            signUpValues.name === "" || 
-            signUpValues.nickname === "" || 
-            signUpValues.phone === "") { 
-            return;
-        }
-
-        if (signUpValues.password !== signUpValues.confirmPassword) {
-            setErrMsg("비밀번호가 일치하지 않습니다.");
-            return;
-        }
-
-        try {
-            setIsLoading(true);
-            const userCreate = await createUserWithEmailAndPassword(
-                auth,
-                signUpValues.email,
-                signUpValues.password
-            );
-            console.log("회원가입 성공:", userCreate.user);
-        } catch (e) {
-            if (e instanceof FirebaseError) {
-                setErrMsg(e.message); 
-            }
-        } finally {
-            setIsLoading(false); // 로딩 상태 해제
-        }
+        console.log(signUpValues);
     };
-    
+
     return (
         <main className={styles.container}>
             <div className={styles.logo}>
@@ -85,7 +53,6 @@ export default function SignUp() {
                 <div className={styles.signupBtn}>
                     <button type="submit" disabled={isLoading}><span>회원가입</span></button> 
                 </div>
-                {errMsg && <div>{errMsg}</div>}
             </form>
             <div className={styles.pageLogin}>
                 <Link to={'/login'}>

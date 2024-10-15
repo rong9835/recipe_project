@@ -3,7 +3,7 @@ import RecipeCard from '../../components/recipecard/RecipeCard';
 const RecipeList = () => {
 	return (
 		<>
-			<div>RecipeList</div>;
+			<div>RecipeList화면</div>
 			<RecipeCard />
 		</>
 	);
