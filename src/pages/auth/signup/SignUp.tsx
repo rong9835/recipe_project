@@ -124,9 +124,7 @@ export default function SignUp() {
                 {nicknameAvailable === false && <div>{errMsg}</div>}
                 <input type="tel" name="phone" value={signUpValues.phone} onChange={signUpInputChange} onBlur={checkPhoneAvailability} placeholder="연락처를 입력해 주세요." required className={styles.input}/>
                 {phoneAvailable === false && <div>{errMsg}</div>}
-                <div className={styles.signupBtn}>
-                    <button type="submit" disabled={isLoading}><span>회원가입</span></button> 
-                </div>
+                <button type="submit" disabled={isLoading} className={styles.signupBtn}>회원가입</button> 
                 {errMsg && <div>{errMsg}</div>}
             </form>
             <div className={styles.pageLogin}>
