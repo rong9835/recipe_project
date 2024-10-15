@@ -1,4 +1,5 @@
 import styles from './RecommendCard.module.css';
+import heartImg from '../../assets/icon_heart.svg';
 
 const RecommendCard = () => {
 	const levelCircle = () => {
@@ -18,11 +19,20 @@ const RecommendCard = () => {
 					<span>'s</span>
 					<span> 추천 레시피</span>
 				</div>
-				<div>
+				<div className={styles.recommendRecipe}>
 					<div
 						className={`${styles.recommendCardImg1} ${styles.recommendCardImg}`}
 					>
 						{levelCircle()}
+					</div>
+					<div>
+						<div>
+							<img className={styles.heartImg} src={heartImg} />
+							하트
+						</div>
+						<div>레시피 제목</div>
+						<div>태그</div>
+						<div>레시피 보러가기</div>
 					</div>
 				</div>
 			</article>
@@ -31,10 +41,21 @@ const RecommendCard = () => {
 					<span>'s</span>
 					<span> 추천 레시피</span>
 				</div>
-				<div>
+				<div className={styles.recommendRecipe}>
 					<div
 						className={`${styles.recommendCardImg2} ${styles.recommendCardImg}`}
-					></div>
+					>
+						{levelCircle()}
+					</div>
+					<div>
+						<div>
+							<img className={styles.heartImg} src={heartImg} />
+							하트
+						</div>
+						<div>레시피 제목</div>
+						<div>태그</div>
+						<div>레시피 보러가기</div>
+					</div>
 				</div>
 			</article>
 		</section>

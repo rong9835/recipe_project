@@ -9,8 +9,10 @@ export enum ButtonType {
 	Edit = 'edit',
 	Delete = 'delete',
 	Save = 'save',
-	Level = 'level',
+	Menu = 'menu',
 	Share = 'share',
+	Step = 'step',
+	Back = 'back',
 }
 
 export interface ButtonProps {
@@ -18,7 +20,7 @@ export interface ButtonProps {
 	size?: 'small' | 'medium' | 'large';
 	color?: 'orange' | 'gray' | 'white' | 'ivory';
 	shape?: 'circle' | 'rad10' | 'rad20' | 'rad30';
-	onClick?: () => void;
+	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	children?: ReactNode;
 	disabled?: boolean;
 }
@@ -40,8 +42,10 @@ const CustomButton = ({
 		[ButtonType.Edit]: styles.editBtn,
 		[ButtonType.Delete]: styles.deleteBtn,
 		[ButtonType.Save]: styles.saveBtn,
-		[ButtonType.Level]: styles.levelBtn,
+		[ButtonType.Menu]: styles.menuBtn,
 		[ButtonType.Share]: styles.shareBtn,
+		[ButtonType.Step]: styles.stepBtn,
+		[ButtonType.Back]: styles.backBtn,
 	};
 
 	// size가 undefined일 경우에 빈 문자열 반환
@@ -55,6 +59,7 @@ const CustomButton = ({
 
 	return (
 		<button
+			type="button"
 			className={`${buttonStyles[btnType]} ${sizeClass} ${colorClass} ${shapeClass}`}
 			onClick={onClick}
 			disabled={disabled}

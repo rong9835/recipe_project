@@ -1,0 +1,233 @@
+.createAndEditSection {
+	width: 1280px;
+	margin: 0 auto;
+	padding: 20px 0;
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-flow: column wrap;
+	align-content: center;
+}
+
+.createAndEditHeader {
+	display: flex;
+	position: relative;
+	justify-content: center;
+	margin-top: 78px;
+}
+
+.backStepIcon {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: inherit;
+}
+
+.backStepIcon img {
+	width: 17px;
+	height: 35px;
+}
+
+.createAndEditDesc {
+	font-size: 28px;
+}
+
+.recipeForm {
+	width: 960px;
+}
+
+.formGroup {
+	margin-bottom: 20px;
+	position: relative;
+}
+
+.charCounter {
+	position: absolute;
+	right: 10px;
+	bottom: 25%;
+	font-size: 20px;
+	color: #999;
+}
+
+.formLabel {
+	display: block;
+	font-size: 28px;
+	font-weight: 500;
+	color: #333;
+	text-align: left;
+	margin: 80px 0 30px;
+}
+
+.formInput,
+.formTextArea,
+select {
+	width: 100%;
+	padding: 12px;
+	font-size: 14px;
+	border: 1px solid #c9532f;
+	border-radius: 10px;
+	box-sizing: border-box;
+	color: #333;
+}
+
+.formInput {
+	height: 95px;
+	font-size: 22px;
+	padding: 30px 20px;
+}
+
+.formInput::placeholder,
+.formTextArea::placeholder {
+	color: #c0c0c0;
+}
+
+.formTextArea {
+	resize: none;
+	height: 150px;
+	padding: 20px; /* padding을 기본으로 추가 */
+}
+
+.recipeTips .formTextArea {
+	height: 300px; /* 특정 클래스에 대한 높이 조정 */
+	width: 960px; /* 폭 조정 */
+	font-size: 18px;
+}
+
+.recipeTags .formTextArea {
+	height: 142px; /* 특정 클래스에 대한 높이 조정 */
+	width: 960px; /* 폭 조정 */
+	font-size: 18px;
+}
+
+.formInput:focus,
+.formTextArea:focus,
+select:focus {
+	border-color: #c9532f;
+	outline: none;
+}
+
+.imageUploadPlaceholder {
+	height: 960px;
+	background-color: #eeeeee;
+	border: 1px dashed #ddd;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	color: #999;
+	cursor: pointer;
+}
+
+.cookingTimeInputs {
+	display: flex;
+	gap: 10px;
+	align-items: flex-end;
+	justify-content: space-between;
+}
+
+.cookingTimeInputs label {
+	font-size: 28px;
+}
+
+.cookingTimeInputs input {
+	width: 400px;
+}
+
+.ingredientInputs {
+	display: flex;
+	gap: 28px;
+	margin-bottom: 56px;
+	position: relative;
+}
+
+.deleteBtnContainer,
+.deleteRecipeBtnContainer {
+	display: flex;
+	align-items: flex-end;
+	justify-content: flex-end;
+	position: absolute;
+	right: 0;
+}
+
+.deleteBtnContainer {
+	bottom: -30px;
+}
+
+.deleteRecipeBtnContainer {
+	bottom: 40px;
+}
+
+.ingredientNameInput {
+	width: 678px;
+}
+
+.ingredientAmountInput {
+	width: 254px;
+}
+
+.recipeSteps {
+	display: flex;
+	gap: 30px;
+}
+
+.recipeStep {
+	display: flex;
+	gap: 17px;
+	align-items: flex-start;
+	margin-bottom: 10px;
+	position: relative;
+}
+
+.recipeStepNumber {
+	font-size: 28px;
+	color: #fff9e9;
+}
+
+.recipeStep .formTextArea {
+	margin-bottom: 70px;
+	font-size: 18px;
+	width: 712px;
+}
+
+.recipeStep .imageUploadPlaceholder {
+	width: 150px;
+	height: 150px;
+	position: relative; /* 상대 위치 설정 */
+}
+
+.formActions {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin: 83px 0 135px;
+}
+
+.deleteBtn {
+	display: block;
+	font-size: 18px;
+	background-color: inherit;
+	color: #c9532f;
+}
+
+.uploadedImage {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.uploadProgress {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 4px;
+	background-color: rgba(0, 0, 0, 0.1);
+	z-index: 100;
+}
+
+.progressBar {
+	height: 100%; /* 전체 높이 사용 */
+	background-color: #c9532f; /* 진행률 바의 색상 */
+}
