@@ -24,12 +24,10 @@ import GroupedIngredientList from '../../components/recipedetailpage/GroupedIngr
 import RecipeSteps from './../../components/recipedetailpage/RecipeSteps';
 import Comments from '../../components/recipedetailpage/Comments';
 
-
 interface RecipeTime {
 	hours: number;
 	minutes: number;
 }
-
 
 interface RecipeCreateTime {
 	seconds: number;

@@ -5,11 +5,23 @@ import CustomButton, {
 import RecommendCard from '../../components/recommendcard/RecommendCard';
 import styles from './Home.module.css';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../firebase/config';
 
 const Home = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const plusRef = useRef<HTMLUListElement>(null);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged(auth, (user) => {
+			setIsLoggedIn(!!user); // user가 존재하면 true, 아니면 false
+		});
+
+		return () => unsubscribe(); // 컴포넌트 언마운트 시 리스너 해제
+	}, []);
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -25,13 +37,21 @@ const Home = () => {
 	}, []);
 
 	const options = [
-		{ label: '레시피 작성하기', path: '/' },
+		{ label: '레시피 작성하기', path: '/create' },
 		{ label: 'AI 추천 레시피', path: '/' },
 		{ label: '마이페이지', path: '/profile' },
 	];
 
 	const renderPlusAndCloseBtn = () => {
 		return isOpen ? <CloseOutlined /> : <PlusOutlined />;
+	};
+
+	const handleOptionClick = (path: string) => {
+		if (!isLoggedIn) {
+			navigate('/login'); // 로그인되지 않았다면 로그인 페이지로 리다이렉트
+		} else {
+			navigate(path); // 로그인된 경우 해당 경로로 이동
+		}
 	};
 
 	return (
@@ -55,7 +75,7 @@ const Home = () => {
 			</article>
 			<RecommendCard />
 			<CustomButton
-				btnType={ButtonType.Plus}
+				btnType={ButtonType.Menu}
 				shape="circle"
 				color="orange"
 				size="large"
@@ -68,9 +88,12 @@ const Home = () => {
 					{/* 각 옵션을 Link로 감싸 경로를 추가 */}
 					{options.map((option) => (
 						<li key={option.label}>
-							<Link className={styles.plusMenuList} to={option.path}>
+							<span
+								className={styles.plusMenuList}
+								onClick={() => handleOptionClick(option.path)}
+							>
 								{option.label}
-							</Link>
+							</span>
 						</li>
 					))}
 				</ul>

@@ -52,6 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 		setLoading(true);
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
+			console.log(email);
 		} catch (error) {
 			console.error('로그인 실패:', error);
 			throw error; // 로그인 컴포넌트에서 처리할 수 있도록 예외를 던짐
