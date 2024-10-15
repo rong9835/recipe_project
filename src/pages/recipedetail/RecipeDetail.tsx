@@ -3,9 +3,6 @@ import heartIcon from '../../assets/icon_heart.png';
 import viewIcon from '../../assets/icon_view.png';
 import heartEmpty from '../../assets/icon_heart_empty.png';
 import heartPull from '../../assets/icon_heart_pull.png';
-import CustomButton, {
-	ButtonType,
-} from '../../components/custombutton/CustomButton';
 import styled from './RecipeDetail.module.css';
 
 import {
@@ -23,6 +20,7 @@ import GroupedIngredientList from '../../components/recipedetailpage/GroupedIngr
 
 import RecipeSteps from './../../components/recipedetailpage/RecipeSteps';
 import Comments from '../../components/recipedetailpage/Comments';
+import CustomButton, { ButtonType } from '../../components/custombutton/CustomButton';
 
 
 interface RecipeTime {
