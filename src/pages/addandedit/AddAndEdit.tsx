@@ -19,7 +19,7 @@ const AddAndEdit = () => {
 	const [ingredients, setIngredients] = useState([{ name: '', amount: '' }]);
 	const [difficulty, setDifficulty] = useState<number | string>('');
 	const navigate = useNavigate();
-	const { user } = useAuth();
+	const { nickname } = useAuth();
 	const [recipeTip, setRecipeTip] = useState('');
 	const [tags, setTags] = useState<string[]>([]);
 	const { imageUrl, uploadImage } = useThumbnailImgUpload();
@@ -87,7 +87,7 @@ const AddAndEdit = () => {
 
 		const recipeData = {
 			author: {
-				user_email: user?.email, // 예시 이메일
+				user_nickname: nickname, // 예시 이메일
 			}, // 적절한 author 데이터 설정
 			hearted: false, // 기본값 설정
 			hearts: 0, // 예시값

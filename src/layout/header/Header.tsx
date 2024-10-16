@@ -9,7 +9,7 @@ const Header = () => {
 
 	return (
 		<header id={styles.header}>
-			<img src={logoImg} />
+			<img src={logoImg} className={styles.logoImg} />
 			<Search />
 			{user ? (
 				<button onClick={logout} className={styles.loginLogoutText}>
