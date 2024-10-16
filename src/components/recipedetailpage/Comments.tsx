@@ -9,9 +9,12 @@ import {
 	doc,
 	DocumentData,
 	Timestamp,
+	orderBy,
+	query,
 } from 'firebase/firestore';
 import CustomButton, { ButtonType } from '../custombutton/CustomButton';
 import styled from '../../pages/recipedetail/RecipeDetail.module.css';
+import { Pagination } from 'antd';
 // import { getAuth } from 'firebase/auth';
 
 const mokuser = {
@@ -31,6 +34,8 @@ const Comments: React.FC<CommentsProps> = ({ recipeId }) => {
 	// 수정할때 필드를 생성해주기 위한 상태 관리
 	const [editingCommentId, setEditngCommentId] = useState<string | null>(null);
 	const [editedComment, setEditedComment] = useState<string>('');
+	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [commentsPerPage] = useState<number>(5);
 
 	// const auth = getAuth();
 	// const currentUser = auth.currentUser;
@@ -38,7 +43,11 @@ const Comments: React.FC<CommentsProps> = ({ recipeId }) => {
 	// 댓글 불러오기
 	const getComments = async () => {
 		const commentsCollection = collection(db, 'recipes', recipeId, 'comment');
-		const commentSnapshot = await getDocs(commentsCollection);
+		const sortComment = query(
+			commentsCollection,
+			orderBy('comment_create_time', 'desc')
+		);
+		const commentSnapshot = await getDocs(sortComment);
 		const commentList = commentSnapshot.docs.map((doc) => ({
 			id: doc.id,
 			...doc.data(),
@@ -101,6 +110,19 @@ const Comments: React.FC<CommentsProps> = ({ recipeId }) => {
 		}
 	};
 
+	// 페이지 변경 처리
+	const handlePageChange = (page: number) => {
+		setCurrentPage(page);
+	};
+
+	// 페이지당 댓글 계산
+	const indexOfLastComment = currentPage * commentsPerPage;
+	const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+	const currentComments = comments.slice(
+		indexOfFirstComment,
+		indexOfLastComment
+	);
+
 	return (
 		<>
 			<h3>댓글 | Comment</h3>
@@ -120,7 +142,7 @@ const Comments: React.FC<CommentsProps> = ({ recipeId }) => {
 			<section className={styled.commentList}>
 				<h3 className={styled.srOnly}>댓글 리스트</h3>
 				<div>
-					{comments.map((comment) => (
+					{currentComments.map((comment) => (
 						<div key={comment.id} className={styled.commentBlock}>
 							<ul className={styled.commentWriterInfo}>
 								<li>{comment.user_nickname}</li>
@@ -190,6 +212,14 @@ const Comments: React.FC<CommentsProps> = ({ recipeId }) => {
 						</div>
 					))}
 				</div>
+
+				<Pagination
+					current={currentPage}
+					pageSize={commentsPerPage}
+					total={comments.length}
+					onChange={handlePageChange}
+					className={styled.pagination_custom}
+				/>
 			</section>
 		</>
 	);

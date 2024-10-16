@@ -402,14 +402,6 @@ h4 em::before {
 }
 /* 댓글 리스트 스타일 끝 */
 
-/* 댓글 페이지네이션 스타일 시작 */
-.pagenation {
-	font-size: 28px;
-	text-align: center;
-	margin-top: 60px;
-}
-/* 댓글 페이지네이션 스타일 끝 */
-
 /* 따라다니는 좋아요 아이콘 스타일 시작 */
 .stickyHeartIcon {
 	width: 80px;

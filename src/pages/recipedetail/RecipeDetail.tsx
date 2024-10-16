@@ -227,10 +227,6 @@ export default function RecipeDetail() {
 
 				<section className={styled.comment}>
 					<Comments recipeId={recipeId} />
-
-					<div className={styled.pagenation}>
-						<span></span> 1 2 3 4 5 <span></span>
-					</div>
 				</section>
 			</section>
 
