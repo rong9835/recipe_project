@@ -1,21 +1,8 @@
 .recommendCardSection {
+	padding-left: 20px;
 	margin-top: 30px;
 	display: flex;
-	justify-content: space-between;
-}
-
-.recommendCardImg1,
-.recommendCardImg2 {
-	width: 300px;
-	height: 400px;
-}
-
-.recommendCardImg1 {
-	background: url('../../assets/test1.png') no-repeat center center;
-}
-
-.recommendCardImg2 {
-	background: url('../../assets/test2.png') no-repeat center center;
+	gap: 50px;
 }
 
 .recommendCardArticle {
@@ -23,8 +10,13 @@
 	height: 470px;
 }
 
-.recommendCardImg {
+.recommendCardImgSection {
 	position: relative;
+}
+
+.recommendCardImg {
+	width: 300px;
+	height: 400px;
 }
 
 .outerCircle {
@@ -32,7 +24,7 @@
 	height: 67.89px;
 	background-color: white;
 	border-radius: 50%;
-	position: relative; /* 변경: absolute에서 relative로 */
+	position: absolute; /* 변경: absolute에서 relative로 */
 	top: 10px;
 	left: 10px;
 	display: flex; /* 추가 */
@@ -54,9 +46,70 @@
 
 .recommendRecipe {
 	display: flex;
+	margin-top: 24px;
 }
 
 .heartImg {
 	width: 20px;
 	height: 18px;
+	vertical-align: middle;
+}
+
+.heartText {
+	font-size: 20px;
+	vertical-align: middle;
+}
+
+.recipeName {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.recipeTags {
+	display: flex;
+	flex-wrap: wrap;
+	max-width: 241px;
+	height: 90px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	gap: 5px;
+	margin-top: 20px;
+}
+
+.customTag {
+	border-radius: 30px;
+	background-color: #ffffff;
+	height: 40px;
+	padding: 10px 16px;
+	font-size: 16px;
+	display: inline-block; /* 태그의 너비를 자동으로 설정 */
+	white-space: nowrap; /* 태그 안에서 줄바꿈 방지 */
+	max-width: 120px; /* 태그의 최대 너비 설정 */
+}
+
+.recipeDescription {
+	margin-left: 30px;
+	display: flex;
+	flex-flow: column wrap;
+	justify-content: space-between;
+}
+
+.recipeDetailLinkWrapper {
+	display: flex;
+	justify-content: center;
+}
+
+.recipeDetailLinkBtn {
+	width: 262px;
+	height: 40px;
+	background-color: #fdf8e3;
+}
+
+.heartImgAndText {
+	text-align: left;
+}
+
+.recipeNameAndIng {
+	text-align: left;
 }
