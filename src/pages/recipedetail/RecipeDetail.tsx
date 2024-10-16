@@ -5,14 +5,7 @@ import heartEmpty from '../../assets/icon_heart_empty.png';
 import heartPull from '../../assets/icon_heart_pull.png';
 import styled from './RecipeDetail.module.css';
 
-import {
-	getFirestore,
-	getDoc,
-	doc,
-	collection,
-	addDoc,
-	updateDoc,
-} from 'firebase/firestore';
+import { getFirestore, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +16,7 @@ import Comments from '../../components/recipedetailpage/Comments';
 import CustomButton, {
 	ButtonType,
 } from '../../components/custombutton/CustomButton';
+import useUserNickname from '../../hooks/useGetUserNickName';
 
 interface RecipeTime {
 	hours: number;
@@ -44,6 +38,11 @@ interface RecipeStep {
 	step_image_url: string | number;
 }
 
+interface Author {
+	user_emain: string;
+	user_nickname: string | undefined;
+}
+
 interface Recipe {
 	recipe_name: string;
 	recipe_create_time: RecipeCreateTime;
@@ -52,21 +51,25 @@ interface Recipe {
 	recipe_ingredients: RecipeIngredient[];
 	recipe_steps: RecipeStep[];
 	recipe_tips: string;
-	image_url: string;
-	hearted: boolean;
+	recipe_description: string;
+	recipe_tags: [];
+
+	thumbnail_url: string;
 	hearts: number;
 	views: number;
+	author: Author;
 }
 
 export default function RecipeDetail() {
 	const [recipeData, setRecipeData] = useState<Recipe | null>(null);
-	const [isHearted, setIsHearted] = useState<boolean>(recipeData?.hearted!);
+	const [isAuthor, setIsAuthor] = useState<boolean>(false);
 
-	const recipeId = 'ClSPjrXxycVbzNW8ZXrR';
+	const recipeId = 'GwU5yV7JXylXb31HGvvj';
 
 	const db = getFirestore();
 	const auth = getAuth();
 	const currentUser = auth.currentUser;
+	const userNickName = useUserNickname(db);
 	const navigate = useNavigate();
 
 	const getRecipe = async () => {
@@ -77,7 +80,12 @@ export default function RecipeDetail() {
 			if (recipeDoc.exists()) {
 				const recipe = recipeDoc.data() as Recipe;
 				setRecipeData(recipe);
-				setIsHearted(recipe.hearted);
+
+				console.log(currentUser);
+
+				if (currentUser && userNickName === recipe.author.user_nickname) {
+					setIsAuthor(true);
+				}
 			} else {
 				navigate('/404');
 			}
@@ -86,6 +94,9 @@ export default function RecipeDetail() {
 			console.log('데이터 전송 오류', error);
 		}
 	};
+
+	const recipeAuthor = recipeData?.author?.user_nickname;
+
 	useEffect(() => {
 		getRecipe();
 	}, [db, navigate]);
@@ -118,46 +129,31 @@ export default function RecipeDetail() {
 			: '추가 설명이 없습니다.';
 	};
 
-	// 다시 짜기
-	// 상세페이지 자체에 좋아요를 누르면 다른 유저들의 좋아요를 핸들링이 불가하므로
-	// 하트의 필드를 따로 두고 각 유저마다 이 페이지에서 좋아요를 누른지를 확인해야한다.
-	const toggleHeart = async () => {
-		const newHearted = !isHearted;
-		setIsHearted(newHearted);
-
-		const currentHearts = recipeData?.hearts!;
-
-		const updatedHeartCount = newHearted
-			? currentHearts + 1
-			: currentHearts - 1;
-
-		try {
-			await updateDoc(doc(db, 'recipes', recipeId), {
-				hearted: newHearted,
-				hearts: updatedHeartCount,
-			});
-			getRecipe();
-		} catch (error) {
-			console.error('하트 업데이트 오류');
-		}
-	};
-
 	return (
 		<>
 			<section className={styled.recipeDetailPage}>
 				<h2 className={styled.srOnly}>레시피 디테일 페이지</h2>
 
 				<nav>
-					<img src={backIcon} alt="뒤로 가기" />
+					<div className={styled.imgWrap}>
+						<img src={backIcon} alt="뒤로 가기" />
+					</div>
 					<ul className={styled.pageTitle}>
 						<li className={styled.pointFont}>Special Cooking Recipe</li>
 						<li>
-							<em>아인맘 's</em> 레시피
+							<em>{userNickName} 's</em> 레시피
 						</li>
 					</ul>
-					<CustomButton btnType={ButtonType.Edit} color="orange" shape="rad10">
-						수정하기
-					</CustomButton>
+
+					{isAuthor && (
+						<CustomButton
+							btnType={ButtonType.Edit}
+							color="orange"
+							shape="rad10"
+						>
+							수정하기
+						</CustomButton>
+					)}
 				</nav>
 
 				<section className={styled.recipeTitle}>
@@ -175,7 +171,11 @@ export default function RecipeDetail() {
 						</li>
 					</ul>
 
-					<img src={recipeData?.image_url} alt="레시피 메인 이미지" />
+					<p className={styled.recipeDescription}>
+						{recipeData?.recipe_description}
+					</p>
+
+					<img src={recipeData?.thumbnail_url} alt="레시피 메인 이미지" />
 				</section>
 
 				<section className={styled.contents}>
@@ -223,20 +223,21 @@ export default function RecipeDetail() {
 						<h4>레시피 팁 | Recipe Tip</h4>
 						<div>{recipeTip()}</div>
 					</div>
+
+					<div className={styled.recipeTag}>
+						<h4>레시피 태그 | Recipe Tag</h4>
+						<p>{recipeData?.recipe_tags}</p>
+					</div>
 				</section>
 
 				<section className={styled.comment}>
-					<Comments recipeId={recipeId} />
-
-					<div className={styled.pagenation}>
-						<span></span> 1 2 3 4 5 <span></span>
-					</div>
+					<Comments recipeId={recipeId} recipeAuthor={recipeAuthor} />
 				</section>
 			</section>
 
-			<aside className={styled.stickyHeartIcon} onClick={toggleHeart}>
+			{/* <aside className={styled.stickyHeartIcon} onClick={toggleHeart}>
 				<img src={isHearted ? heartPull : heartEmpty} alt="좋아요 아이콘" />
-			</aside>
+			</aside> */}
 		</>
 	);
 }
