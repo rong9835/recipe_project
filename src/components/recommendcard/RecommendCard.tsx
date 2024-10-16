@@ -5,6 +5,7 @@ import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { useEffect, useState } from 'react';
 import { Tag } from 'antd'; // antd의 Tag 컴포넌트 임포트
+import { Link } from 'react-router-dom';
 
 const getTopHeartsRecipes = async () => {
 	try {
@@ -86,7 +87,7 @@ const RecommendCard = () => {
 							</div>
 							<div className={styles.recipeDetailLinkWrapper}>
 								<button className={styles.recipeDetailLinkBtn}>
-									레시피 보러가기
+									<Link to={`/recipedetail/${recipe.id}`}>레시피 보러가기</Link>
 								</button>
 							</div>
 						</div>

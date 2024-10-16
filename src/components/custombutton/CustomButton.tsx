@@ -13,6 +13,7 @@ export enum ButtonType {
 	Share = 'share',
 	Step = 'step',
 	Back = 'back',
+	Level = 'level',
 }
 
 export interface ButtonProps {
@@ -46,6 +47,7 @@ const CustomButton = ({
 		[ButtonType.Share]: styles.shareBtn,
 		[ButtonType.Step]: styles.stepBtn,
 		[ButtonType.Back]: styles.backBtn,
+		[ButtonType.Level]: styles.levelBtn,
 	};
 
 	// size가 undefined일 경우에 빈 문자열 반환

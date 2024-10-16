@@ -44,8 +44,16 @@
 
 .charCounter {
 	position: absolute;
-	right: 10px;
+	right: 20px;
 	bottom: 25%;
+	font-size: 20px;
+	color: #999;
+}
+
+.recipeDesc .charCounter {
+	position: absolute;
+	right: 25px;
+	bottom: 25px;
 	font-size: 20px;
 	color: #999;
 }
@@ -60,8 +68,7 @@
 }
 
 .formInput,
-.formTextArea,
-select {
+.formTextArea {
 	width: 100%;
 	padding: 12px;
 	font-size: 14px;
@@ -101,8 +108,7 @@ select {
 }
 
 .formInput:focus,
-.formTextArea:focus,
-select:focus {
+.formTextArea:focus {
 	border-color: #c9532f;
 	outline: none;
 }
@@ -165,6 +171,11 @@ select:focus {
 
 .ingredientAmountInput {
 	width: 254px;
+}
+
+.recipeDesc .formTextArea {
+	font-size: 22px;
+	height: 230px;
 }
 
 .recipeSteps {
@@ -230,4 +241,46 @@ select:focus {
 .progressBar {
 	height: 100%; /* 전체 높이 사용 */
 	background-color: #c9532f; /* 진행률 바의 색상 */
+}
+
+.dropdown {
+	border: 1px solid #c9532f;
+	border-radius: 10px;
+	font-size: 22px;
+	padding: 0;
+	display: flex;
+	flex-flow: column wrap;
+	align-items: flex-start;
+}
+
+.dropdownOptions {
+	display: flex;
+	flex-flow: column wrap;
+	width: 100%;
+}
+
+.dropdownOption {
+	padding: 30px;
+	display: flex;
+	align-items: center;
+}
+
+.dropdownSelected {
+	display: flex;
+	padding: 30px;
+}
+
+.dropdown,
+.dropdownOptions,
+.dropdownOption {
+	cursor: pointer;
+}
+
+.dropdownOption:hover {
+	background-color: #fff9e9;
+}
+
+.dropdownOption:last-child {
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 }
