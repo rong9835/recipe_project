@@ -33,6 +33,19 @@ body, #root {
   padding-left: 1rem;
   color: rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
+  transition: color 0.3s ease;
+}
+
+.input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.input:focus {
+  outline: none;
+}
+
+.inputWithContent {
+  color: black;
 }
 
 .googleButton,
@@ -107,4 +120,8 @@ body, #root {
   text-decoration: none;
   display: block;
   margin-top: 20px;
+}
+
+.links span {
+  color: rgba(0, 0, 0, 0.5);
 }
