@@ -15,18 +15,19 @@ import {
 import CustomButton, { ButtonType } from '../custombutton/CustomButton';
 import styled from '../../pages/recipedetail/RecipeDetail.module.css';
 import { Pagination } from 'antd';
-// import { getAuth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 
-const mokuser = {
-	user_nickname: 'test_nickname',
-	user_id: 'CA06FVCAxSNsOMXkwhgP',
-};
+// const mokuser = {
+// 	user_nickname: 'test_nickname',
+// 	user_id: 'CA06FVCAxSNsOMXkwhgP',
+// };
 
 interface CommentsProps {
 	recipeId: string;
+	recipeAuthor: string | undefined;
 }
 
-const Comments: React.FC<CommentsProps> = ({ recipeId }) => {
+const Comments: React.FC<CommentsProps> = ({ recipeId, recipeAuthor }) => {
 	const [comments, setComments] = useState<DocumentData[]>([]);
 	const [newComment, setNewComment] = useState<string>('');
 
@@ -37,8 +38,13 @@ const Comments: React.FC<CommentsProps> = ({ recipeId }) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [commentsPerPage] = useState<number>(5);
 
-	// const auth = getAuth();
-	// const currentUser = auth.currentUser;
+	const auth = getAuth();
+	const currentUser = auth.currentUser;
+
+	console.log(currentUser?.uid);
+
+	// const userId = currentUser!.uid; // 현재 로그인한 사용자의 ID
+	// const userDocRef = doc(db, 'users', userId);
 
 	// 댓글 불러오기
 	const getComments = async () => {
@@ -87,7 +93,7 @@ const Comments: React.FC<CommentsProps> = ({ recipeId }) => {
 	// 댓글 등록하기
 	const addComment = async () => {
 		if (newComment.trim()) {
-			if (!mokuser.user_nickname) {
+			if (currentUser === null) {
 				alert('로그인이 필요한 작업입니다 :)');
 				setNewComment('');
 				return;
@@ -96,10 +102,11 @@ const Comments: React.FC<CommentsProps> = ({ recipeId }) => {
 			try {
 				await addDoc(collection(db, 'recipes', recipeId, 'comment'), {
 					comment_description: newComment,
-					// user_nickname: currentUser?.displayName,
-					user_nickname: 'test_nickname',
+					user_nickname: currentUser.uid,
+					// user_nickname: 'test_nickname',
 					comment_create_time: new Date(),
 				});
+
 				setNewComment('');
 				getComments();
 			} catch (eorror) {
@@ -132,7 +139,7 @@ const Comments: React.FC<CommentsProps> = ({ recipeId }) => {
 						id="comment"
 						value={newComment}
 						onChange={(e) => setNewComment(e.target.value)}
-						placeholder={`특별한 레시피를 남겨준 ${mokuser.user_nickname} 님에게 따뜻한 댓글을 남겨주세요 ♥`}
+						placeholder={`특별한 레시피를 남겨준 ${recipeAuthor} 님에게 따뜻한 댓글을 남겨주세요 ♥`}
 					/>
 				</label>
 
@@ -184,7 +191,7 @@ const Comments: React.FC<CommentsProps> = ({ recipeId }) => {
 								<>
 									<p>{comment.comment_description}</p>
 
-									{mokuser.user_nickname === comment.user_nickname && (
+									{currentUser?.uid === comment.user_nickname && (
 										<div className={styled.commentSettingsBtn}>
 											<CustomButton
 												btnType={ButtonType.Edit}

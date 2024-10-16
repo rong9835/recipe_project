@@ -44,6 +44,11 @@ interface RecipeStep {
 	step_image_url: string | number;
 }
 
+interface Author {
+	user_emain: string;
+	user_nickname: string | undefined;
+}
+
 interface Recipe {
 	recipe_name: string;
 	recipe_create_time: RecipeCreateTime;
@@ -52,15 +57,16 @@ interface Recipe {
 	recipe_ingredients: RecipeIngredient[];
 	recipe_steps: RecipeStep[];
 	recipe_tips: string;
-	image_url: string;
-	hearted: boolean;
+	thumbnail_url: string;
 	hearts: number;
 	views: number;
+	author: Author;
+	author_uid: string;
 }
 
 export default function RecipeDetail() {
 	const [recipeData, setRecipeData] = useState<Recipe | null>(null);
-	const [isHearted, setIsHearted] = useState<boolean>(recipeData?.hearted!);
+	const [isAuthor, setIsAuthor] = useState<boolean>(false);
 
 	const recipeId = 'ClSPjrXxycVbzNW8ZXrR';
 
@@ -77,7 +83,12 @@ export default function RecipeDetail() {
 			if (recipeDoc.exists()) {
 				const recipe = recipeDoc.data() as Recipe;
 				setRecipeData(recipe);
-				setIsHearted(recipe.hearted);
+
+				console.log(currentUser);
+
+				if (currentUser && currentUser.uid === recipe.author.user_nickname) {
+					setIsAuthor(true);
+				}
 			} else {
 				navigate('/404');
 			}
@@ -86,6 +97,9 @@ export default function RecipeDetail() {
 			console.log('데이터 전송 오류', error);
 		}
 	};
+
+	const recipeAuthor = recipeData?.author?.user_nickname;
+
 	useEffect(() => {
 		getRecipe();
 	}, [db, navigate]);
@@ -118,30 +132,6 @@ export default function RecipeDetail() {
 			: '추가 설명이 없습니다.';
 	};
 
-	// 다시 짜기
-	// 상세페이지 자체에 좋아요를 누르면 다른 유저들의 좋아요를 핸들링이 불가하므로
-	// 하트의 필드를 따로 두고 각 유저마다 이 페이지에서 좋아요를 누른지를 확인해야한다.
-	const toggleHeart = async () => {
-		const newHearted = !isHearted;
-		setIsHearted(newHearted);
-
-		const currentHearts = recipeData?.hearts!;
-
-		const updatedHeartCount = newHearted
-			? currentHearts + 1
-			: currentHearts - 1;
-
-		try {
-			await updateDoc(doc(db, 'recipes', recipeId), {
-				hearted: newHearted,
-				hearts: updatedHeartCount,
-			});
-			getRecipe();
-		} catch (error) {
-			console.error('하트 업데이트 오류');
-		}
-	};
-
 	return (
 		<>
 			<section className={styled.recipeDetailPage}>
@@ -155,9 +145,16 @@ export default function RecipeDetail() {
 							<em>아인맘 's</em> 레시피
 						</li>
 					</ul>
-					<CustomButton btnType={ButtonType.Edit} color="orange" shape="rad10">
-						수정하기
-					</CustomButton>
+
+					{isAuthor && (
+						<CustomButton
+							btnType={ButtonType.Edit}
+							color="orange"
+							shape="rad10"
+						>
+							수정하기
+						</CustomButton>
+					)}
 				</nav>
 
 				<section className={styled.recipeTitle}>
@@ -175,7 +172,7 @@ export default function RecipeDetail() {
 						</li>
 					</ul>
 
-					<img src={recipeData?.image_url} alt="레시피 메인 이미지" />
+					<img src={recipeData?.thumbnail_url} alt="레시피 메인 이미지" />
 				</section>
 
 				<section className={styled.contents}>
@@ -226,13 +223,13 @@ export default function RecipeDetail() {
 				</section>
 
 				<section className={styled.comment}>
-					<Comments recipeId={recipeId} />
+					<Comments recipeId={recipeId} recipeAuthor={recipeAuthor} />
 				</section>
 			</section>
 
-			<aside className={styled.stickyHeartIcon} onClick={toggleHeart}>
+			{/* <aside className={styled.stickyHeartIcon} onClick={toggleHeart}>
 				<img src={isHearted ? heartPull : heartEmpty} alt="좋아요 아이콘" />
-			</aside>
+			</aside> */}
 		</>
 	);
 }
