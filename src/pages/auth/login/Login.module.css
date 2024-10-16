@@ -108,3 +108,7 @@ body, #root {
   display: block;
   margin-top: 20px;
 }
+
+.links span {
+  color: rgba(0, 0, 0, 0.5);
+}
