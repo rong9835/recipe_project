@@ -6,6 +6,7 @@ import CustomButton, { ButtonType } from '../custombutton/CustomButton';
 const Search = () => {
 	const [isOpen, setIsOpen] = useState(false); // 드롭다운 상태
 	const [selectedOption, setSelectedOption] = useState('레시피'); // 선택된 옵션
+	const [searchTerm, setSearchTerm] = useState(''); // 입력된 검색어
 	const [placeholder, setPlaceholder] = useState('검색어를 입력해주세요'); // 초기 placeholder
 	const menuRef = useRef<HTMLDivElement>(null); // 드롭다운 참조
 
@@ -80,10 +81,17 @@ const Search = () => {
 			</div>
 
 			{/* 검색 입력 및 링크 */}
-			<input placeholder={placeholder} className={styles.searchInput} />
-			<CustomButton btnType={ButtonType.Search} color="orange">
-				<Link to="/recipelist">검색</Link>
-			</CustomButton>
+			<input
+				value={searchTerm}
+				onChange={(e) => setSearchTerm(e.target.value)}
+				placeholder={placeholder}
+				className={styles.searchInput}
+			/>
+			<Link to={`/recipelist?search=${searchTerm}&option=${selectedOption}`}>
+				<CustomButton btnType={ButtonType.Search} color="orange">
+					검색
+				</CustomButton>
+			</Link>
 		</div>
 	);
 };

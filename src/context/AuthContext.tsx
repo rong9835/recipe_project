@@ -111,7 +111,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 			if (!querySnapshot.empty) {
 				const userDoc = querySnapshot.docs[0]; // 첫 번째 일치하는 도큐먼트
 				const userData = userDoc.data();
-				return userData.nickname; // 닉네임 반환
+				return userData.user_nickname; // 닉네임 반환
 			} else {
 				throw new Error('일치하는 유저가 없습니다.');
 			}
