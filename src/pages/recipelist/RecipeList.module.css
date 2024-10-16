@@ -29,3 +29,20 @@
 	display: flex;
 	gap: 11px;
 }
+
+.recipeGrid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+}
+
+.loading {
+	text-align: center;
+	margin: 20px 0;
+}
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	margin: 20px 0;
+}
