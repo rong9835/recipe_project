@@ -9,4 +9,5 @@ export interface Recipe {
 	add_at: string;
 	views: number;
 	hearts: number;
+	recipe_description: string;
 }

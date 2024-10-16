@@ -132,24 +132,19 @@ const RecipeList = () => {
 			console.error('Error fetching recipes:', error);
 		} finally {
 			setLoading(false);
+			window.scrollTo(0, 0);
 		}
 	};
 
 	// 페이지 변경 시 데이터를 다시 불러옴
 	useEffect(() => {
 		fetchRecipes(currentPage);
-		console.log(searchTerm, 'searchTerm');
-		console.log(selectedOption, 'selectedOption');
 	}, [currentPage, searchTerm, selectedOption]); // 검색어와 옵션이 변경될 때도 재호출
 
 	const [isOpen, setIsOpen] = useState(false);
 	const plusRef = useRef<HTMLUListElement>(null);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		// 컴포넌트 언마운트 시 리스너 해제
-	}, []);
 
 	const handleOptionClick = (path: string) => {
 		if (!isLoggedIn) {
@@ -163,7 +158,7 @@ const RecipeList = () => {
 		const currentUrl = window.location.href;
 
 		if (currentUrl.includes('/recipelist')) {
-			document.body.style.marginTop = '300px';
+			document.body.style.marginTop = '200px';
 			document.body.style.backgroundColor = '#FFF9E9';
 		}
 
@@ -238,13 +233,14 @@ const RecipeList = () => {
 				</div>
 				<div></div>
 			</div>
-			<div>
+			<div className={styles.recipeGrid}>
 				{filteredRecipes.map((recipe) => (
 					<RecipeCard key={recipe.id} recipe={recipe} />
 				))}
 			</div>
-			{loading && <div>로딩 중...</div>}
+			{loading && <div className={styles.loading}>로딩 중...</div>}
 			<Pagination
+				className={styles.pagination}
 				current={currentPage}
 				pageSize={pageSize}
 				total={filteredRecipes.length} // Firestore에서 전체 개수를 가져오는 로직도 추가 가능

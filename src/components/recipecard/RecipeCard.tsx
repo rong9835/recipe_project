@@ -48,6 +48,11 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 						</div>
 					</div>
 				</div>
+				<div className={styles.recipeDesc}>
+					<span className={styles.recipeDescText}>
+						{recipe.recipe_description}
+					</span>
+				</div>
 				<div className={styles.recipeIngredients}>
 					{recipe.recipe_ingredients.map((ingredient, index) => (
 						<Tag key={index} className={styles.ingredient}>
