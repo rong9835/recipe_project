@@ -4,9 +4,18 @@ import App from './App.tsx';
 import './styles/reset.css';
 import './styles/global.css';
 import './styles/font.css';
+import { ConfigProvider } from 'antd';
 
 createRoot(document.getElementById('root')!).render(
-	<BrowserRouter>
-		<App />
-	</BrowserRouter>
+	<ConfigProvider
+		theme={{
+			token: {
+				colorPrimary: '#c9532f',
+			},
+		}}
+	>
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
+	</ConfigProvider>
 );

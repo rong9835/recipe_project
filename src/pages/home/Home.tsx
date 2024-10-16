@@ -5,9 +5,10 @@ import CustomButton, {
 import RecommendCard from '../../components/recommendcard/RecommendCard';
 import styles from './Home.module.css';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/config';
+import { Pagination } from 'antd';
 
 const Home = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -98,6 +99,7 @@ const Home = () => {
 					))}
 				</ul>
 			)}
+			<Pagination defaultCurrent={1} total={50} />
 		</div>
 	);
 };
