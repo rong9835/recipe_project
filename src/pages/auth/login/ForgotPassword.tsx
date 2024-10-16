@@ -33,7 +33,7 @@ const ForgotPassword: React.FC = () => {
       try {
         await sendPasswordResetEmail(auth, email);
         setMessage('비밀번호 재설정 이메일을 보냈습니다. 이메일을 확인해주세요.');
-      } catch (error) {
+      } catch (error: unknown) {
         setError('등록된 회원정보가 없습니다.');
       }
     } else {
@@ -48,8 +48,6 @@ const ForgotPassword: React.FC = () => {
         return;
       }
 
-      // 이메일 찾기 로직 (실제로는 백엔드 API가 필요할 수 있습니다)
-      // 여기서는 임시로 항상 실패하는 것으로 가정합니다
       setError('등록된 회원정보가 없습니다.');
     }
   };
@@ -88,7 +86,9 @@ const ForgotPassword: React.FC = () => {
             <input
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setName(e.target.value)
+              }
               placeholder="이름을 입력해주세요"
               className={styles.input}
             />
@@ -99,22 +99,26 @@ const ForgotPassword: React.FC = () => {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setEmail(e.target.value)
+              }
               placeholder="이메일을 입력해주세요"
               className={styles.input}
             />
           </>
         )}
-        
+
         <label className={styles.inputLabel}>연락처</label>
         <input
           type="tel"
           value={contact}
-          onChange={(e) => setContact(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setContact(e.target.value)
+          }
           placeholder="등록한 연락처를 입력해주세요"
           className={styles.input}
         />
-        
+
         {error && <div className={styles.errorMessage}>{error}</div>}
         <button type="submit" className={styles.submitButton}>
           확인
@@ -122,8 +126,8 @@ const ForgotPassword: React.FC = () => {
       </form>
       {message && <div className={styles.message}>{message}</div>}
       <div className={styles.footer}>
-      <Link to="/login">로그인</Link> <span>|</span> <Link to="/signup">회원가입</Link>
-</div>
+        <Link to="/login">로그인</Link> <span>|</span> <Link to="/signup">회원가입</Link>
+      </div>
     </div>
   );
 };

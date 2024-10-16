@@ -8,7 +8,8 @@ import Layout from './layout/Layout';
 import RecipeList from './pages/recipelist/RecipeList';
 import Home from './pages/home/Home';
 import { AuthProvider } from './context/AuthContext';
-import ForgotPassword from './pages/auth/login/ForgotPassword'
+import ForgotPassword from './pages/auth/login/ForgotPassword';
+import NotFound from './pages/auth/notfound/NotFound'
 
 function App() {
 	return (
@@ -23,6 +24,7 @@ function App() {
 						<Route path="/forgot-password" element={<ForgotPassword />} />
 						<Route path="/recipedetail" element={<RecipeDetail />} />
 						<Route path="/recipelist" element={<RecipeList />} />
+						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</Layout>
 			</AuthProvider>
