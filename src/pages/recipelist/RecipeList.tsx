@@ -163,7 +163,8 @@ const RecipeList = () => {
 		const currentUrl = window.location.href;
 
 		if (currentUrl.includes('/recipelist')) {
-			document.body.style.marginTop = '300px'; // 원하는 배경 색상으로 변경
+			document.body.style.marginTop = '300px';
+			document.body.style.backgroundColor = '#FFF9E9';
 		}
 
 		const handleClickOutside = (event: MouseEvent) => {
@@ -180,6 +181,7 @@ const RecipeList = () => {
 
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
+			document.body.style.backgroundColor = '';
 			document.body.style.marginTop = '';
 			unsubscribe();
 		};
