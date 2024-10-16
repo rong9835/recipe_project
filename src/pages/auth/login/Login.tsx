@@ -53,14 +53,14 @@ const Login = () => {
 						placeholder="이메일을 입력해주세요"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
-						className={styles.input}
+						className={`${styles.input} ${email ? styles.inputWithContent : ''}`}
 					/>
 					<input
 						type="password"
 						placeholder="비밀번호를 입력해주세요"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
-						className={styles.input}
+						className={`${styles.input} ${password ? styles.inputWithContent : ''}`}
 					/>
 					{loginError && (
 						<p className={styles.error}>
