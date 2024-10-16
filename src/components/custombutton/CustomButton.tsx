@@ -14,6 +14,7 @@ export enum ButtonType {
 	Step = 'step',
 	Back = 'back',
 	Level = 'level',
+	Filter = 'filter',
 }
 
 export interface ButtonProps {
@@ -48,6 +49,7 @@ const CustomButton = ({
 		[ButtonType.Step]: styles.stepBtn,
 		[ButtonType.Back]: styles.backBtn,
 		[ButtonType.Level]: styles.levelBtn,
+		[ButtonType.Filter]: styles.filterBtn,
 	};
 
 	// size가 undefined일 경우에 빈 문자열 반환
