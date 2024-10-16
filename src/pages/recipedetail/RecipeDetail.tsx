@@ -5,14 +5,7 @@ import heartEmpty from '../../assets/icon_heart_empty.png';
 import heartPull from '../../assets/icon_heart_pull.png';
 import styled from './RecipeDetail.module.css';
 
-import {
-	getFirestore,
-	getDoc,
-	doc,
-	collection,
-	addDoc,
-	updateDoc,
-} from 'firebase/firestore';
+import { getFirestore, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +16,7 @@ import Comments from '../../components/recipedetailpage/Comments';
 import CustomButton, {
 	ButtonType,
 } from '../../components/custombutton/CustomButton';
+import useUserNickname from '../../hooks/useGetUserNickName';
 
 interface RecipeTime {
 	hours: number;
@@ -57,22 +51,25 @@ interface Recipe {
 	recipe_ingredients: RecipeIngredient[];
 	recipe_steps: RecipeStep[];
 	recipe_tips: string;
+	recipe_description: string;
+	recipe_tags: [];
+
 	thumbnail_url: string;
 	hearts: number;
 	views: number;
 	author: Author;
-	author_uid: string;
 }
 
 export default function RecipeDetail() {
 	const [recipeData, setRecipeData] = useState<Recipe | null>(null);
 	const [isAuthor, setIsAuthor] = useState<boolean>(false);
 
-	const recipeId = 'ClSPjrXxycVbzNW8ZXrR';
+	const recipeId = 'GwU5yV7JXylXb31HGvvj';
 
 	const db = getFirestore();
 	const auth = getAuth();
 	const currentUser = auth.currentUser;
+	const userNickName = useUserNickname(db);
 	const navigate = useNavigate();
 
 	const getRecipe = async () => {
@@ -86,7 +83,7 @@ export default function RecipeDetail() {
 
 				console.log(currentUser);
 
-				if (currentUser && currentUser.uid === recipe.author.user_nickname) {
+				if (currentUser && userNickName === recipe.author.user_nickname) {
 					setIsAuthor(true);
 				}
 			} else {
@@ -138,11 +135,13 @@ export default function RecipeDetail() {
 				<h2 className={styled.srOnly}>레시피 디테일 페이지</h2>
 
 				<nav>
-					<img src={backIcon} alt="뒤로 가기" />
+					<div className={styled.imgWrap}>
+						<img src={backIcon} alt="뒤로 가기" />
+					</div>
 					<ul className={styled.pageTitle}>
 						<li className={styled.pointFont}>Special Cooking Recipe</li>
 						<li>
-							<em>아인맘 's</em> 레시피
+							<em>{userNickName} 's</em> 레시피
 						</li>
 					</ul>
 
@@ -171,6 +170,10 @@ export default function RecipeDetail() {
 							{recipeData?.hearts}
 						</li>
 					</ul>
+
+					<p className={styled.recipeDescription}>
+						{recipeData?.recipe_description}
+					</p>
 
 					<img src={recipeData?.thumbnail_url} alt="레시피 메인 이미지" />
 				</section>
@@ -219,6 +222,11 @@ export default function RecipeDetail() {
 					<div className={styled.recipeTip}>
 						<h4>레시피 팁 | Recipe Tip</h4>
 						<div>{recipeTip()}</div>
+					</div>
+
+					<div className={styled.recipeTag}>
+						<h4>레시피 태그 | Recipe Tag</h4>
+						<p>{recipeData?.recipe_tags}</p>
 					</div>
 				</section>
 

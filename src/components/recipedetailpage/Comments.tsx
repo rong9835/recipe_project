@@ -16,20 +16,19 @@ import CustomButton, { ButtonType } from '../custombutton/CustomButton';
 import styled from '../../pages/recipedetail/RecipeDetail.module.css';
 import { Pagination } from 'antd';
 import { getAuth } from 'firebase/auth';
-
-// const mokuser = {
-// 	user_nickname: 'test_nickname',
-// 	user_id: 'CA06FVCAxSNsOMXkwhgP',
-// };
+import useUserNickname from '../../hooks/useGetUserNickName';
 
 interface CommentsProps {
 	recipeId: string;
 	recipeAuthor: string | undefined;
 }
 
+type TextAreaEvent = React.ChangeEvent<HTMLTextAreaElement>;
+
 const Comments: React.FC<CommentsProps> = ({ recipeId, recipeAuthor }) => {
 	const [comments, setComments] = useState<DocumentData[]>([]);
 	const [newComment, setNewComment] = useState<string>('');
+	const [countNewComment, setCountNewComment] = useState<number>(0);
 
 	// 현재 수정중인 상태를 관리 - 초기 값은 수정중이 아니기 때문에 null을 넣어줌
 	// 수정할때 필드를 생성해주기 위한 상태 관리
@@ -38,13 +37,9 @@ const Comments: React.FC<CommentsProps> = ({ recipeId, recipeAuthor }) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [commentsPerPage] = useState<number>(5);
 
+	const userNickName = useUserNickname(db);
 	const auth = getAuth();
 	const currentUser = auth.currentUser;
-
-	console.log(currentUser?.uid);
-
-	// const userId = currentUser!.uid; // 현재 로그인한 사용자의 ID
-	// const userDocRef = doc(db, 'users', userId);
 
 	// 댓글 불러오기
 	const getComments = async () => {
@@ -102,8 +97,7 @@ const Comments: React.FC<CommentsProps> = ({ recipeId, recipeAuthor }) => {
 			try {
 				await addDoc(collection(db, 'recipes', recipeId, 'comment'), {
 					comment_description: newComment,
-					user_nickname: currentUser.uid,
-					// user_nickname: 'test_nickname',
+					user_nickname: userNickName,
 					comment_create_time: new Date(),
 				});
 
@@ -114,6 +108,14 @@ const Comments: React.FC<CommentsProps> = ({ recipeId, recipeAuthor }) => {
 			}
 		} else {
 			alert('댓글을 입력해주세요!');
+		}
+	};
+
+	const countCommentHandler = (e: TextAreaEvent) => {
+		const newCommentLength = e.target.value.length;
+		setCountNewComment(newCommentLength);
+		if (newCommentLength > 300) {
+			alert('댓글은 300자 내로 작성해주세요');
 		}
 	};
 
@@ -138,9 +140,14 @@ const Comments: React.FC<CommentsProps> = ({ recipeId, recipeAuthor }) => {
 					<textarea
 						id="comment"
 						value={newComment}
-						onChange={(e) => setNewComment(e.target.value)}
+						maxLength={300}
+						onChange={(e) => [
+							setNewComment(e.target.value),
+							countCommentHandler(e),
+						]}
 						placeholder={`특별한 레시피를 남겨준 ${recipeAuthor} 님에게 따뜻한 댓글을 남겨주세요 ♥`}
 					/>
+					<p className={styled.countComment}>{countNewComment}/300자</p>
 				</label>
 
 				<button onClick={addComment}>등록</button>
@@ -191,7 +198,7 @@ const Comments: React.FC<CommentsProps> = ({ recipeId, recipeAuthor }) => {
 								<>
 									<p>{comment.comment_description}</p>
 
-									{currentUser?.uid === comment.user_nickname && (
+									{userNickName === comment.user_nickname && (
 										<div className={styled.commentSettingsBtn}>
 											<CustomButton
 												btnType={ButtonType.Edit}
