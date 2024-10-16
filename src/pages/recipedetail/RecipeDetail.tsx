@@ -1,33 +1,32 @@
 import backIcon from '../../assets/icon_back.png';
 import heartIcon from '../../assets/icon_heart.png';
 import viewIcon from '../../assets/icon_view.png';
-import sampleImage from '../../assets/sample_img.jpg';
 import heartEmpty from '../../assets/icon_heart_empty.png';
 import heartPull from '../../assets/icon_heart_pull.png';
-import CustomButton, {
-	ButtonType,
-} from '../../components/custombutton/CustomButton';
 import styled from './RecipeDetail.module.css';
 
-import { getFirestore, getDoc, doc } from 'firebase/firestore';
+import {
+	getFirestore,
+	getDoc,
+	doc,
+	collection,
+	addDoc,
+	updateDoc,
+} from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GroupedIngredientList from '../../components/recipedetailpage/GroupedIngredientList';
 
+import RecipeSteps from './../../components/recipedetailpage/RecipeSteps';
+import Comments from '../../components/recipedetailpage/Comments';
+import CustomButton, {
+	ButtonType,
+} from '../../components/custombutton/CustomButton';
+
 interface RecipeTime {
 	hours: number;
 	minutes: number;
-}
-
-interface RecipeIngredient {
-	name: string;
-	volume: number | string;
-}
-
-interface RecipeSteps {
-	step_description: string;
-	step_image_url: string | number;
 }
 
 interface RecipeCreateTime {
@@ -35,15 +34,24 @@ interface RecipeCreateTime {
 	nanoseconds: number;
 }
 
+interface RecipeIngredient {
+	name: string;
+	volume: number | string;
+}
+
+interface RecipeStep {
+	step_description: string;
+	step_image_url: string | number;
+}
+
 interface Recipe {
 	recipe_name: string;
+	recipe_create_time: RecipeCreateTime;
 	recipe_time: RecipeTime;
 	recipe_difficulty: string | number;
-	recipe_steps: RecipeSteps;
-	recipe_tips: string;
 	recipe_ingredients: RecipeIngredient[];
-	recipe_create_time: RecipeCreateTime;
-
+	recipe_steps: RecipeStep[];
+	recipe_tips: string;
 	image_url: string;
 	hearted: boolean;
 	hearts: number;
@@ -52,28 +60,33 @@ interface Recipe {
 
 export default function RecipeDetail() {
 	const [recipeData, setRecipeData] = useState<Recipe | null>(null);
+	const [isHearted, setIsHearted] = useState<boolean>(recipeData?.hearted!);
+
+	const recipeId = 'ClSPjrXxycVbzNW8ZXrR';
 
 	const db = getFirestore();
 	const auth = getAuth();
+	const currentUser = auth.currentUser;
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		const getRecipe = async () => {
-			try {
-				const docRef = doc(db, 'recipes', 'ClSPjrXxycVbzNW8ZXrR');
-				const recipeDoc = await getDoc(docRef);
+	const getRecipe = async () => {
+		try {
+			const docRef = doc(db, 'recipes', recipeId);
+			const recipeDoc = await getDoc(docRef);
 
-				if (recipeDoc.exists()) {
-					setRecipeData(recipeDoc.data() as Recipe);
-				} else {
-					navigate('/404');
-				}
-			} catch (error) {
+			if (recipeDoc.exists()) {
+				const recipe = recipeDoc.data() as Recipe;
+				setRecipeData(recipe);
+				setIsHearted(recipe.hearted);
+			} else {
 				navigate('/404');
-				console.log('데이터 전송 오류', error);
 			}
-		};
-
+		} catch (error) {
+			navigate('/404');
+			console.log('데이터 전송 오류', error);
+		}
+	};
+	useEffect(() => {
 		getRecipe();
 	}, [db, navigate]);
 
@@ -103,6 +116,30 @@ export default function RecipeDetail() {
 		return recipeData?.recipe_tips
 			? recipeData.recipe_tips
 			: '추가 설명이 없습니다.';
+	};
+
+	// 다시 짜기
+	// 상세페이지 자체에 좋아요를 누르면 다른 유저들의 좋아요를 핸들링이 불가하므로
+	// 하트의 필드를 따로 두고 각 유저마다 이 페이지에서 좋아요를 누른지를 확인해야한다.
+	const toggleHeart = async () => {
+		const newHearted = !isHearted;
+		setIsHearted(newHearted);
+
+		const currentHearts = recipeData?.hearts!;
+
+		const updatedHeartCount = newHearted
+			? currentHearts + 1
+			: currentHearts - 1;
+
+		try {
+			await updateDoc(doc(db, 'recipes', recipeId), {
+				hearted: newHearted,
+				hearts: updatedHeartCount,
+			});
+			getRecipe();
+		} catch (error) {
+			console.error('하트 업데이트 오류');
+		}
 	};
 
 	return (
@@ -179,88 +216,7 @@ export default function RecipeDetail() {
 					</div>
 
 					<div className={styled.cookingList}>
-						<ol>
-							<li>
-								<CustomButton
-									btnType={ButtonType.Level}
-									size="medium"
-									color="orange"
-									shape="circle"
-								>
-									01
-								</CustomButton>
-								<div>
-									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기 사립문이
-									내 눈앞에 와있는 나오질 않았습니다 그리고 그 있고 노라드
-									아주머니는 휴가를 별나라에서 일어나는 일을 더 귀여운 천국의
-									목자였습니다
-								</div>
-								<img src={sampleImage} />
-							</li>
-							<li>
-								<CustomButton
-									btnType={ButtonType.Level}
-									size="medium"
-									color="orange"
-									shape="circle"
-								>
-									01
-								</CustomButton>
-								<div>
-									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기 사립문이
-									내 눈앞에 와있는 나오질 않았습니다 그리고 그 있고 노라드
-									아주머니는 휴가를 별나라에서 일어나는 일을 더 귀여운 천
-								</div>
-							</li>
-							<li>
-								<CustomButton
-									btnType={ButtonType.Level}
-									size="medium"
-									color="orange"
-									shape="circle"
-								>
-									01
-								</CustomButton>
-								<div>
-									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기 사립문이
-									내 눈앞에 와있는 나오질 않았습니다 그리고 그 있고 노라드
-									아주머니는 휴가를 별나라에서 일어나는 일을 더 귀여운 천 국의
-									목자였습니다 어머나 따라 성호를 긋고는 잠시 나란히 앉아
-									있었습니다
-								</div>
-							</li>
-							<li>
-								<CustomButton
-									btnType={ButtonType.Level}
-									size="medium"
-									color="orange"
-									shape="circle"
-								>
-									01
-								</CustomButton>
-								<div>
-									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기
-									사립문이내 눈앞에 와있는 나오질
-								</div>
-							</li>
-							<li>
-								<CustomButton
-									btnType={ButtonType.Level}
-									size="medium"
-									color="orange"
-									shape="circle"
-								>
-									01
-								</CustomButton>
-								<div>
-									선뜻 나오질 않았습니다 그리고 적은 없었습니다 갑자기 사립문이
-									내 눈앞에 와있는 나오질 않았습니다 그리고 그 있고 노라드
-									아주머니는 휴가를 별나라에서 일어나는 일을 더 귀여운 천 국의
-									목자였습니다 어머나 따라 성호를 긋고는 잠시 나란히 앉아
-									있었습니다
-								</div>
-							</li>
-						</ol>
+						<RecipeSteps recipeData={recipeData || { recipe_steps: [] }} />
 					</div>
 
 					<div className={styled.recipeTip}>
@@ -270,48 +226,7 @@ export default function RecipeDetail() {
 				</section>
 
 				<section className={styled.comment}>
-					<h3>댓글 | Comment</h3>
-					<div className={styled.commentInput}>
-						<label htmlFor="comment">
-							<textarea
-								id="comment"
-								placeholder="특별한 레시피를 남겨준 `@{user}` 에게 따듯한 댓글을 남겨주세요 ♥"
-							/>
-						</label>
-
-						<button type="submit">등록</button>
-					</div>
-
-					<div className={styled.commentList}>
-						<ul className={styled.commentWriterInfo}>
-							<li>diayhew5869</li>
-							<li>2024/09/24 11:32</li>
-						</ul>
-						<div className={styled.commentSettingsBtn}>
-							<CustomButton
-								btnType={ButtonType.Edit}
-								color="orange"
-								shape="rad30"
-							>
-								수정
-							</CustomButton>
-							<CustomButton
-								btnType={ButtonType.Delete}
-								color="white"
-								shape="rad30"
-							>
-								삭제
-							</CustomButton>
-						</div>
-						<p>
-							고개를 들고 하늘을 쳐다보며 맨 꼬리가 되었어요 그래 실린 버들고리
-							사이에 의젓이 어머나 저렇게 많아 참 것이었습니다 이때까지 밤하늘이
-							그렇게도 정기와 소나기 뒤에 싸늘하게 바라보아도 내 눈은 지칠
-							지팡이를 냅다 던졌어요 프로방스의 언덕배기에서 나를 부르는 소리가
-							뒤척이는 서슬에 짚이 버스럭거리며 선뜻 나오질 않았습니다 그리고
-							줄을 몰랐습니다 그때까지 그렇게
-						</p>
-					</div>
+					<Comments recipeId={recipeId} />
 
 					<div className={styled.pagenation}>
 						<span></span> 1 2 3 4 5 <span></span>
@@ -319,8 +234,8 @@ export default function RecipeDetail() {
 				</section>
 			</section>
 
-			<aside className={styled.stickyHeartIcon}>
-				<img src={heartEmpty} alt="비어있는 좋아요 아이콘" />
+			<aside className={styled.stickyHeartIcon} onClick={toggleHeart}>
+				<img src={isHearted ? heartPull : heartEmpty} alt="좋아요 아이콘" />
 			</aside>
 		</>
 	);

@@ -1,0 +1,44 @@
+.homeBanner {
+	background-image: url('../../assets/home_banner.png');
+	background-size: cover;
+	height: 400px;
+	margin-top: 85px;
+}
+
+.bannerText {
+	font-size: 18px;
+	line-height: 35px;
+	padding-top: 80px;
+	margin-bottom: 70px;
+}
+
+.plusMenu {
+	position: fixed;
+	bottom: 136px;
+	right: 100px;
+	background-color: #c9532f;
+	border: 1px solid #c9532f;
+	border-radius: 10px;
+	width: 206px;
+	height: 225px;
+	padding: 32.5px 3px 42.5px 3px;
+}
+
+.plusMenuList {
+	display: block;
+	font-size: 20px;
+	color: white;
+	line-height: 50px;
+	width: 100%;
+	cursor: pointer;
+}
+
+.plusMenuList:hover {
+	color: #c9532f;
+	background-color: #fff9e9;
+	border-radius: 10px;
+}
+
+a:visited {
+	color: inherit;
+}
