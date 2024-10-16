@@ -21,6 +21,7 @@ const AddAndEdit = () => {
 	const navigate = useNavigate();
 	const { nickname } = useAuth();
 	const [recipeTip, setRecipeTip] = useState('');
+	const [recipeDesc, setRecipeDesc] = useState('');
 	const [tags, setTags] = useState<string[]>([]);
 	const { imageUrl, uploadImage } = useThumbnailImgUpload();
 
@@ -32,6 +33,8 @@ const AddAndEdit = () => {
 			uploadImage(file); // 이미지 업로드 함수 호출
 		}
 	};
+
+	console.log(nickname);
 
 	const [steps, setSteps] = useState([{ description: '', image: '' }]);
 	const { uploadStepImage, uploadProgress } = useStepImgUpload(); // Step 이미지 업로드 훅 사용
@@ -89,7 +92,6 @@ const AddAndEdit = () => {
 			author: {
 				user_nickname: nickname, // 예시 이메일
 			}, // 적절한 author 데이터 설정
-			hearted: false, // 기본값 설정
 			hearts: 0, // 예시값
 			recipe_difficulty: difficulty,
 			recipe_ingredients: ingredients.map((ing) => ({
@@ -97,6 +99,7 @@ const AddAndEdit = () => {
 				volume: ing.amount,
 			})),
 			recipe_name: recipeName,
+			recipe_description: recipeDesc,
 			recipe_steps: steps.map((step) => ({
 				step_description: step.description,
 				step_image_url: step.image,
@@ -109,6 +112,9 @@ const AddAndEdit = () => {
 			recipe_tips: recipeTip,
 			thumbnail_url: imageUrl, // 업로드된 이미지 URL
 			views: 0,
+			add_at: new Date().toISOString(), // 작성 시간 추가
+			comments: [], // 댓글 초기화
+			hearted: [], // 좋아요 초기화
 		};
 
 		await addRecipe(recipeData); // 레시피 추가
@@ -135,6 +141,27 @@ const AddAndEdit = () => {
 		}
 	};
 
+	// 난이도 드롭다운 항목
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태
+	const [selectedDifficulty, setSelectedDifficulty] =
+		useState('레벨을 선택해주세요'); // 선택된 난이도
+
+	const difficultyOptions = [
+		{ value: '1', label: 'Lv 1' },
+		{ value: '2', label: 'Lv 2' },
+		{ value: '3', label: 'Lv 3' },
+	];
+
+	const toggleDropdown = () => {
+		setIsDropdownOpen(!isDropdownOpen);
+	};
+
+	const handleDifficultySelect = (value: string) => {
+		setSelectedDifficulty(value); // 선택된 난이도 설정
+		setDifficulty(value); // 상태 업데이트
+		setIsDropdownOpen(false); // 드롭다운 닫기
+	};
+
 	return (
 		<div className={styles.createAndEditSection}>
 			{/* 헤더 부분 */}
@@ -148,7 +175,7 @@ const AddAndEdit = () => {
 				<div className={styles.createAndEditDesc}>
 					<p>Special Cooking Recipe</p>
 					<p>
-						<span>닉네임 's</span> 레시피
+						<span>{nickname} 's</span> 레시피
 					</p>
 				</div>
 			</div>
@@ -165,6 +192,20 @@ const AddAndEdit = () => {
 						placeholder="요리 이름을 입력하세요"
 					/>
 					<span className={styles.charCounter}>{recipeName.length}/30 자</span>
+				</div>
+
+				{/* 레시피 설명 */}
+				<div className={`${styles.formGroup} ${styles.recipeDesc}`}>
+					<label className={styles.formLabel}>
+						요리 설명 | Recipe Description
+					</label>
+					<textarea
+						className={styles.formTextArea}
+						value={recipeDesc}
+						onChange={(e) => setRecipeDesc(e.target.value)}
+						placeholder="요리에 대한 스토리 또는 간단 설명을 작성해주세요."
+					/>
+					<span className={styles.charCounter}>{recipeDesc.length}/50 자</span>
 				</div>
 
 				{/* 사진 등록 */}
@@ -282,15 +323,22 @@ const AddAndEdit = () => {
 				{/* 난이도 */}
 				<div className={styles.formGroup}>
 					<label className={styles.formLabel}>난이도 | Difficulty Level</label>
-					<select
-						value={difficulty}
-						onChange={(e) => setDifficulty(Number(e.target.value))}
-					>
-						<option value="">레벨을 선택해주세요</option>
-						<option value="1">Lv 1</option>
-						<option value="2">Lv 2</option>
-						<option value="3">Lv 3</option>
-					</select>
+					<div className={styles.dropdown} onClick={toggleDropdown}>
+						<div className={styles.dropdownSelected}>{selectedDifficulty}</div>
+						{isDropdownOpen && (
+							<div className={styles.dropdownOptions}>
+								{difficultyOptions.map((option) => (
+									<div
+										key={option.value}
+										className={styles.dropdownOption}
+										onClick={() => handleDifficultySelect(option.label)}
+									>
+										{option.label}
+									</div>
+								))}
+							</div>
+						)}
+					</div>
 				</div>
 
 				{/* 레시피 단계 */}

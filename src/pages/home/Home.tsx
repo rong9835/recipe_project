@@ -8,7 +8,6 @@ import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/config';
-import { Pagination } from 'antd';
 
 const Home = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +24,12 @@ const Home = () => {
 	}, []);
 
 	useEffect(() => {
+		const currentUrl = window.location.href;
+
+		if (currentUrl.includes('/')) {
+			document.body.style.backgroundColor = 'white'; // 원하는 배경 색상으로 변경
+		}
+
 		const handleClickOutside = (event: MouseEvent) => {
 			if (plusRef.current && !plusRef.current.contains(event.target as Node)) {
 				setIsOpen(false);
@@ -34,6 +39,7 @@ const Home = () => {
 		document.addEventListener('mousedown', handleClickOutside);
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
+			document.body.style.backgroundColor = '';
 		};
 	}, []);
 
@@ -99,7 +105,6 @@ const Home = () => {
 					))}
 				</ul>
 			)}
-			<Pagination defaultCurrent={1} total={50} />
 		</div>
 	);
 };
