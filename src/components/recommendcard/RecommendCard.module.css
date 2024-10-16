@@ -58,6 +58,7 @@
 .heartText {
 	font-size: 20px;
 	vertical-align: middle;
+	margin-left: 12px;
 }
 
 .recipeName {

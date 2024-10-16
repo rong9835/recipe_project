@@ -17,7 +17,7 @@ const AddAndEdit = () => {
 	const [cookingTimeHour, setCookingTimeHour] = useState<string>('');
 	const [cookingTimeMinute, setCookingTimeMinute] = useState<string>('');
 	const [ingredients, setIngredients] = useState([{ name: '', amount: '' }]);
-	const [difficulty, setDifficulty] = useState<number | string>('');
+	const [difficulty, setDifficulty] = useState<string>('');
 	const navigate = useNavigate();
 	const { nickname } = useAuth();
 	const [recipeTip, setRecipeTip] = useState('');
@@ -85,40 +85,59 @@ const AddAndEdit = () => {
 	// 레시피 Add 함수
 	const { addRecipe } = useAddRecipe(); // custom hook 사용
 
+	const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
+
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault(); // 기본 제출 방지
 
-		const recipeData = {
-			author: {
-				user_nickname: nickname, // 예시 이메일
-			}, // 적절한 author 데이터 설정
-			hearts: 0, // 예시값
-			recipe_difficulty: difficulty,
-			recipe_ingredients: ingredients.map((ing) => ({
-				name: ing.name,
-				volume: ing.amount,
-			})),
-			recipe_name: recipeName,
-			recipe_description: recipeDesc,
-			recipe_steps: steps.map((step) => ({
-				step_description: step.description,
-				step_image_url: step.image,
-			})),
-			recipe_tags: tags,
-			recipe_time: {
-				hours: parseInt(cookingTimeHour, 10),
-				minutes: parseInt(cookingTimeMinute, 10),
-			},
-			recipe_tips: recipeTip,
-			thumbnail_url: imageUrl, // 업로드된 이미지 URL
-			views: 0,
-			add_at: new Date().toISOString(), // 작성 시간 추가
-			comments: [], // 댓글 초기화
-			hearted: [], // 좋아요 초기화
-		};
+		if (
+			recipeName &&
+			recipeDesc &&
+			cookingTimeHour &&
+			cookingTimeMinute &&
+			ingredients &&
+			difficulty !== '레벨을 선택해주세요' &&
+			steps &&
+			recipeTip &&
+			imageUrl &&
+			tags
+		) {
+			const recipeData = {
+				author: {
+					user_nickname: nickname, // 예시 이메일
+				}, // 적절한 author 데이터 설정
+				hearts: 0, // 예시값
+				recipe_difficulty: difficulty.replace(/\D/g, ''),
+				recipe_ingredients: ingredients.map((ing) => ({
+					name: ing.name,
+					volume: ing.amount,
+				})),
+				recipe_name: recipeName,
+				recipe_description: recipeDesc,
+				recipe_steps: steps.map((step) => ({
+					step_description: step.description,
+					step_image_url: step.image,
+				})),
+				recipe_tags: tags,
+				recipe_time: {
+					hours: parseInt(cookingTimeHour, 10),
+					minutes: parseInt(cookingTimeMinute, 10),
+				},
+				recipe_tips: recipeTip,
+				thumbnail_url: imageUrl, // 업로드된 이미지 URL
+				views: 0,
+				add_at: new Date().toISOString(), // 작성 시간 추가
+				comments: [], // 댓글 초기화
+				hearted: [], // 좋아요 초기화
+			};
 
-		await addRecipe(recipeData); // 레시피 추가
-		navigate('/recipelist');
+			setIsSubmitDisabled(false);
+			await addRecipe(recipeData); // 레시피 추가
+			navigate('/recipelist');
+		} else if (isSubmitDisabled) {
+			alert('모든 필드를 입력해주세요.');
+			return;
+		}
 	};
 
 	const handleCookingTimeHourChange = (
@@ -143,13 +162,14 @@ const AddAndEdit = () => {
 
 	// 난이도 드롭다운 항목
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태
-	const [selectedDifficulty, setSelectedDifficulty] =
-		useState('레벨을 선택해주세요'); // 선택된 난이도
+	const [selectedDifficulty, setSelectedDifficulty] = useState<number | string>(
+		'레벨을 선택해주세요'
+	);
 
 	const difficultyOptions = [
-		{ value: '1', label: 'Lv 1' },
-		{ value: '2', label: 'Lv 2' },
-		{ value: '3', label: 'Lv 3' },
+		{ value: 1, label: 'Lv 1' },
+		{ value: 2, label: 'Lv 2' },
+		{ value: 3, label: 'Lv 3' },
 	];
 
 	const toggleDropdown = () => {

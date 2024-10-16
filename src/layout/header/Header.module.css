@@ -1,7 +1,20 @@
 #header {
 	display: flex;
+	justify-content: center;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 10;
+	height: 60px;
+	padding: 60px 0;
+	background-color: #fff;
+}
+
+.customHeader {
+	display: flex;
 	justify-content: space-between;
-	/* margin-top: 70px; */
+	width: 1280px;
 }
 
 .logoImg {

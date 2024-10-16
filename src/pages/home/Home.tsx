@@ -4,10 +4,10 @@ import CustomButton, {
 } from '../../components/custombutton/CustomButton';
 import RecommendCard from '../../components/recommendcard/RecommendCard';
 import styles from './Home.module.css';
-import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/config';
+import PlusMenuBtn from '../../components/plusmenubutton/PlusMenuBtn';
 
 const Home = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -49,10 +49,6 @@ const Home = () => {
 		{ label: '마이페이지', path: '/profile' },
 	];
 
-	const renderPlusAndCloseBtn = () => {
-		return isOpen ? <CloseOutlined /> : <PlusOutlined />;
-	};
-
 	const handleOptionClick = (path: string) => {
 		if (!isLoggedIn) {
 			navigate('/login'); // 로그인되지 않았다면 로그인 페이지로 리다이렉트
@@ -77,19 +73,11 @@ const Home = () => {
 					</p>
 				</div>
 				<CustomButton btnType={ButtonType.Share} color="orange" shape="rad20">
-					내 레시피 공유하기
+					<Link to="/create">내 레시피 공유하기</Link>
 				</CustomButton>
 			</article>
 			<RecommendCard />
-			<CustomButton
-				btnType={ButtonType.Menu}
-				shape="circle"
-				color="orange"
-				size="large"
-				onClick={() => setIsOpen(!isOpen)}
-			>
-				{renderPlusAndCloseBtn()}
-			</CustomButton>
+			<PlusMenuBtn isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
 			{isOpen && (
 				<ul className={styles.plusMenu} ref={plusRef}>
 					{/* 각 옵션을 Link로 감싸 경로를 추가 */}
