@@ -12,14 +12,12 @@ export const usePageStyle = () => {
     // HTML과 body 스타일 설정
     document.documentElement.style.cssText = `
       height: 100%;
-      overflow: hidden;
     `;
     
     document.body.style.cssText = `
-      height: 100%;
+      min-height: 100%;
       margin: 0;
       padding: 0;
-      overflow: hidden;
       background-color: #FFF9E9;
       font-family: 'SUIT Variable', sans-serif;
     `;
@@ -28,8 +26,7 @@ export const usePageStyle = () => {
     const rootElement = document.getElementById('root');
     if (rootElement) {
       rootElement.style.cssText = `
-        height: 100%;
-        overflow-y: auto;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
       `;
