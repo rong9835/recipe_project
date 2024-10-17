@@ -3,8 +3,11 @@ import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 import styles from './ForgotPassword.module.css';
 import { Link } from 'react-router-dom';
+import { usePageStyle } from '../../../hooks/usePageStyle'; 
 
 const ForgotPassword: React.FC = () => {
+  usePageStyle(); 
+
   const [name, setName] = useState('');
   const [contact, setContact] = useState('');
   const [email, setEmail] = useState('');
@@ -13,6 +16,21 @@ const ForgotPassword: React.FC = () => {
 
   const auth = getAuth();
   const db = getFirestore();
+
+  const formatPhoneNumber = (value: string) => {
+    if (!value) return value;
+    const phoneNumber = value.replace(/[^\d]/g, '');
+    const phoneNumberLength = phoneNumber.length;
+    if (phoneNumberLength <= 3) return phoneNumber;
+    if (phoneNumberLength <= 7) return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+    return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 7)}-${phoneNumber.slice(7, 11)}`;
+  };
+
+  const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value.replace(/[^\d-]/g, '');
+    const formattedPhoneNumber = formatPhoneNumber(inputValue);
+    setContact(formattedPhoneNumber);
+  };
 
   const findEmail = async (name: string, contact: string) => {
     const usersRef = collection(db, 'users');
@@ -38,6 +56,8 @@ const ForgotPassword: React.FC = () => {
     e.preventDefault();
     setError('');
 
+    const unformattedContact = contact.replace(/-/g, '');
+
     if (isPasswordReset) {
       if (!email || !contact) {
         setError('이메일과 연락처를 모두 입력해주세요.');
@@ -45,7 +65,7 @@ const ForgotPassword: React.FC = () => {
       }
 
       try {
-        const isVerified = await verifyEmailAndContact(email, contact);
+        const isVerified = await verifyEmailAndContact(email, unformattedContact);
         if (isVerified) {
           await sendPasswordResetEmail(auth, email);
           alert('비밀번호 재설정 이메일을 보냈습니다. 이메일을 확인해주세요.');
@@ -63,7 +83,7 @@ const ForgotPassword: React.FC = () => {
       }
 
       try {
-        const foundEmail = await findEmail(name, contact);
+        const foundEmail = await findEmail(name, unformattedContact);
         if (foundEmail) {
           const maskedEmail = `${foundEmail.substring(0, 3)}***@${foundEmail.split('@')[1]}`;
           alert(`일치하는 이메일: ${maskedEmail}`);
@@ -109,9 +129,7 @@ const ForgotPassword: React.FC = () => {
             <input
               type="text"
               value={name}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setName(e.target.value)
-              }
+              onChange={(e) => setName(e.target.value)}
               placeholder="이름을 입력해주세요"
               className={styles.input}
             />
@@ -122,9 +140,7 @@ const ForgotPassword: React.FC = () => {
             <input
               type="email"
               value={email}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setEmail(e.target.value)
-              }
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="이메일을 입력해주세요"
               className={styles.input}
             />
@@ -134,11 +150,10 @@ const ForgotPassword: React.FC = () => {
         <input
           type="tel"
           value={contact}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setContact(e.target.value)
-          }
+          onChange={handleContactChange}
           placeholder="등록한 연락처를 입력해주세요"
           className={styles.input}
+          maxLength={13}
         />
 
         {error && <div className={styles.errorMessage}>{error}</div>}

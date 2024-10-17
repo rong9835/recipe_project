@@ -1,25 +1,18 @@
-body{
-  background-color: #FFF9E9;
-  font-family: 'SUIT Variable', sans-serif;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
+.pageContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow-y: auto; 
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .loginContainer {
   width: 100%;
   max-width: 517px;
-  padding: 20px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  max-height: 100vh;
   display: flex;
-  flex-direction: column;  
-  margin: auto;
+  flex-direction: column;
 }
 
 .loginBox {
@@ -110,7 +103,7 @@ body{
 .links {
   text-align: center;
   font-size: 24px;
-  margin-bottom: 105px;
+  margin-bottom: 80px;
   margin-top: 60px;
 }
 
