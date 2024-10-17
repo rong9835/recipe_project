@@ -20,8 +20,8 @@
 	border: 1px solid #c9532f;
 	border-radius: 10px;
 	width: 206px;
-	height: 225px;
-	padding: 32.5px 3px 42.5px 3px;
+	height: 145px;
+	padding: 32.5px 3px 32.5px 3px;
 }
 
 .plusMenuList {
@@ -30,14 +30,11 @@
 	color: white;
 	line-height: 50px;
 	width: 100%;
+	cursor: pointer;
 }
 
 .plusMenuList:hover {
 	color: #c9532f;
 	background-color: #fff9e9;
 	border-radius: 10px;
-}
-
-a:visited {
-	color: inherit;
 }

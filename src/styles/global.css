@@ -4,3 +4,12 @@
 	--main-color: #c9532f;
 	--sub-color: #fff9e9;
 }
+
+* {
+	font-family: 'SUIT Variable', sans-serif;
+}
+
+a,
+a:visited {
+	color: inherit;
+}

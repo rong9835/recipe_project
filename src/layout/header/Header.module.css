@@ -1,15 +1,29 @@
 #header {
 	display: flex;
-	justify-content: space-between;
-	/* margin-top: 70px; */
+	justify-content: center;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 10;
+	height: 60px;
+	padding: 60px 0;
+	background-color: #fff;
 }
 
-img {
-	height: 82px;
-	width: 163.88px;
+.customHeader {
+	display: flex;
+	justify-content: space-between;
+	width: 1280px;
+}
+
+.logoImg {
+	height: 65.43px;
+	width: 163px;
 }
 
 .loginLogoutText {
 	font-size: 24px;
 	align-self: flex-start;
+	background-color: inherit;
 }

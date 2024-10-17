@@ -5,17 +5,17 @@ import Header from './header/Header';
 const Layout = ({ children }: any) => {
 	const location = useLocation();
 
-	// 로그인 및 회원가입 페이지 경로
-	const hideHeaderFooter =
-		location.pathname === '/login' || location.pathname === '/signup';
+	// 헤더와 푸터를 보여줄 경로
+	const showHeaderFooter =
+		location.pathname === '/' || location.pathname === '/recipelist'; // + '/recipedetail/:id' 경로
 
 	return (
 		<>
-			{!hideHeaderFooter && <Header />}
+			{showHeaderFooter && <Header />}
 
 			<main>{children}</main>
 
-			{!hideHeaderFooter && <Footer />}
+			{showHeaderFooter && <Footer />}
 		</>
 	);
 };

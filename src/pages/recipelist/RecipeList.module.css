@@ -1,0 +1,48 @@
+.plusMenu {
+	position: fixed;
+	bottom: 136px;
+	right: 100px;
+	background-color: #c9532f;
+	border: 1px solid #c9532f;
+	border-radius: 10px;
+	width: 206px;
+	height: 145px;
+	padding: 32.5px 3px 32.5px 3px;
+}
+
+.plusMenuList {
+	display: block;
+	font-size: 20px;
+	color: white;
+	line-height: 50px;
+	width: 100%;
+	cursor: pointer;
+}
+
+.plusMenuList:hover {
+	color: #c9532f;
+	background-color: #fff9e9;
+	border-radius: 10px;
+}
+
+.filterBtnWrapper {
+	display: flex;
+	gap: 11px;
+}
+
+.recipeGrid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+}
+
+.loading {
+	text-align: center;
+	margin: 20px 0;
+}
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	margin: 20px 0;
+}
