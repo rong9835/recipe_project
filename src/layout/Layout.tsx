@@ -7,7 +7,9 @@ const Layout = ({ children }: any) => {
 
 	// 헤더와 푸터를 보여줄 경로
 	const showHeaderFooter =
-		location.pathname === '/' || location.pathname === '/recipelist'; // + '/recipedetail/:id' 경로
+		location.pathname === '/' ||
+		location.pathname === '/recipelist' ||
+		location.pathname === '/recipedetail/';
 
 	return (
 		<>

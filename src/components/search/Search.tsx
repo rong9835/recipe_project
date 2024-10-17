@@ -1,14 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Search.module.css';
 import CustomButton, { ButtonType } from '../custombutton/CustomButton';
 
 const Search = () => {
+	const location = useLocation(); // useLocation을 사용하여 현재 URL을 가져옵니다.
+	const queryParams = new URLSearchParams(location.search); // URL 파라미터 가져오기
 	const [isOpen, setIsOpen] = useState(false); // 드롭다운 상태
-	const [selectedOption, setSelectedOption] = useState('레시피'); // 선택된 옵션
-	const [searchTerm, setSearchTerm] = useState(''); // 입력된 검색어
+	const [selectedOption, setSelectedOption] = useState(
+		queryParams.get('option') || '레시피' // URL에서 가져온 옵션으로 초기화
+	);
+	const [searchTerm, setSearchTerm] = useState(
+		queryParams.get('search') || '' // URL에서 가져온 검색어로 초기화
+	);
 	const [placeholder, setPlaceholder] = useState('검색어를 입력해주세요'); // 초기 placeholder
 	const menuRef = useRef<HTMLDivElement>(null); // 드롭다운 참조
+	const navigate = useNavigate();
 
 	const options = ['레시피', '태그', '재료'];
 
@@ -51,6 +58,13 @@ const Search = () => {
 		}
 	};
 
+	// 엔터 키 누를 시 검색 수행
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			navigate(`/recipelist?search=${searchTerm}&option=${selectedOption}`);
+		}
+	};
+
 	return (
 		<div className={styles.searchSection}>
 			{/* 드롭다운 버튼 */}
@@ -86,6 +100,7 @@ const Search = () => {
 				onChange={(e) => setSearchTerm(e.target.value)}
 				placeholder={placeholder}
 				className={styles.searchInput}
+				onKeyDown={handleKeyDown}
 			/>
 			<Link to={`/recipelist?search=${searchTerm}&option=${selectedOption}`}>
 				<CustomButton btnType={ButtonType.Search} color="orange">

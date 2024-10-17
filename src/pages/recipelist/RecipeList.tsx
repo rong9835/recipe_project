@@ -33,6 +33,7 @@ const RecipeList = () => {
 	const [selectedOption, setSelectedOption] = useState<string>('레시피');
 
 	// URL 파라미터 변경 시 상태 초기화
+	// URL 파라미터에서 검색어와 옵션을 가져와 상태 초기화
 	useEffect(() => {
 		const queryParams = new URLSearchParams(location.search);
 		const searchParam = queryParams.get('search') || '';
@@ -40,7 +41,8 @@ const RecipeList = () => {
 
 		setSearchTerm(searchParam);
 		setSelectedOption(optionParam);
-	}, [location.search]);
+		fetchRecipes(currentPage); // URL 파라미터가 변경될 때마다 데이터를 가져옵니다.
+	}, [location.search]); // URL 파라미터가 변경될 때마다 호출
 
 	// 데이터를 페이징하여 가져오는 함수
 	const fetchRecipes = async (page: number) => {
@@ -49,7 +51,7 @@ const RecipeList = () => {
 			const recipeCollectionRef = collection(db, 'recipes');
 			let recipeQuery = query(
 				recipeCollectionRef,
-				orderBy('add_at', 'desc'),
+				orderBy('recipe_create_time', 'desc'),
 				limit(pageSize)
 			);
 
@@ -75,10 +77,23 @@ const RecipeList = () => {
 					setLoading(false); // 로딩 종료
 					return; // Firestore 쿼리 없이 클라이언트 측 필터링으로 결과를 처리
 				} else if (selectedOption === '태그') {
-					recipeQuery = query(
-						recipeQuery,
-						where('recipe_tags', 'array-contains', searchTerm) // 배열 내 포함
+					const allRecipesSnapshot = await getDocs(recipeCollectionRef);
+					const allRecipes: Recipe[] = allRecipesSnapshot.docs.map((doc) => ({
+						id: doc.id,
+						...doc.data(),
+					})) as Recipe[];
+
+					// 클라이언트 측에서 필터링
+					const filteredRecipes = allRecipes.filter((recipe) =>
+						recipe.recipe_tags.some(
+							(recipe_tag) =>
+								recipe_tag.toLowerCase().includes(searchTerm.toLowerCase()) // 대소문자 구분 없이 포함 여부 확인
+						)
 					);
+
+					setRecipes(filteredRecipes);
+					setLoading(false); // 로딩 종료
+					return;
 				} else if (selectedOption === '재료') {
 					const allRecipesSnapshot = await getDocs(recipeCollectionRef);
 					const allRecipes: Recipe[] = allRecipesSnapshot.docs.map((doc) => ({
