@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import Footer from './footer/Footer';
 import Header from './header/Header';
+import { useLocation } from 'react-router-dom';
 
 const Layout = ({ children }: any) => {
 	const location = useLocation();
