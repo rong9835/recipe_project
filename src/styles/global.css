@@ -8,3 +8,8 @@
 * {
 	font-family: 'SUIT Variable', sans-serif;
 }
+
+a,
+a:visited {
+	color: inherit;
+}

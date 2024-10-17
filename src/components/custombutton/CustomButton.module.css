@@ -93,4 +93,9 @@
 	height: 70px;
 	font-size: 24px;
 }
+
+.filterBtn {
+	padding: 8px 20px;
+	font-size: 20px;
+}
 /* 타입별 스타일 끝 */

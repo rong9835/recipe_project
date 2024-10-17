@@ -7,4 +7,7 @@ export interface Recipe {
 	recipe_hearts: number;
 	thumbnail_url: string;
 	add_at: string;
+	views: number;
+	hearts: number;
+	recipe_description: string;
 }

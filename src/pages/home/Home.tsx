@@ -4,10 +4,10 @@ import CustomButton, {
 } from '../../components/custombutton/CustomButton';
 import RecommendCard from '../../components/recommendcard/RecommendCard';
 import styles from './Home.module.css';
-import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/config';
+import PlusMenuBtn from '../../components/plusmenubutton/PlusMenuBtn';
 
 const Home = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -24,12 +24,6 @@ const Home = () => {
 	}, []);
 
 	useEffect(() => {
-		const currentUrl = window.location.href;
-
-		if (currentUrl.includes('/')) {
-			document.body.style.backgroundColor = 'white'; // 원하는 배경 색상으로 변경
-		}
-
 		const handleClickOutside = (event: MouseEvent) => {
 			if (plusRef.current && !plusRef.current.contains(event.target as Node)) {
 				setIsOpen(false);
@@ -39,7 +33,6 @@ const Home = () => {
 		document.addEventListener('mousedown', handleClickOutside);
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
-			document.body.style.backgroundColor = '';
 		};
 	}, []);
 
@@ -48,10 +41,6 @@ const Home = () => {
 		{ label: 'AI 추천 레시피', path: '/' },
 		{ label: '마이페이지', path: '/profile' },
 	];
-
-	const renderPlusAndCloseBtn = () => {
-		return isOpen ? <CloseOutlined /> : <PlusOutlined />;
-	};
 
 	const handleOptionClick = (path: string) => {
 		if (!isLoggedIn) {
@@ -77,19 +66,11 @@ const Home = () => {
 					</p>
 				</div>
 				<CustomButton btnType={ButtonType.Share} color="orange" shape="rad20">
-					내 레시피 공유하기
+					<Link to="/create">내 레시피 공유하기</Link>
 				</CustomButton>
 			</article>
 			<RecommendCard />
-			<CustomButton
-				btnType={ButtonType.Menu}
-				shape="circle"
-				color="orange"
-				size="large"
-				onClick={() => setIsOpen(!isOpen)}
-			>
-				{renderPlusAndCloseBtn()}
-			</CustomButton>
+			<PlusMenuBtn isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
 			{isOpen && (
 				<ul className={styles.plusMenu} ref={plusRef}>
 					{/* 각 옵션을 Link로 감싸 경로를 추가 */}

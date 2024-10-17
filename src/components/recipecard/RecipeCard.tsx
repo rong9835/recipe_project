@@ -1,8 +1,9 @@
 import styles from './RecipeCard.module.css'; // 필요한 스타일 모듈 임포트
 import heartImg from '../../assets/icon_heart.svg'; // 하트 아이콘 임포트
-import CustomButton, { ButtonType } from '../custombutton/CustomButton';
+import viewImg from '../../assets/icon_views.svg';
 import { Recipe } from '../../type/type';
 import { Link } from 'react-router-dom';
+import { Tag } from 'antd';
 
 interface RecipeCardProps {
 	recipe: Recipe;
@@ -11,14 +12,11 @@ interface RecipeCardProps {
 const RecipeCard = ({ recipe }: RecipeCardProps) => {
 	const levelCircle = (difficulty: number) => {
 		return (
-			<CustomButton
-				btnType={ButtonType.Level}
-				shape="circle"
-				color="orange"
-				size="medium"
-			>
-				<span>Lv {difficulty}</span>
-			</CustomButton>
+			<div className={styles.outerCircle}>
+				<div className={styles.innerCircle}>
+					<span>Lv {difficulty}</span>
+				</div>
+			</div>
 		);
 	};
 
@@ -36,16 +34,30 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 			</div>
 
 			<div className={styles.recipeInfo}>
-				<h3 className={styles.recipeTitle}>{recipe.recipe_name}</h3>
-				<div className={styles.recipeDetails}>
-					<img src={heartImg} alt="heart" className={styles.heartIcon} />
-					<span>{recipe.recipe_hearts}</span>
+				<div className={styles.recipeInfoHeader}>
+					<h3 className={styles.recipeTitle}>{recipe.recipe_name}</h3>
+					<div className={styles.viewsAndHearts}>
+						<div className={styles.recipeViews}>
+							<img src={viewImg} alt="views" className={styles.viewIcon} />
+							<span className={styles.viewText}>{recipe.views}</span>
+						</div>
+						<span className={styles.seperator}></span>
+						<div className={styles.recipeHearts}>
+							<img src={heartImg} alt="heart" className={styles.heartIcon} />
+							<span className={styles.heartText}>{recipe.hearts}</span>
+						</div>
+					</div>
+				</div>
+				<div className={styles.recipeDesc}>
+					<span className={styles.recipeDescText}>
+						{recipe.recipe_description}
+					</span>
 				</div>
 				<div className={styles.recipeIngredients}>
 					{recipe.recipe_ingredients.map((ingredient, index) => (
-						<span key={index} className={styles.ingredient}>
+						<Tag key={index} className={styles.ingredient}>
 							{ingredient.name}
-						</span>
+						</Tag>
 					))}
 				</div>
 			</div>

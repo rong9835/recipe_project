@@ -71,7 +71,7 @@ const RecommendCard = () => {
 						</div>
 						<div className={styles.recipeDescription}>
 							<div className={styles.heartImgAndText}>
-								<img className={styles.heartImg} src={heartImg} alt="heart" />{' '}
+								<img className={styles.heartImg} src={heartImg} alt="heart" />
 								<span className={styles.heartText}>{recipe.hearts}</span>
 							</div>
 							<div className={styles.recipeNameAndIng}>
