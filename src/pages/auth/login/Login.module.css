@@ -1,13 +1,13 @@
-body, #root {
+body{
   background-color: #FFF9E9;
   font-family: 'SUIT Variable', sans-serif;
   margin: 0;
   padding: 0;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  overflow-y: auto; 
 }
 
 .loginContainer {
@@ -15,10 +15,16 @@ body, #root {
   max-width: 517px;
   padding: 20px;
   box-sizing: border-box;
-  overflow-y: auto; 
-  max-height: 100vh; 
+  overflow-y: auto;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;  
+  margin: auto;
 }
 
+.loginBox {
+  width: 100%;
+}
 
 .title {
   text-align: center;
