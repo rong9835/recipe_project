@@ -9,7 +9,7 @@ const Layout = ({ children }: any) => {
 	const showHeaderFooter =
 		location.pathname === '/' ||
 		location.pathname === '/recipelist' ||
-		location.pathname === '/recipedetail/';
+		location.pathname.startsWith('/recipedetail/');
 
 	return (
 		<>
