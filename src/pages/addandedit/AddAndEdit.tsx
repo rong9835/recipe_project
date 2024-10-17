@@ -23,7 +23,7 @@ const AddAndEdit = () => {
 	const [recipeTip, setRecipeTip] = useState('');
 	const [recipeDesc, setRecipeDesc] = useState('');
 	const [tags, setTags] = useState<string[]>([]);
-	const { imageUrl, uploadImage } = useThumbnailImgUpload();
+	const { imageUrl, uploadImage, setImageUrl } = useThumbnailImgUpload();
 
 	const handleThumbnailImgChange = (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -212,7 +212,7 @@ const AddAndEdit = () => {
 					setRecipeTip(recipeData.recipe_tips);
 					setTags(recipeData.recipe_tags);
 					// Assuming you have a way to set the thumbnail image URL
-					// setImageUrl(recipeData.thumbnail_url);
+					setImageUrl(recipeData.thumbnail_url);
 				}
 			}
 		};

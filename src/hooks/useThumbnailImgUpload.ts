@@ -19,7 +19,7 @@ const useThumbnailImgUpload = () => {
 		}
 	};
 
-	return { imageUrl, uploadImage };
+	return { imageUrl, uploadImage, setImageUrl };
 };
 
 export default useThumbnailImgUpload;

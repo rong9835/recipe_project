@@ -65,9 +65,11 @@ const Home = () => {
 						만드는 모든 요리의 레시피를 들려주세요.
 					</p>
 				</div>
-				<CustomButton btnType={ButtonType.Share} color="orange" shape="rad20">
-					<Link to="/create">내 레시피 공유하기</Link>
-				</CustomButton>
+				<Link to="/create">
+					<CustomButton btnType={ButtonType.Share} color="orange" shape="rad20">
+						내 레시피 공유하기
+					</CustomButton>
+				</Link>
 			</article>
 			<RecommendCard />
 			<PlusMenuBtn isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
