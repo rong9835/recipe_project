@@ -10,7 +10,6 @@ import {
 	orderBy,
 	limit,
 	startAfter,
-	where,
 } from 'firebase/firestore';
 import { Recipe } from '../../type/type';
 import PlusMenuBtn from '../../components/plusmenubutton/PlusMenuBtn';
