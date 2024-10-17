@@ -3,8 +3,8 @@ import styles from './SignUp.module.css';
 import { FirebaseError } from 'firebase/app';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../../../firebase/config';
-import { Link } from 'react-router-dom';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { Link, useNavigate } from 'react-router-dom';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 
 interface SignUpValues {
 	email: string;
@@ -16,6 +16,7 @@ interface SignUpValues {
 }
 
 export default function SignUp() {
+
     const [signUpValues, setSignUpValues] = useState<SignUpValues>({
         email: '',
         password: '',
@@ -29,8 +30,9 @@ export default function SignUp() {
     const [emailAvailable, setEmailAvailable] = useState<boolean | null>(null);
     const [nicknameAvailable, setNicknameAvailable] = useState<boolean | null>(null);
     const [phoneAvailable, setPhoneAvailable] = useState<boolean | null>(null);
+    const navigate = useNavigate();
 
-
+    // 입력 값 받는 함수
 	const signUpInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setSignUpValues({
@@ -39,6 +41,7 @@ export default function SignUp() {
 		});
 	};
 
+    // 중복 체크 함수
     const checkEmailAvailability = async () => {
         const q = query(collection(db, 'users'), where('email', '==', signUpValues.email));
         const querySnapshot = await getDocs(q);
@@ -58,6 +61,7 @@ export default function SignUp() {
     };
 
 
+    // 회원가입 폼 제출 함수
     const signUpFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setErrMsg("");        
@@ -72,6 +76,7 @@ export default function SignUp() {
             return;
         }
 
+        // 일치, 중복 여부 체크
         if (signUpValues.password !== signUpValues.confirmPassword) {
             setErrMsg("비밀번호가 일치하지 않습니다.");
             return;
@@ -94,12 +99,27 @@ export default function SignUp() {
 
         try {
             setIsLoading(true);
+            // Firebase에서 사용자 계정 생성
             const userCreate = await createUserWithEmailAndPassword(
                 auth,
                 signUpValues.email,
                 signUpValues.password
             );
+
+            // Firestore에 사용자 정보 저장하기
+            const userDocRef = doc(db, 'users', userCreate.user.uid); 
+            await setDoc(userDocRef, { 
+                name: signUpValues.name,
+                nickname: signUpValues.nickname,
+                email: signUpValues.email,
+                phone: signUpValues.phone,
+            });
+
             console.log("회원가입 성공:", userCreate.user);
+            alert("회원가입이 되었습니다.");
+
+            navigate('/login');
+
         } catch (e) {
             if (e instanceof FirebaseError) {
                 setErrMsg(e.message); 
@@ -112,7 +132,9 @@ export default function SignUp() {
     return (
         <main className={styles.container}>
             <div className={styles.logo}>
-                <img src="./src/assets/icon_logo.png" alt="" />
+                <Link to={'/'}>
+                    <img src="./src/assets/icon_logo.png" alt="" />
+                </Link>
             </div>
             <form onSubmit={signUpFormSubmit}>
                 <input type="email" name="email" value={signUpValues.email} onChange={signUpInputChange} onBlur={checkEmailAvailability} placeholder="이메일 형식으로 입력해 주세요." required className={styles.input}/>
@@ -124,8 +146,8 @@ export default function SignUp() {
                 {nicknameAvailable === false && <div>{errMsg}</div>}
                 <input type="tel" name="phone" value={signUpValues.phone} onChange={signUpInputChange} onBlur={checkPhoneAvailability} placeholder="연락처를 입력해 주세요." required className={styles.input}/>
                 {phoneAvailable === false && <div>{errMsg}</div>}
-                <button type="submit" disabled={isLoading} className={styles.signupBtn}>회원가입</button> 
                 {errMsg && <div>{errMsg}</div>}
+                <button type="submit" disabled={isLoading} className={styles.signupBtn}>회원가입</button> 
             </form>
             <div className={styles.pageLogin}>
                 <Link to={'/login'}>
