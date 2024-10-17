@@ -15,9 +15,14 @@ const Header = () => {
 				</Link>
 				<Search />
 				{user ? (
-					<button onClick={logout} className={styles.loginLogoutText}>
+					<div>
+						<Link to={'/profile'}>
+							{}
+						</Link>
+						<button onClick={logout} className={styles.loginLogoutText}>
 						로그아웃
-					</button>
+						</button>
+					</div>
 				) : (
 					<Link to="/login" className={styles.loginLogoutText}>
 						로그인
