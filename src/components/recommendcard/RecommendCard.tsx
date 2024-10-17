@@ -7,29 +7,31 @@ import { useEffect, useState } from 'react';
 import { Tag } from 'antd'; // antd의 Tag 컴포넌트 임포트
 import { Link } from 'react-router-dom';
 
-const getTopHeartsRecipes = async () => {
-	try {
-		const recipesRef = collection(db, 'recipes');
-		const q = query(recipesRef, orderBy('hearts', 'desc'), limit(2));
-		const querySnapshot = await getDocs(q);
-
-		const topRecipes = querySnapshot.docs.map((doc) => ({
-			id: doc.id,
-			...doc.data(),
-		}));
-
-		return topRecipes;
-	} catch (error) {
-		console.error('Error fetching recipes: ', error);
-		return [];
-	}
-};
-
 const RecommendCard = () => {
 	const [topRecipes, setTopRecipes] = useState<any[]>([]);
+	const [loading, setLoading] = useState(false);
+
+	const getTopHeartsRecipes = async () => {
+		try {
+			const recipesRef = collection(db, 'recipes');
+			const q = query(recipesRef, orderBy('hearts', 'desc'), limit(2));
+			const querySnapshot = await getDocs(q);
+
+			const topRecipes = querySnapshot.docs.map((doc) => ({
+				id: doc.id,
+				...doc.data(),
+			}));
+
+			return topRecipes;
+		} catch (error) {
+			console.error('Error fetching recipes: ', error);
+			return [];
+		}
+	};
 
 	useEffect(() => {
 		const fetchTopRecipes = async () => {
+			setLoading(true); // 데이터를 불러오기 시작할 때 로딩 상태를 true로 설정
 			try {
 				console.log('Fetching top recipes...');
 				const recipes = await getTopHeartsRecipes();
@@ -37,6 +39,8 @@ const RecommendCard = () => {
 				setTopRecipes(recipes);
 			} catch (error) {
 				console.error('Error fetching recipes:', error);
+			} finally {
+				setLoading(false); // 데이터를 다 불러온 후 로딩 상태를 false로 설정
 			}
 		};
 
@@ -54,47 +58,56 @@ const RecommendCard = () => {
 	};
 
 	return (
-		<div className={styles.recommendCardSection}>
-			{topRecipes.map((recipe) => (
-				<article key={recipe.id} className={styles.recommendCardArticle}>
-					<div>
-						<span>{recipe.author.user_nickname}'s</span>
-						<span> 추천 레시피</span>
-					</div>
-					<div className={styles.recommendRecipe}>
-						<div className={styles.recommendCardImgSection}>
-							<img
-								className={styles.recommendCardImg}
-								src={recipe.thumbnail_url}
-							/>
-							{levelCircle(recipe.recipe_difficulty)}
+		<>
+			{loading && <div className={styles.loading}>로딩 중...</div>}
+			<div className={styles.recommendCardSection}>
+				{topRecipes.map((recipe) => (
+					<article key={recipe.id} className={styles.recommendCardArticle}>
+						<div className={styles.recommendCardTitle}>
+							<span className={styles.userNickname}>
+								{recipe.author.user_nickname}'s
+							</span>
+							<span>추천 레시피</span>
 						</div>
-						<div className={styles.recipeDescription}>
-							<div className={styles.heartImgAndText}>
-								<img className={styles.heartImg} src={heartImg} alt="heart" />
-								<span className={styles.heartText}>{recipe.hearts}</span>
+						<div className={styles.recommendRecipe}>
+							<div className={styles.recommendCardImgSection}>
+								<img
+									className={styles.recommendCardImg}
+									src={recipe.thumbnail_url}
+								/>
+								{levelCircle(recipe.recipe_difficulty)}
 							</div>
-							<div className={styles.recipeNameAndIng}>
-								<div className={styles.recipeName}>{recipe.recipe_name}</div>
-								<div className={styles.recipeTags}>
-									{/* antd의 Tag 컴포넌트를 사용하여 태그들을 분할하여 표시 */}
-									{recipe.recipe_ingredients.map((ing: any, index: number) => (
-										<Tag className={styles.customTag} key={index}>
-											{ing.name}
-										</Tag>
-									))}
+							<div className={styles.recipeDescription}>
+								<div className={styles.heartImgAndText}>
+									<img className={styles.heartImg} src={heartImg} alt="heart" />
+									<span className={styles.heartText}>{recipe.hearts}</span>
+								</div>
+								<div className={styles.recipeNameAndIng}>
+									<div className={styles.recipeName}>{recipe.recipe_name}</div>
+									<div className={styles.recipeTags}>
+										{/* antd의 Tag 컴포넌트를 사용하여 태그들을 분할하여 표시 */}
+										{recipe.recipe_ingredients.map(
+											(ing: any, index: number) => (
+												<Tag className={styles.customTag} key={index}>
+													{ing.name}
+												</Tag>
+											)
+										)}
+									</div>
+								</div>
+								<div className={styles.recipeDetailLinkWrapper}>
+									<Link to={`/recipedetail/${recipe.id}`}>
+										<button className={styles.recipeDetailLinkBtn}>
+											레시피 보러가기
+										</button>
+									</Link>
 								</div>
 							</div>
-							<div className={styles.recipeDetailLinkWrapper}>
-								<button className={styles.recipeDetailLinkBtn}>
-									<Link to={`/recipedetail/${recipe.id}`}>레시피 보러가기</Link>
-								</button>
-							</div>
 						</div>
-					</div>
-				</article>
-			))}
-		</div>
+					</article>
+				))}
+			</div>
+		</>
 	);
 };
 
