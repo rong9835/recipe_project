@@ -15,17 +15,21 @@ import {
 import CustomButton, { ButtonType } from '../custombutton/CustomButton';
 import styled from '../../pages/recipedetail/RecipeDetail.module.css';
 import { Pagination } from 'antd';
-import { getAuth } from 'firebase/auth';
-import useUserNickname from '../../hooks/useGetUserNickName';
+// import { AuthContextProps } from '../../context/AuthContext';
 
 interface CommentsProps {
 	recipeId: string;
 	recipeAuthor: string | undefined;
+	users: any;
 }
 
 type TextAreaEvent = React.ChangeEvent<HTMLTextAreaElement>;
 
-const Comments: React.FC<CommentsProps> = ({ recipeId, recipeAuthor }) => {
+const Comments: React.FC<CommentsProps> = ({
+	recipeId,
+	recipeAuthor,
+	users,
+}) => {
 	const [comments, setComments] = useState<DocumentData[]>([]);
 	const [newComment, setNewComment] = useState<string>('');
 	const [countNewComment, setCountNewComment] = useState<number>(0);
@@ -36,10 +40,6 @@ const Comments: React.FC<CommentsProps> = ({ recipeId, recipeAuthor }) => {
 	const [editedComment, setEditedComment] = useState<string>('');
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [commentsPerPage] = useState<number>(5);
-
-	const userNickName = useUserNickname(db);
-	const auth = getAuth();
-	const currentUser = auth.currentUser;
 
 	// 댓글 불러오기
 	const getComments = async () => {
@@ -88,7 +88,7 @@ const Comments: React.FC<CommentsProps> = ({ recipeId, recipeAuthor }) => {
 	// 댓글 등록하기
 	const addComment = async () => {
 		if (newComment.trim()) {
-			if (currentUser === null) {
+			if (users.user === null) {
 				alert('로그인이 필요한 작업입니다 :)');
 				setNewComment('');
 				return;
@@ -97,7 +97,7 @@ const Comments: React.FC<CommentsProps> = ({ recipeId, recipeAuthor }) => {
 			try {
 				await addDoc(collection(db, 'recipes', recipeId, 'comment'), {
 					comment_description: newComment,
-					user_nickname: userNickName,
+					user_nickname: users.nickname,
 					comment_create_time: new Date(),
 				});
 
@@ -198,7 +198,7 @@ const Comments: React.FC<CommentsProps> = ({ recipeId, recipeAuthor }) => {
 								<>
 									<p>{comment.comment_description}</p>
 
-									{userNickName === comment.user_nickname && (
+									{users.nickname === comment.user_nickname && (
 										<div className={styled.commentSettingsBtn}>
 											<CustomButton
 												btnType={ButtonType.Edit}

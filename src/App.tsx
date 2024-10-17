@@ -8,7 +8,7 @@ import RecipeList from './pages/recipelist/RecipeList';
 import Home from './pages/home/Home';
 import { AuthProvider } from './context/AuthContext';
 import ForgotPassword from './pages/auth/login/ForgotPassword';
-import NotFound from './pages/auth/notfound/NotFound'
+import NotFound from './pages/auth/notfound/NotFound';
 import Profile from './pages/auth/profile/Profile';
 import AddAndEdit from './pages/addandedit/AddAndEdit';
 
@@ -25,7 +25,6 @@ function App() {
 						<Route path="/login" element={<Login />} />
 						<Route path="/signup" element={<SignUp />} />
 						<Route path="/forgot-password" element={<ForgotPassword />} />
-						<Route path="/recipedetail" element={<RecipeDetail />} />
 						<Route path="/recipedetail/:id" element={<RecipeDetail />} />
 						<Route path="/recipelist" element={<RecipeList />} />
 						<Route path="*" element={<NotFound />} />
