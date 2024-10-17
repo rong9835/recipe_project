@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './AddAndEdit.module.css'; // module.css 파일 import
 import CustomButton, {
 	ButtonType,
@@ -9,7 +9,7 @@ import backIcon from '../../assets/icon_back.svg';
 import useThumbnailImgUpload from '../../hooks/useThumbnailImgUpload';
 import useStepImgUpload from '../../hooks/useStepImgUpload';
 import useAddRecipe from '../../hooks/useAddRecipe';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const AddAndEdit = () => {
@@ -17,9 +17,9 @@ const AddAndEdit = () => {
 	const [cookingTimeHour, setCookingTimeHour] = useState<string>('');
 	const [cookingTimeMinute, setCookingTimeMinute] = useState<string>('');
 	const [ingredients, setIngredients] = useState([{ name: '', amount: '' }]);
-	const [difficulty, setDifficulty] = useState<number | string>('');
+	const [difficulty, setDifficulty] = useState<string>('');
 	const navigate = useNavigate();
-	const { nickname } = useAuth();
+	const { nickname, user } = useAuth();
 	const [recipeTip, setRecipeTip] = useState('');
 	const [recipeDesc, setRecipeDesc] = useState('');
 	const [tags, setTags] = useState<string[]>([]);
@@ -33,8 +33,6 @@ const AddAndEdit = () => {
 			uploadImage(file); // 이미지 업로드 함수 호출
 		}
 	};
-
-	console.log(nickname);
 
 	const [steps, setSteps] = useState([{ description: '', image: '' }]);
 	const { uploadStepImage, uploadProgress } = useStepImgUpload(); // Step 이미지 업로드 훅 사용
@@ -83,42 +81,64 @@ const AddAndEdit = () => {
 	};
 
 	// 레시피 Add 함수
-	const { addRecipe } = useAddRecipe(); // custom hook 사용
+	const { addRecipe, getRecipe, updateRecipe } = useAddRecipe(); // custom hook 사용
+
+	const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault(); // 기본 제출 방지
 
-		const recipeData = {
-			author: {
-				user_nickname: nickname, // 예시 이메일
-			}, // 적절한 author 데이터 설정
-			hearts: 0, // 예시값
-			recipe_difficulty: difficulty,
-			recipe_ingredients: ingredients.map((ing) => ({
-				name: ing.name,
-				volume: ing.amount,
-			})),
-			recipe_name: recipeName,
-			recipe_description: recipeDesc,
-			recipe_steps: steps.map((step) => ({
-				step_description: step.description,
-				step_image_url: step.image,
-			})),
-			recipe_tags: tags,
-			recipe_time: {
-				hours: parseInt(cookingTimeHour, 10),
-				minutes: parseInt(cookingTimeMinute, 10),
-			},
-			recipe_tips: recipeTip,
-			thumbnail_url: imageUrl, // 업로드된 이미지 URL
-			views: 0,
-			add_at: new Date().toISOString(), // 작성 시간 추가
-			comments: [], // 댓글 초기화
-			hearted: [], // 좋아요 초기화
-		};
+		if (
+			recipeName &&
+			recipeDesc &&
+			cookingTimeHour &&
+			cookingTimeMinute &&
+			ingredients &&
+			difficulty !== '레벨을 선택해주세요' &&
+			steps &&
+			recipeTip &&
+			imageUrl &&
+			tags
+		) {
+			const recipeData = {
+				author: {
+					user_nickname: nickname ? nickname : user?.displayName, // 예시 이메일
+				}, // 적절한 author 데이터 설정
+				hearts: 0, // 예시값
+				recipe_difficulty: parseInt(difficulty.replace(/\D/g, ''), 10),
+				recipe_ingredients: ingredients.map((ing) => ({
+					name: ing.name,
+					volume: ing.amount,
+				})),
+				recipe_name: recipeName,
+				recipe_description: recipeDesc,
+				recipe_steps: steps.map((step) => ({
+					step_description: step.description,
+					step_image_url: step.image,
+				})),
+				recipe_tags: tags,
+				recipe_time: {
+					hours: parseInt(cookingTimeHour, 10),
+					minutes: parseInt(cookingTimeMinute, 10),
+				},
+				recipe_tips: recipeTip,
+				thumbnail_url: imageUrl, // 업로드된 이미지 URL
+				views: 0,
+				comments: [], // 댓글 초기화
+				hearted: [], // 좋아요 초기화
+			};
 
-		await addRecipe(recipeData); // 레시피 추가
-		navigate('/recipelist');
+			setIsSubmitDisabled(false);
+			if (id) {
+				await updateRecipe(id, recipeData);
+			} else {
+				await addRecipe(recipeData);
+			}
+			navigate('/recipelist');
+		} else if (isSubmitDisabled) {
+			alert('모든 필드를 입력해주세요.');
+			return;
+		}
 	};
 
 	const handleCookingTimeHourChange = (
@@ -143,13 +163,14 @@ const AddAndEdit = () => {
 
 	// 난이도 드롭다운 항목
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태
-	const [selectedDifficulty, setSelectedDifficulty] =
-		useState('레벨을 선택해주세요'); // 선택된 난이도
+	const [selectedDifficulty, setSelectedDifficulty] = useState<number | string>(
+		'레벨을 선택해주세요'
+	);
 
 	const difficultyOptions = [
-		{ value: '1', label: 'Lv 1' },
-		{ value: '2', label: 'Lv 2' },
-		{ value: '3', label: 'Lv 3' },
+		{ value: 1, label: 'Lv 1' },
+		{ value: 2, label: 'Lv 2' },
+		{ value: 3, label: 'Lv 3' },
 	];
 
 	const toggleDropdown = () => {
@@ -161,6 +182,43 @@ const AddAndEdit = () => {
 		setDifficulty(value); // 상태 업데이트
 		setIsDropdownOpen(false); // 드롭다운 닫기
 	};
+
+	// 생성 및 수정
+	const { id } = useParams();
+
+	useEffect(() => {
+		const fetchRecipe = async () => {
+			if (id) {
+				const recipeData = await getRecipe(id);
+				if (recipeData) {
+					setRecipeName(recipeData.recipe_name);
+					setRecipeDesc(recipeData.recipe_description);
+					setCookingTimeHour(recipeData.recipe_time.hours.toString());
+					setCookingTimeMinute(recipeData.recipe_time.minutes.toString());
+					setIngredients(
+						recipeData.recipe_ingredients.map((ing) => ({
+							name: ing.name,
+							amount: ing.volume,
+						}))
+					);
+					setDifficulty(`Lv ${recipeData.recipe_difficulty}`);
+					setSelectedDifficulty(`Lv ${recipeData.recipe_difficulty}`);
+					setSteps(
+						recipeData.recipe_steps.map((step) => ({
+							description: step.step_description,
+							image: step.step_image_url,
+						}))
+					);
+					setRecipeTip(recipeData.recipe_tips);
+					setTags(recipeData.recipe_tags);
+					// Assuming you have a way to set the thumbnail image URL
+					// setImageUrl(recipeData.thumbnail_url);
+				}
+			}
+		};
+
+		fetchRecipe();
+	}, [id]);
 
 	return (
 		<div className={styles.createAndEditSection}>
@@ -175,7 +233,7 @@ const AddAndEdit = () => {
 				<div className={styles.createAndEditDesc}>
 					<p>Special Cooking Recipe</p>
 					<p>
-						<span>{nickname} 's</span> 레시피
+						<span>{nickname ? nickname : user?.displayName} 's</span> 레시피
 					</p>
 				</div>
 			</div>

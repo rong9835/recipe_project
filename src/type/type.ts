@@ -6,11 +6,13 @@ export interface Recipe {
 	recipe_difficulty: number;
 	recipe_hearts: number;
 	thumbnail_url: string;
-	add_at: string;
 
 	recipe_create_time: RecipeCreateTime;
-	recipe_time: RecipeTime;
-	recipe_steps: RecipeStep[];
+	recipe_time: {
+		hours: number;
+		minutes: number;
+	};
+	recipe_steps: Array<{ step_description: string; step_image_url: string }>;
 	recipe_tips: string;
 	recipe_description: string;
 
@@ -19,19 +21,9 @@ export interface Recipe {
 	author: Author;
 }
 
-interface RecipeTime {
-	hours: number;
-	minutes: number;
-}
-
 interface RecipeCreateTime {
 	seconds: number;
 	nanoseconds: number;
-}
-
-interface RecipeStep {
-	step_description: string;
-	step_image_url: string | number;
 }
 
 interface Author {

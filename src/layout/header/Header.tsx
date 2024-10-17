@@ -9,19 +9,21 @@ const Header = () => {
 
 	return (
 		<header id={styles.header}>
-			<Link to="/">
-				<img src={logoImg} className={styles.logoImg} />
-			</Link>
-			<Search />
-			{user ? (
-				<button onClick={logout} className={styles.loginLogoutText}>
-					로그아웃
-				</button>
-			) : (
-				<Link to="/login" className={styles.loginLogoutText}>
-					로그인
+			<div className={styles.customHeader}>
+				<Link to="/">
+					<img src={logoImg} className={styles.logoImg} />
 				</Link>
-			)}
+				<Search />
+				{user ? (
+					<button onClick={logout} className={styles.loginLogoutText}>
+						로그아웃
+					</button>
+				) : (
+					<Link to="/login" className={styles.loginLogoutText}>
+						로그인
+					</Link>
+				)}
+			</div>
 		</header>
 	);
 };
