@@ -10,7 +10,7 @@ const PrivateRoute = ({ element }: PrivateRouteProps) => {
 
 	// 인증 상태가 로딩 중일 때는 아무것도 렌더링하지 않음
 	if (loading) {
-		return null; // 로딩 중일 때 로딩 스피너를 보여주거나 아무것도 렌더링하지 않음
+		return <div>로딩 중...</div>; // 로딩 중일 때 로딩 스피너를 보여주거나 아무것도 렌더링하지 않음
 	}
 
 	if (!user) {
