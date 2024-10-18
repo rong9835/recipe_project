@@ -2,12 +2,21 @@ import { useEffect, useState } from 'react';
 import styles from './Profile.module.css';
 import { auth, db } from '../../../firebase/config';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import Spoon from './spoon/Spoon';
+
+const badgeData = [
+	{ image: "./src/assets/icon_spoon.png", name: "스푼 Spoon", count: 0 },
+    { image: "./src/assets/icon_spoon2.png", name: "포크 Fork", count: 10 },
+    { image: "./src/assets/icon_spoon3.png", name: "챕스 Chopsticks", count: 20 },
+    { image: "./src/assets/icon_spoon4.png", name: "터너 Turner", count: 30 },
+    { image: "./src/assets/icon_spoon5.png", name: "나이프 Knife", count: 40 },
+]
 
 export default function Profile() {
 	
 	const [userNickname, setUserNickname] = useState<string | null>(null);
-
 	const [userRecipes, setUserRecipes] = useState<any[]>([]);
+	const [spoonModalOpen, setSpoonModalOpen] = useState<boolean>(false);
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -50,7 +59,7 @@ export default function Profile() {
 			<div className={styles.profileBox}>
 				<section className={styles.profile}>
 					<div className={styles.user}>
-						<div className={styles.userImg}></div>
+						<img src="./src/assets/icon_profileImg.png" alt="" />
 						<h2>{userNickname}</h2>
 						<span>회원소개</span>
 					</div>
@@ -62,9 +71,9 @@ export default function Profile() {
 						</div>
 						<div className={styles.userDivider}></div>
 						<div className={styles.userClass}>
-							<div><img src="./src/assets/icon_spoon.png" alt="" /></div>
+							<div onClick={() => setSpoonModalOpen(true)}><img src="./src/assets/icon_spoon.png" alt="" /></div>
 							<span>뱃지 등급</span>
-							<h3>스푼</h3>
+							<h3>스푼 Spoon</h3>
 						</div>
 					</div>
 				</section>
@@ -87,6 +96,7 @@ export default function Profile() {
 					</div>
 				</section>
 			</div>
+			{spoonModalOpen && (<Spoon onClose={() => setSpoonModalOpen(false)} />)}
 		</main>
 	);
 }
