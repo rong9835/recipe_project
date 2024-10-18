@@ -10,6 +10,7 @@ interface Badge {
     count: number;
 }
 
+// 사용자 게시글 수에 따라 배지 제공하기 위한 데이터
 const badgeData:Badge[] = [
 	{ image: "./src/assets/icon_spoon.png", name: "스푼 Spoon", count: 0 },
     { image: "./src/assets/icon_spoon2.png", name: "포크 Fork", count: 10 },
@@ -56,10 +57,12 @@ export default function Profile() {
 		fetchUserData();
 	}, []);
 
+	// 게시글 수를 기준으로 현재 배지를 반환하는 함수
 	const getCurrentBadge = (postsCount: number): Badge => {
 		return badgeData.slice().reverse().find(badgeData => postsCount >= badgeData.count) || badgeData[0];
 	}
 	
+	// 현재 사용자의 게시물 수에 따라 배지 계산
 	const currentBadge = getCurrentBadge(userRecipes.length);
 
 	return (
