@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
 import errorIcon from '../../../assets/icon_error.png';
@@ -40,6 +40,19 @@ const Login = () => {
 			setLoginError('구글 로그인에 실패했습니다. 다시 시도해주세요.');
 		}
 	};
+
+	// url에 따른 스타일링
+	useEffect(() => {
+		const currentUrl = window.location.href;
+
+		if (currentUrl.includes('/login')) {
+			document.body.style.backgroundColor = '#fff9e9';
+		}
+
+		return () => {
+			document.body.style.backgroundColor = '';
+		};
+	}, []);
 
 	return (
 		<div className={styles.loginContainer}>

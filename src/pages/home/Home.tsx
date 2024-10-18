@@ -34,7 +34,6 @@ const Home = () => {
 	];
 
 	const handleOptionClick = (path: string) => {
-		console.log(null);
 		if (!user) {
 			alert('로그인 하셔야합니다.');
 			navigate('/login'); // 로그인되지 않았다면 로그인 페이지로 리다이렉트
