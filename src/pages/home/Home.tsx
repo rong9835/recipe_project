@@ -4,7 +4,7 @@ import CustomButton, {
 } from '../../components/custombutton/CustomButton';
 import RecommendCard from '../../components/recommendcard/RecommendCard';
 import styles from './Home.module.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PlusMenuBtn from '../../components/plusmenubutton/PlusMenuBtn';
 import { useAuth } from '../../context/AuthContext';
 
@@ -34,7 +34,6 @@ const Home = () => {
 	];
 
 	const handleOptionClick = (path: string) => {
-		console.log(null);
 		if (!user) {
 			alert('로그인 하셔야합니다.');
 			navigate('/login'); // 로그인되지 않았다면 로그인 페이지로 리다이렉트

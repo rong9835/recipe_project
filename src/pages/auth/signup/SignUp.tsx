@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './SignUp.module.css';
 import { FirebaseError } from 'firebase/app';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../../../firebase/config';
 import { Link, useNavigate } from 'react-router-dom';
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import {
+	collection,
+	doc,
+	getDocs,
+	query,
+	setDoc,
+	where,
+} from 'firebase/firestore';
 
 interface SignUpValues {
 	email: string;
@@ -16,23 +23,24 @@ interface SignUpValues {
 }
 
 export default function SignUp() {
+	const [signUpValues, setSignUpValues] = useState<SignUpValues>({
+		email: '',
+		password: '',
+		confirmPassword: '',
+		name: '',
+		nickname: '',
+		phone: '',
+	});
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [errMsg, setErrMsg] = useState<string>('');
+	const [emailAvailable, setEmailAvailable] = useState<boolean | null>(null);
+	const [nicknameAvailable, setNicknameAvailable] = useState<boolean | null>(
+		null
+	);
+	const [phoneAvailable, setPhoneAvailable] = useState<boolean | null>(null);
+	const navigate = useNavigate();
 
-    const [signUpValues, setSignUpValues] = useState<SignUpValues>({
-        email: '',
-        password: '',
-        confirmPassword: '',
-        name:'',
-        nickname:'',
-        phone:''
-    });
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [errMsg, setErrMsg] = useState<string>("");
-    const [emailAvailable, setEmailAvailable] = useState<boolean | null>(null);
-    const [nicknameAvailable, setNicknameAvailable] = useState<boolean | null>(null);
-    const [phoneAvailable, setPhoneAvailable] = useState<boolean | null>(null);
-    const navigate = useNavigate();
-
-    // 입력 값 받는 함수
+	// 입력 값 받는 함수
 	const signUpInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setSignUpValues({
@@ -41,7 +49,7 @@ export default function SignUp() {
 		});
 	};
 
-    // 중복 체크 함수
+  // 중복 체크 함수
     const checkEmailAvailability = async () => {
         const q = query(collection(db, 'users'), where('email', '==', signUpValues.email));
         const querySnapshot = await getDocs(q);
