@@ -47,40 +47,46 @@ export default function Profile() {
 				<img src="./src/assets/icon_mypage.png" alt="" />
 				<h1>마이페이지</h1>
 			</div>
-			<section className={styles.profile}>
-				<div className={styles.user}>
-					<div>이미지 부분</div>
-					<span>{userNickname}</span>
-					<span>회원소개</span>
-				</div>
-				<div className={styles.userPost}>
-					<div>이미지 부분</div>
-					<span>등록된 게시물</span>
-					<span>{userRecipes.length}</span>
-				</div>
-				<div className={styles.userClass}>
-					<div>이미지 부분</div>
-					<span>뱃지 등급</span>
-					<span>갯수</span>
-				</div>
-			</section>
-			<section className={styles.userInformation}>
-				<div className={styles.userRecipe}>
-					<div>레시피 | Recipe</div>
-					<div>
-						<button>등록한 레시피</button>
-						<button>좋아요 누른 레시피</button>
+			<div className={styles.profileBox}>
+				<section className={styles.profile}>
+					<div className={styles.user}>
+						<div className={styles.userImg}></div>
+						<h2>{userNickname}</h2>
+						<span>회원소개</span>
 					</div>
-				</div>
-				<div className={styles.userInfo}>
-					<div>회원정보 | User Info</div>
-					<div>
-						<button>정보수정</button>
-						<button>비밀번호 변경</button>
-						<button>회원탈퇴</button>
+					<div className={styles.userPostsContainer}>
+						<div className={styles.userPost}>
+							<div><img src="./src/assets/icon_posts.png" alt="" /></div>
+							<span>등록된 게시물</span>
+							<h3>{userRecipes.length}</h3>
+						</div>
+						<div className={styles.userDivider}></div>
+						<div className={styles.userClass}>
+							<div><img src="./src/assets/icon_spoon.png" alt="" /></div>
+							<span>뱃지 등급</span>
+							<h3>스푼</h3>
+						</div>
 					</div>
-				</div>
-			</section>
+				</section>
+				<div className={styles.sectionDivider}></div>
+				<section className={styles.userInformation}>
+					<div className={styles.userRecipe}>
+						<span>레시피 | Recipe</span>
+						<div>
+							<button>등록한 레시피<img src="./src/assets/icon_profileButton.png" alt="" /></button>
+							<button>좋아요 누른 레시피<img src="./src/assets/icon_profileButton.png" alt="" /></button>
+						</div>
+					</div>
+					<div className={styles.userInfo}>
+						<span>회원정보 | User Info</span>
+						<div>
+							<button>정보수정<img src="./src/assets/icon_profileButton.png" alt="" /></button>
+							<button>비밀번호 변경<img src="./src/assets/icon_profileButton.png" alt="" /></button>
+							<button>회원탈퇴<img src="./src/assets/icon_profileButton.png" alt="" /></button>
+						</div>
+					</div>
+				</section>
+			</div>
 		</main>
 	);
 }
