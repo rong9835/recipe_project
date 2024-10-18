@@ -96,7 +96,7 @@ export default function RecipeDetail() {
 	const updateRecipeHandler = (
 		e: React.MouseEvent<HTMLButtonElement>
 	): void => {
-		navigate(`/edit/:${recipeId}`);
+		navigate(`/edit/${recipeId}`);
 	};
 
 	// 레시피 삭제하기
@@ -127,13 +127,11 @@ export default function RecipeDetail() {
 
 		if (currentUrl.includes('/recipedetail')) {
 			document.body.style.marginTop = '100px';
-			document.body.style.backgroundColor = '#fff9e9';
 		}
 
 		window.scrollTo(0, 0);
 		return () => {
 			document.body.style.marginTop = '';
-			document.body.style.backgroundColor = '';
 		};
 	}, []);
 
