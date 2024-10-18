@@ -4,7 +4,13 @@ import { auth, db } from '../../../firebase/config';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import Spoon from './spoon/Spoon';
 
-const badgeData = [
+interface Badge {
+    image: string;
+    name: string;
+    count: number;
+}
+
+const badgeData:Badge[] = [
 	{ image: "./src/assets/icon_spoon.png", name: "스푼 Spoon", count: 0 },
     { image: "./src/assets/icon_spoon2.png", name: "포크 Fork", count: 10 },
     { image: "./src/assets/icon_spoon3.png", name: "챕스 Chopsticks", count: 20 },
@@ -49,7 +55,13 @@ export default function Profile() {
 		
 		fetchUserData();
 	}, []);
+
+	const getCurrentBadge = (postsCount: number): Badge => {
+		return badgeData.slice().reverse().find(badgeData => postsCount >= badgeData.count) || badgeData[0];
+	}
 	
+	const currentBadge = getCurrentBadge(userRecipes.length);
+
 	return (
 		<main className={styles.container}>
 			<div className={styles.logo}>
@@ -71,9 +83,9 @@ export default function Profile() {
 						</div>
 						<div className={styles.userDivider}></div>
 						<div className={styles.userClass}>
-							<div onClick={() => setSpoonModalOpen(true)}><img src="./src/assets/icon_spoon.png" alt="" /></div>
+							<div onClick={() => setSpoonModalOpen(true)}><img src={currentBadge.image} alt={currentBadge.name} /></div>
 							<span>뱃지 등급</span>
-							<h3>스푼 Spoon</h3>
+							<h3>{currentBadge.name}</h3>
 						</div>
 					</div>
 				</section>
