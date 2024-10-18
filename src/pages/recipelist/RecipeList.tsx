@@ -212,7 +212,6 @@ const RecipeList = () => {
 
 	const handleFilterClick = (fOption: any) => {
 		setSelectedFilter(fOption.value);
-		console.log(selectedFilter);
 	};
 
 	// 필터링된 레시피 생성
@@ -225,9 +224,30 @@ const RecipeList = () => {
 		return false;
 	});
 
+	// 정렬 드롭다운
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태
+	const [sorting, setSorting] = useState<string>('');
+	const [selectedSorting, setSelectedSorting] = useState<string>('정렬');
+
+	const toggleDropdown = () => {
+		setIsDropdownOpen(!isDropdownOpen);
+	};
+
+	const handleSortingSelect = (value: string) => {
+		setSelectedSorting(value); // 선택된 난이도 설정
+		setSorting(value); // 상태 업데이트
+		setIsDropdownOpen(false); // 드롭다운 닫기
+	};
+
+	const sortingOptions = [
+		{ value: 'latest', label: '최신글' },
+		{ value: 'likes', label: '좋아요' },
+		{ value: 'views', label: '조회수' },
+	];
+
 	return (
 		<div>
-			<div>
+			<div className={styles.recipeListHeader}>
 				<div className={styles.filterBtnWrapper}>
 					{filterOptions.map((fOption) => (
 						<CustomButton
@@ -241,14 +261,40 @@ const RecipeList = () => {
 						</CustomButton>
 					))}
 				</div>
-				<div></div>
+				<button
+					type="button"
+					className={styles.sortingDropdown}
+					onClick={toggleDropdown}
+				>
+					<div
+						className={`${styles.sortingDropdownSelected} ${isDropdownOpen ? styles.open : ''}`}
+					>
+						{selectedSorting}
+					</div>
+					{isDropdownOpen && (
+						<ul className={styles.sortingDropdownOptions}>
+							{sortingOptions.map((option) => (
+								<li
+									key={option.value}
+									className={styles.sortingDropdownOption}
+									onClick={() => handleSortingSelect(option.label)}
+								>
+									{option.label}
+								</li>
+							))}
+						</ul>
+					)}
+				</button>
 			</div>
-			<div className={styles.recipeGrid}>
-				{filteredRecipes.map((recipe) => (
-					<RecipeCard key={recipe.id} recipe={recipe} />
-				))}
-			</div>
-			{loading && <div className={styles.loading}>로딩 중...</div>}
+			{loading ? (
+				<div className={styles.loading}>로딩 중...</div>
+			) : (
+				<div className={styles.recipeGrid}>
+					{filteredRecipes.map((recipe) => (
+						<RecipeCard key={recipe.id} recipe={recipe} />
+					))}
+				</div>
+			)}
 			<Pagination
 				className={styles.pagination}
 				current={currentPage}
