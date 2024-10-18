@@ -156,84 +156,92 @@ const Comments: React.FC<CommentsProps> = ({
 			<section className={styled.commentList}>
 				<h3 className={styled.srOnly}>댓글 리스트</h3>
 				<div>
-					{currentComments.map((comment) => (
-						<div key={comment.id} className={styled.commentBlock}>
-							<ul className={styled.commentWriterInfo}>
-								<li>{comment.user_nickname}</li>
-								<li>
-									{comment.comment_update_time
-										? formatDate(comment.comment_update_time)
-										: formatDate(comment.comment_create_time)}
+					{currentComments.length > 0 ? (
+						<>
+							{currentComments.map((comment) => (
+								<div key={comment.id} className={styled.commentBlock}>
+									<ul className={styled.commentWriterInfo}>
+										<li>{comment.user_nickname}</li>
+										<li>
+											{comment.comment_update_time
+												? formatDate(comment.comment_update_time)
+												: formatDate(comment.comment_create_time)}
 
-									{comment.isEdited && <span> 수정됨 </span>}
-								</li>
-							</ul>
+											{comment.isEdited && <span> 수정됨 </span>}
+										</li>
+									</ul>
 
-							{editingCommentId === comment.id ? (
-								<>
-									<textarea
-										value={editedComment}
-										onChange={(e) => setEditedComment(e.target.value)}
-									/>
-									<div className={styled.editingSettingBtn}>
-										<CustomButton
-											btnType={ButtonType.Edit}
-											color="orange"
-											shape="rad30"
-											onClick={() => updateComment(comment.id)}
-										>
-											저장
-										</CustomButton>
-										<CustomButton
-											btnType={ButtonType.Delete}
-											color="white"
-											shape="rad30"
-											onClick={() => setEditngCommentId(null)}
-										>
-											취소
-										</CustomButton>
-									</div>
-								</>
-							) : (
-								<>
-									<p>{comment.comment_description}</p>
+									{editingCommentId === comment.id ? (
+										<>
+											<textarea
+												value={editedComment}
+												onChange={(e) => setEditedComment(e.target.value)}
+											/>
+											<div className={styled.editingSettingBtn}>
+												<CustomButton
+													btnType={ButtonType.Edit}
+													color="orange"
+													shape="rad30"
+													onClick={() => updateComment(comment.id)}
+												>
+													저장
+												</CustomButton>
+												<CustomButton
+													btnType={ButtonType.Delete}
+													color="white"
+													shape="rad30"
+													onClick={() => setEditngCommentId(null)}
+												>
+													취소
+												</CustomButton>
+											</div>
+										</>
+									) : (
+										<>
+											<p>{comment.comment_description}</p>
 
-									{users.nickname === comment.user_nickname && (
-										<div className={styled.commentSettingsBtn}>
-											<CustomButton
-												btnType={ButtonType.Edit}
-												color="orange"
-												shape="rad30"
-												onClick={() => {
-													setEditngCommentId(comment.id);
-													setEditedComment(comment.comment_description);
-												}}
-											>
-												수정
-											</CustomButton>
-											<CustomButton
-												btnType={ButtonType.Delete}
-												color="white"
-												shape="rad30"
-												onClick={() => deleteComment(comment.id)}
-											>
-												삭제
-											</CustomButton>
-										</div>
+											{users.nickname === comment.user_nickname && (
+												<div className={styled.commentSettingsBtn}>
+													<CustomButton
+														btnType={ButtonType.Edit}
+														color="orange"
+														shape="rad30"
+														onClick={() => {
+															setEditngCommentId(comment.id);
+															setEditedComment(comment.comment_description);
+														}}
+													>
+														수정
+													</CustomButton>
+													<CustomButton
+														btnType={ButtonType.Delete}
+														color="white"
+														shape="rad30"
+														onClick={() => deleteComment(comment.id)}
+													>
+														삭제
+													</CustomButton>
+												</div>
+											)}
+										</>
 									)}
-								</>
-							)}
-						</div>
-					))}
+								</div>
+							))}
+							<Pagination
+								current={currentPage}
+								pageSize={commentsPerPage}
+								total={comments.length}
+								onChange={handlePageChange}
+								className={styled.pagination_custom}
+							/>
+						</>
+					) : (
+						<p className={styled.emptyComment}>
+							{' '}
+							아직 등록된 댓글이 없습니다.{' '}
+						</p>
+					)}
 				</div>
-
-				<Pagination
-					current={currentPage}
-					pageSize={commentsPerPage}
-					total={comments.length}
-					onChange={handlePageChange}
-					className={styled.pagination_custom}
-				/>
 			</section>
 		</>
 	);

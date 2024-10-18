@@ -231,15 +231,15 @@ h4 em::before {
 
 .cookingIngredientList ul li {
 	font-size: 20px;
-	text-align: left;
-	position: relative;
+
+	display: flex;
+	justify-content: space-between;
+	word-break: break-all;
+
 	margin-top: 10px;
-	padding-right: 50px;
 }
 
 .cookingIngredientList ul li span {
-	position: absolute;
-	right: 30px;
 	opacity: 60%;
 }
 /* 레시피 재료 리스트 스타일 끝 */
@@ -271,6 +271,7 @@ h4 em::before {
 	text-decoration-line: underline;
 	text-decoration-color: var(--main-color);
 	text-underline-offset: 10px;
+	word-wrap: break-word;
 }
 
 .cookingList ol li > img {
@@ -304,16 +305,17 @@ h4 em::before {
 
 	padding: 30px;
 	margin-top: 16px;
+	word-wrap: break-word;
 }
 
 .customTag {
-	border-radius: 30px;
+	color: #000;
+	opacity: 50%;
 	background-color: #ffffff;
 	padding: 10px 16px;
 	font-size: 16px;
 	display: inline-block;
 	white-space: nowrap;
-	max-width: 120px;
 
 	margin-top: 20px;
 }
@@ -449,6 +451,19 @@ textarea::-webkit-scrollbar-thumb {
 	margin-top: 20px;
 }
 
+/* 댓글이 없을 때 */
+.emptyComment {
+	opacity: 50%;
+	text-align: center;
+	align-content: center;
+	padding-top: 130px;
+}
+.emptyComment::after {
+	content: '';
+	display: block;
+	border: 1px solid var(--main-color);
+	margin-top: 130px;
+}
 /* 페이지에서 수정하는 댓글 area */
 .commentBlock > textarea {
 	font-size: 18px;
@@ -479,24 +494,3 @@ textarea::-webkit-scrollbar-thumb {
 	margin-top: 60px;
 }
 /* 페이지네이션 스타일 끝 */
-
-/* 따라다니는 좋아요 아이콘 스타일 시작 */
-.stickyHeartIcon {
-	width: 80px;
-	height: 80px;
-	background-color: var(--main-color);
-	border-radius: 50%;
-	position: fixed;
-	right: 10%;
-	top: 87%;
-}
-
-.stickyHeartIcon img {
-	position: absolute;
-	right: 23%;
-	top: 27%;
-
-	max-width: 40px;
-	max-height: 37px;
-}
-/* 따라다니는 좋아요 아이콘 스타일 끝 */
