@@ -5,23 +5,14 @@ import CustomButton, {
 import RecommendCard from '../../components/recommendcard/RecommendCard';
 import styles from './Home.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../firebase/config';
 import PlusMenuBtn from '../../components/plusmenubutton/PlusMenuBtn';
+import { useAuth } from '../../context/AuthContext';
 
 const Home = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const plusRef = useRef<HTMLUListElement>(null);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const { user } = useAuth(); // user 정보를 가져옵니다.
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, (user) => {
-			setIsLoggedIn(!!user); // user가 존재하면 true, 아니면 false
-		});
-
-		return () => unsubscribe(); // 컴포넌트 언마운트 시 리스너 해제
-	}, []);
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -43,10 +34,21 @@ const Home = () => {
 	];
 
 	const handleOptionClick = (path: string) => {
-		if (!isLoggedIn) {
+		console.log(null);
+		if (!user) {
+			alert('로그인 하셔야합니다.');
 			navigate('/login'); // 로그인되지 않았다면 로그인 페이지로 리다이렉트
 		} else {
 			navigate(path); // 로그인된 경우 해당 경로로 이동
+		}
+	};
+
+	const handleShareRecipe = () => {
+		if (user) {
+			navigate('/create'); // 로그인된 경우 레시피 공유하기 페이지로 이동
+		} else {
+			alert('로그인 하셔야합니다.');
+			navigate('/login'); // 로그인되지 않았다면 로그인 페이지로 리다이렉트
 		}
 	};
 
@@ -65,8 +67,13 @@ const Home = () => {
 						만드는 모든 요리의 레시피를 들려주세요.
 					</p>
 				</div>
-				<CustomButton btnType={ButtonType.Share} color="orange" shape="rad20">
-					<Link to="/create">내 레시피 공유하기</Link>
+				<CustomButton
+					btnType={ButtonType.Share}
+					color="orange"
+					shape="rad20"
+					onClick={() => handleShareRecipe()}
+				>
+					내 레시피 공유하기
 				</CustomButton>
 			</article>
 			<RecommendCard />

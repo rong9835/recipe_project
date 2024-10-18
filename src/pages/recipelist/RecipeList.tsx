@@ -110,7 +110,7 @@ const RecipeList = () => {
 
 					setRecipes(filteredRecipes);
 					setLoading(false); // 로딩 종료
-					return; // Firestore 쿼리 없이 클라이언트 측 필터링으로 결과를 처리
+					return;
 				}
 			}
 

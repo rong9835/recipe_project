@@ -113,3 +113,20 @@
 .recipeNameAndIng {
 	text-align: left;
 }
+
+.loading {
+	text-align: center;
+	margin: 20px 0;
+}
+
+.recommendCardTitle {
+	text-align: left;
+	font-size: 20px;
+}
+
+.userNickname {
+	font-family: 'Ainmom';
+	font-size: 40px;
+	color: #c9532f;
+	margin-right: 20px;
+}
