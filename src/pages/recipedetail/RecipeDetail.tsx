@@ -96,7 +96,7 @@ export default function RecipeDetail() {
 	const updateRecipeHandler = (
 		e: React.MouseEvent<HTMLButtonElement>
 	): void => {
-		navigate(`/edit/:${recipeId}`);
+		navigate(`/edit/${recipeId}`);
 	};
 
 	// 레시피 삭제하기
