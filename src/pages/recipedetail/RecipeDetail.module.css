@@ -494,24 +494,3 @@ textarea::-webkit-scrollbar-thumb {
 	margin-top: 60px;
 }
 /* 페이지네이션 스타일 끝 */
-
-/* 따라다니는 좋아요 아이콘 스타일 시작 */
-.stickyHeartIcon {
-	width: 80px;
-	height: 80px;
-	background-color: var(--main-color);
-	border-radius: 50%;
-	position: fixed;
-	right: 10%;
-	top: 87%;
-}
-
-.stickyHeartIcon img {
-	position: absolute;
-	right: 23%;
-	top: 27%;
-
-	max-width: 40px;
-	max-height: 37px;
-}
-/* 따라다니는 좋아요 아이콘 스타일 끝 */

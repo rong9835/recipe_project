@@ -1,11 +1,9 @@
 import backIcon from '../../assets/icon_back.png';
 import heartIcon from '../../assets/icon_heart.png';
 import viewIcon from '../../assets/icon_view.png';
-import heartEmpty from '../../assets/icon_heart_empty.png';
-import heartPull from '../../assets/icon_heart_pull.png';
 import styled from './RecipeDetail.module.css';
 
-import { getFirestore, getDoc, doc, deleteDoc } from 'firebase/firestore';
+import { getFirestore, doc, deleteDoc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import GroupedIngredientList from '../../components/recipedetailpage/GroupedIngredientList';
@@ -18,6 +16,7 @@ import CustomButton, {
 import { Tag } from 'antd';
 import { Recipe } from '../../type/type';
 import { useAuth } from '../../context/AuthContext';
+import LikeButton from '../../components/recipedetailpage/likebutton/LikeButton';
 
 export default function RecipeDetail() {
 	const [recipeData, setRecipeData] = useState<Recipe | null>(null);
@@ -25,7 +24,6 @@ export default function RecipeDetail() {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const { id: recipeId } = useParams<{ id: string }>();
-	console.log(recipeId);
 
 	const db = getFirestore();
 
@@ -33,38 +31,28 @@ export default function RecipeDetail() {
 
 	const navigate = useNavigate();
 
-	const getRecipe = async () => {
-		try {
-			// recipeId를 doc 함수에 제대로 전달
-			if (recipeId) {
-				const docRef = doc(db, 'recipes', recipeId);
-				const recipeDoc = await getDoc(docRef);
-
-				if (recipeDoc.exists()) {
-					const recipe = recipeDoc.data() as Recipe;
+	useEffect(() => {
+		if (recipeId) {
+			const docRef = doc(db, 'recipes', recipeId);
+			const unsubscribe = onSnapshot(docRef, (doc) => {
+				if (doc.exists()) {
+					const recipe = doc.data() as Recipe;
 					setRecipeData(recipe);
 
-					// 사용자가 레시피 작성자인지 확인
-					if (user.nickname === recipe.author.user_nickname) {
+					if (user?.nickname === recipe.author.user_nickname) {
 						setIsAuthor(true);
 					}
 				} else {
 					navigate('/404');
 				}
-			}
-		} catch (error) {
-			navigate('/404');
-			console.log('데이터 전송 오류', error);
-		} finally {
-			setIsLoading(false);
+				setIsLoading(false);
+			});
+
+			return () => unsubscribe();
 		}
-	};
+	}, [db, navigate, user, recipeId]);
 
 	const recipeAuthor = recipeData?.author?.user_nickname;
-
-	useEffect(() => {
-		getRecipe();
-	}, [db, navigate, user]);
 
 	// 작성한 날짜 데이터 받아오기
 	function createTime(seconds: number | undefined): string {
@@ -252,11 +240,9 @@ export default function RecipeDetail() {
 					<div className={styled.recipeTag}>
 						<h4>레시피 태그 | Recipe Tag</h4>
 						{recipeData?.recipe_tags.map((value: string, index: number) => (
-							<>
-								<Tag className={styled.customTag} key={index}>
-									# {value}
-								</Tag>
-							</>
+							<Tag className={styled.customTag} key={`${value}-${index}`}>
+								# {value}
+							</Tag>
 						))}
 					</div>
 				</section>
@@ -272,9 +258,7 @@ export default function RecipeDetail() {
 				</section>
 			</section>
 
-			{/* <aside className={styled.stickyHeartIcon} onClick={toggleHeart}>
-				<img src={isHearted ? heartPull : heartEmpty} alt="좋아요 아이콘" />
-			</aside> */}
+			{recipeId && <LikeButton recipeId={recipeId} />}
 		</>
 	);
 }
