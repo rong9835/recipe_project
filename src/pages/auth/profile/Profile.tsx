@@ -4,6 +4,14 @@ import { auth, db } from '../../../firebase/config';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import Spoon from './spoon/Spoon';
 
+const badgeData = [
+	{ image: "./src/assets/icon_spoon.png", name: "스푼 Spoon", count: 0 },
+    { image: "./src/assets/icon_spoon2.png", name: "포크 Fork", count: 10 },
+    { image: "./src/assets/icon_spoon3.png", name: "챕스 Chopsticks", count: 20 },
+    { image: "./src/assets/icon_spoon4.png", name: "터너 Turner", count: 30 },
+    { image: "./src/assets/icon_spoon5.png", name: "나이프 Knife", count: 40 },
+]
+
 export default function Profile() {
 	
 	const [userNickname, setUserNickname] = useState<string | null>(null);
