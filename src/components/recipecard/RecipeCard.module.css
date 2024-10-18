@@ -7,6 +7,7 @@
 	width: 387px;
 	height: 609px;
 	background-color: #ffffff;
+	cursor: pointer;
 }
 
 .thumbnailContainer {
@@ -49,6 +50,12 @@
 .recipeTitle {
 	font-size: 18px;
 	font-weight: bold;
+	overflow: hidden;
+	height: 18px;
+	width: 200px;
+	text-align: left;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .recipeViews {

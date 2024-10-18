@@ -121,6 +121,22 @@ export default function RecipeDetail() {
 		navigate(-1);
 	};
 
+	// url에 따라 스타일 적용하기
+	useEffect(() => {
+		const currentUrl = window.location.href;
+
+		if (currentUrl.includes('/recipedetail')) {
+			document.body.style.marginTop = '100px';
+			document.body.style.backgroundColor = '#fff9e9';
+		}
+
+		window.scrollTo(0, 0);
+		return () => {
+			document.body.style.marginTop = '';
+			document.body.style.backgroundColor = '';
+		};
+	}, []);
+
 	return (
 		<>
 			<section className={styled.recipeDetailPage}>
