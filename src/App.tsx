@@ -36,10 +36,6 @@ function App() {
 						<Route path="/signup" element={<SignUp />} />
 						<Route path="/forgot-password" element={<ForgotPassword />} />
 						<Route
-							path="/recipedetail"
-							element={<PrivateRoute element={<RecipeDetail />} />}
-						/>
-						<Route
 							path="/recipedetail/:id"
 							element={<PrivateRoute element={<RecipeDetail />} />}
 						/>
