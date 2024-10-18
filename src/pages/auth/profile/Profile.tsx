@@ -1,18 +1,44 @@
 import { useEffect, useState } from 'react';
 import styles from './Profile.module.css';
-import { auth } from '../../../firebase/config';
+import { auth, db } from '../../../firebase/config';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 
 export default function Profile() {
 	
-	const [userName, setUserName] = useState<string | null>(null);
+	const [userNickname, setUserNickname] = useState<string | null>(null);
+
+	const [userRecipes, setUserRecipes] = useState<any[]>([]);
 
 	useEffect(() => {
-		const user = auth.currentUser;
-		if(user){
-			setUserName(user.displayName);
-		} else {
-			setUserName("Unknown User");
-		}
+		const fetchUserData = async () => {
+			const user = auth.currentUser;
+			if (user) {
+				// Firestore에서 사용자 닉네임 가져오기
+				const userDocRef = doc(db, 'users', user.uid);
+				const userDocSnap = await getDoc(userDocRef);
+				
+				if (userDocSnap.exists()) {
+					setUserNickname(userDocSnap.data().user_nickname);
+				} else {
+					setUserNickname("Unknown User");
+				}
+			} else {
+				setUserNickname("Unknown User");
+			}
+
+			// Firestore에서 사용자가 작성한 게시물 가져오기
+			const recipesCollectionRef = collection(db, 'recipes');
+			const q = query(recipesCollectionRef, where('email', '==', user?.email));
+			const recipesSnapshot = await getDocs(q);
+
+			const recipesData = recipesSnapshot.docs.map(doc => ({
+				id:doc.id,
+				...doc.data()
+			}));
+			setUserRecipes(recipesData);
+		};
+		
+		fetchUserData();
 	}, []);
 	
 	return (
@@ -24,13 +50,13 @@ export default function Profile() {
 			<section className={styles.profile}>
 				<div className={styles.user}>
 					<div>이미지 부분</div>
-					<span>{userName}</span>
+					<span>{userNickname}</span>
 					<span>회원소개</span>
 				</div>
 				<div className={styles.userPost}>
 					<div>이미지 부분</div>
 					<span>등록된 게시물</span>
-					<span>갯수</span>
+					<span>{userRecipes.length}</span>
 				</div>
 				<div className={styles.userClass}>
 					<div>이미지 부분</div>
