@@ -5,11 +5,14 @@ import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { useEffect, useState } from 'react';
 import { Tag } from 'antd'; // antd의 Tag 컴포넌트 임포트
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const RecommendCard = () => {
 	const [topRecipes, setTopRecipes] = useState<any[]>([]);
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
+	const { user } = useAuth();
 
 	const getTopHeartsRecipes = async () => {
 		try {
@@ -57,6 +60,15 @@ const RecommendCard = () => {
 		);
 	};
 
+	const handleClickEvent = (id: string) => {
+		if (!user) {
+			alert('로그인 하셔야합니다.');
+			navigate('/login');
+		} else {
+			navigate(`/recipedetail/${id}`);
+		}
+	};
+
 	return (
 		<>
 			{loading && <div className={styles.loading}>로딩 중...</div>}
@@ -96,11 +108,12 @@ const RecommendCard = () => {
 									</div>
 								</div>
 								<div className={styles.recipeDetailLinkWrapper}>
-									<Link to={`/recipedetail/${recipe.id}`}>
-										<button className={styles.recipeDetailLinkBtn}>
-											레시피 보러가기
-										</button>
-									</Link>
+									<button
+										className={styles.recipeDetailLinkBtn}
+										onClick={() => handleClickEvent(recipe.id)}
+									>
+										레시피 보러가기
+									</button>
 								</div>
 							</div>
 						</div>
