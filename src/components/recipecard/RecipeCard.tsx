@@ -70,23 +70,20 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 						{recipe.recipe_description}
 					</span>
 				</div>
-				<div className={styles.recipeIngAndBtn}>
-					<div className={styles.recipeIngredients}>
-						{recipe.recipe_ingredients.map((ingredient, index) => (
-							<Tag key={index} className={styles.ingredient}>
-								{ingredient.name}
-							</Tag>
-						))}
-					</div>
-					<img src={ellipsisImg} alt="말 줄임표" />
-					<CustomButton
-						btnType={ButtonType.Move}
-						shape="circle"
-						color="orange"
-						size="small"
-					>
-						<img src={cardArrowImg} alt="카드 화살표" />
-					</CustomButton>
+				<div className={styles.recipeIngredients}>
+					{recipe.recipe_ingredients.slice(0, 3).map((ingredient, index) => (
+						<Tag key={index} className={styles.ingredient}>
+							<span className={styles.ingredientText}>{ingredient.name}</span>
+						</Tag>
+					))}
+
+					{recipe.recipe_ingredients.length > 4 && (
+						<Tag className={styles.ingredient}>
+							<span className={styles.ingredientText}>
+								+{recipe.recipe_ingredients.length - 3}
+							</span>
+						</Tag>
+					)}
 				</div>
 			</div>
 		</div>

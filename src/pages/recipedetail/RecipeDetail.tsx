@@ -127,13 +127,11 @@ export default function RecipeDetail() {
 
 		if (currentUrl.includes('/recipedetail')) {
 			document.body.style.marginTop = '100px';
-			document.body.style.backgroundColor = '#fff9e9';
 		}
 
 		window.scrollTo(0, 0);
 		return () => {
 			document.body.style.marginTop = '';
-			document.body.style.backgroundColor = '';
 		};
 	}, []);
 
