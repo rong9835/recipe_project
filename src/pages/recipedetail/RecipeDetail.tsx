@@ -96,7 +96,7 @@ export default function RecipeDetail() {
 	const updateRecipeHandler = (
 		e: React.MouseEvent<HTMLButtonElement>
 	): void => {
-		navigate(`/edit/:${recipeId}`);
+		navigate(`/edit/${recipeId}`);
 	};
 
 	// 레시피 삭제하기
@@ -120,6 +120,20 @@ export default function RecipeDetail() {
 	const backBtn = () => {
 		navigate(-1);
 	};
+
+	// url에 따라 스타일 적용하기
+	useEffect(() => {
+		const currentUrl = window.location.href;
+
+		if (currentUrl.includes('/recipedetail')) {
+			document.body.style.marginTop = '100px';
+		}
+
+		window.scrollTo(0, 0);
+		return () => {
+			document.body.style.marginTop = '';
+		};
+	}, []);
 
 	return (
 		<>

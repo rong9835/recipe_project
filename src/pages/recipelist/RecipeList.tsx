@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Pagination } from 'antd';
 import RecipeCard from '../../components/recipecard/RecipeCard';
-import { auth, db } from '../../firebase/config';
+import { db } from '../../firebase/config';
 import {
 	collection,
 	getDocs,
@@ -13,11 +13,11 @@ import {
 } from 'firebase/firestore';
 import { Recipe } from '../../type/type';
 import PlusMenuBtn from '../../components/plusmenubutton/PlusMenuBtn';
-import { onAuthStateChanged } from 'firebase/auth';
 import styles from './RecipeList.module.css';
 import CustomButton, {
 	ButtonType,
 } from '../../components/custombutton/CustomButton';
+import { useAuth } from '../../context/AuthContext';
 
 const RecipeList = () => {
 	const [recipes, setRecipes] = useState<Recipe[]>([]); // 레시피 배열
@@ -110,7 +110,7 @@ const RecipeList = () => {
 
 					setRecipes(filteredRecipes);
 					setLoading(false); // 로딩 종료
-					return; // Firestore 쿼리 없이 클라이언트 측 필터링으로 결과를 처리
+					return;
 				}
 			}
 
@@ -157,11 +157,12 @@ const RecipeList = () => {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const plusRef = useRef<HTMLUListElement>(null);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const { user } = useAuth();
 	const navigate = useNavigate();
 
 	const handleOptionClick = (path: string) => {
-		if (!isLoggedIn) {
+		if (!user) {
+			alert('로그인 하셔야합니다.');
 			navigate('/login'); // 로그인되지 않았다면 로그인 페이지로 리다이렉트
 		} else {
 			navigate(path); // 로그인된 경우 해당 경로로 이동
@@ -172,8 +173,8 @@ const RecipeList = () => {
 		const currentUrl = window.location.href;
 
 		if (currentUrl.includes('/recipelist')) {
+			document.body.style.backgroundColor = '#fff9e9';
 			document.body.style.marginTop = '200px';
-			document.body.style.backgroundColor = '#FFF9E9';
 		}
 
 		const handleClickOutside = (event: MouseEvent) => {
@@ -184,15 +185,10 @@ const RecipeList = () => {
 
 		document.addEventListener('mousedown', handleClickOutside);
 
-		const unsubscribe = onAuthStateChanged(auth, (user) => {
-			setIsLoggedIn(!!user); // user가 존재하면 true, 아니면 false
-		});
-
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 			document.body.style.backgroundColor = '';
 			document.body.style.marginTop = '';
-			unsubscribe();
 		};
 	}, []);
 

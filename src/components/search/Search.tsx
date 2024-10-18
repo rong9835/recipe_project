@@ -4,17 +4,15 @@ import styles from './Search.module.css';
 import CustomButton, { ButtonType } from '../custombutton/CustomButton';
 
 const Search = () => {
-	const location = useLocation(); // useLocation을 사용하여 현재 URL을 가져옵니다.
-	const queryParams = new URLSearchParams(location.search); // URL 파라미터 가져오기
-	const [isOpen, setIsOpen] = useState(false); // 드롭다운 상태
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
+	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState(
-		queryParams.get('option') || '레시피' // URL에서 가져온 옵션으로 초기화
+		queryParams.get('option') || '레시피'
 	);
-	const [searchTerm, setSearchTerm] = useState(
-		queryParams.get('search') || '' // URL에서 가져온 검색어로 초기화
-	);
-	const [placeholder, setPlaceholder] = useState('검색어를 입력해주세요'); // 초기 placeholder
-	const menuRef = useRef<HTMLDivElement>(null); // 드롭다운 참조
+	const [searchTerm, setSearchTerm] = useState(queryParams.get('search') || '');
+	const [placeholder, setPlaceholder] = useState('검색어를 입력해주세요');
+	const menuRef = useRef<HTMLDivElement>(null);
 	const navigate = useNavigate();
 
 	const options = ['레시피', '태그', '재료'];
@@ -37,6 +35,24 @@ const Search = () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
 	}, []);
+
+	// 쿼리 파라미터가 변경될 때 상태 초기화
+	useEffect(() => {
+		const search = queryParams.get('search');
+		const option = queryParams.get('option');
+
+		if (search !== null) {
+			setSearchTerm(search);
+		} else {
+			setSearchTerm('');
+		}
+
+		if (option !== null) {
+			setSelectedOption(option);
+		} else {
+			setSelectedOption('레시피');
+		}
+	}, [location.search]);
 
 	// 옵션을 선택하는 함수
 	const handleOptionSelect = (option: string) => {

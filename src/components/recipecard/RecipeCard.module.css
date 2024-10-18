@@ -5,8 +5,9 @@
 	border-radius: 40px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	width: 387px;
-	height: 611px;
+	height: 609px;
 	background-color: #ffffff;
+	cursor: pointer;
 }
 
 .thumbnailContainer {
@@ -33,7 +34,7 @@
 
 .recipeInfo {
 	margin-top: 16px;
-	padding: 0 17px;
+	padding: 0 18px;
 }
 
 .recipeInfoHeader {
@@ -49,6 +50,12 @@
 .recipeTitle {
 	font-size: 18px;
 	font-weight: bold;
+	overflow: hidden;
+	height: 18px;
+	width: 200px;
+	text-align: left;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .recipeViews {
@@ -76,8 +83,8 @@
 .viewText,
 .heartText {
 	font-size: 14px;
-	color: #999999;
 	font-weight: bold;
+	opacity: 50%;
 }
 
 .seperator {
@@ -88,9 +95,7 @@
 }
 
 .recipeIngredients {
-	margin-top: 8px;
 	display: flex;
-	width: 241px;
 	overflow: hidden;
 }
 
@@ -99,8 +104,20 @@
 	margin-right: 8px;
 	font-size: 16px;
 	background-color: #ffffff;
-	padding: 10px 16px;
 	border-radius: 30px;
+	height: 40px;
+	width: 80px;
+	display: flex;
+	align-items: center;
+}
+
+.ingredientText {
+	display: block;
+	overflow: hidden;
+	text-align: center;
+	width: 80px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .outerCircle {
@@ -126,4 +143,29 @@
 	align-items: center; /* 추가 */
 	color: white; /* 글자 색상 */
 	font-size: 20px;
+}
+
+.recipeDesc {
+	text-align: left;
+	margin: 18px 0px 30px;
+	width: 260px;
+	height: 39px;
+	line-height: 1.2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+}
+
+.recipeDescText {
+	opacity: 60%;
+	font-size: 16px;
+}
+
+.recipeIngAndBtn {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }

@@ -2,14 +2,21 @@ import styles from './RecipeCard.module.css'; // 필요한 스타일 모듈 임�
 import heartImg from '../../assets/icon_heart.svg'; // 하트 아이콘 임포트
 import viewImg from '../../assets/icon_views.svg';
 import { Recipe } from '../../type/type';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Tag } from 'antd';
+import CustomButton, { ButtonType } from '../custombutton/CustomButton';
+import cardArrowImg from '../../assets/icon_card_arrow.svg';
+import ellipsisImg from '../../assets/icon_ellipsis.svg';
+import { useAuth } from '../../context/AuthContext';
 
 interface RecipeCardProps {
 	recipe: Recipe;
 }
 
 const RecipeCard = ({ recipe }: RecipeCardProps) => {
+	const navigate = useNavigate();
+	const { user } = useAuth();
+
 	const levelCircle = (difficulty: number) => {
 		return (
 			<div className={styles.outerCircle}>
@@ -20,8 +27,18 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 		);
 	};
 
+	// 클릭 시 경로 이동 함수
+	const handleNavigate = () => {
+		if (!user) {
+			alert('로그인 하셔야합니다.');
+			navigate('/login');
+		} else {
+			navigate(`/recipedetail/${recipe.id}`);
+		}
+	};
+
 	return (
-		<Link to={`/recipedetail/${recipe.id}`} className={styles.recipeCard}>
+		<div className={styles.recipeCard} onClick={handleNavigate}>
 			<div className={styles.thumbnailContainer}>
 				<img
 					src={recipe.thumbnail_url}
@@ -54,14 +71,22 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 					</span>
 				</div>
 				<div className={styles.recipeIngredients}>
-					{recipe.recipe_ingredients.map((ingredient, index) => (
+					{recipe.recipe_ingredients.slice(0, 3).map((ingredient, index) => (
 						<Tag key={index} className={styles.ingredient}>
-							{ingredient.name}
+							<span className={styles.ingredientText}>{ingredient.name}</span>
 						</Tag>
 					))}
+
+					{recipe.recipe_ingredients.length > 4 && (
+						<Tag className={styles.ingredient}>
+							<span className={styles.ingredientText}>
+								+{recipe.recipe_ingredients.length - 3}
+							</span>
+						</Tag>
+					)}
 				</div>
 			</div>
-		</Link>
+		</div>
 	);
 };
 
