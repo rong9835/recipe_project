@@ -4,7 +4,7 @@ import CustomButton, {
 } from '../../components/custombutton/CustomButton';
 import RecommendCard from '../../components/recommendcard/RecommendCard';
 import styles from './Home.module.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PlusMenuBtn from '../../components/plusmenubutton/PlusMenuBtn';
 import { useAuth } from '../../context/AuthContext';
 
