@@ -11,7 +11,7 @@ const Header = () => {
 		<header id={styles.header}>
 			<div className={styles.customHeader}>
 				<Link to="/">
-					<img src={logoImg} className={styles.logoImg} />
+					<img src={logoImg} className={styles.logoImg} alt="레시피 연구소" />
 				</Link>
 				<Search />
 				{user ? (
