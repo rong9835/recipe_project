@@ -109,10 +109,12 @@ export default function SignUp() {
             // Firestore에 사용자 정보 저장하기
             const userDocRef = doc(db, 'users', userCreate.user.uid); 
             await setDoc(userDocRef, { 
-                name: signUpValues.name,
-                nickname: signUpValues.nickname,
-                email: signUpValues.email,
-                phone: signUpValues.phone,
+                recipes_total: 0,
+                user_email: signUpValues.email,
+                user_info: "",
+                user_name: signUpValues.name,
+                user_nickname: signUpValues.nickname,
+                user_phone_number: signUpValues.phone,
             });
 
             console.log("회원가입 성공:", userCreate.user);
