@@ -21,7 +21,6 @@ import LikeButton from '../../components/recipedetailpage/likebutton/LikeButton'
 export default function RecipeDetail() {
 	const [recipeData, setRecipeData] = useState<Recipe | null>(null);
 	const [isAuthor, setIsAuthor] = useState<boolean>(false);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const { id: recipeId } = useParams<{ id: string }>();
 
@@ -45,7 +44,6 @@ export default function RecipeDetail() {
 				} else {
 					navigate('/404');
 				}
-				setIsLoading(false);
 			});
 
 			return () => unsubscribe();
@@ -140,7 +138,7 @@ export default function RecipeDetail() {
 							</li>
 						</ul>
 
-						{isLoading ? (
+						{user.loading ? (
 							<></>
 						) : (
 							<div className={styled.udBtn}>
