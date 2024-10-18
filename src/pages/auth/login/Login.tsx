@@ -85,7 +85,8 @@ const Login = () => {
 						</button>
 					</form>
 					<div className={styles.links}>
-						<Link to="/forgot-password">이메일 찾기</Link> <span>|</span> <Link to="/forgot-password">비밀번호 찾기</Link>
+						<Link to="/forgot-password">이메일 찾기</Link> <span>|</span>{' '}
+						<Link to="/forgot-password">비밀번호 찾기</Link>
 					</div>
 					<p className={styles.signup}>
 						아직 회원이 아니신가요? <Link to="/signup">회원가입</Link>
