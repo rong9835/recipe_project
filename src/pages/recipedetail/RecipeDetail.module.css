@@ -231,15 +231,15 @@ h4 em::before {
 
 .cookingIngredientList ul li {
 	font-size: 20px;
-	text-align: left;
-	position: relative;
+
+	display: flex;
+	justify-content: space-between;
+	word-break: break-all;
+
 	margin-top: 10px;
-	padding-right: 50px;
 }
 
 .cookingIngredientList ul li span {
-	position: absolute;
-	right: 30px;
 	opacity: 60%;
 }
 /* 레시피 재료 리스트 스타일 끝 */
@@ -271,6 +271,7 @@ h4 em::before {
 	text-decoration-line: underline;
 	text-decoration-color: var(--main-color);
 	text-underline-offset: 10px;
+	word-wrap: break-word;
 }
 
 .cookingList ol li > img {
@@ -304,16 +305,17 @@ h4 em::before {
 
 	padding: 30px;
 	margin-top: 16px;
+	word-wrap: break-word;
 }
 
 .customTag {
-	border-radius: 30px;
+	color: #000;
+	opacity: 50%;
 	background-color: #ffffff;
 	padding: 10px 16px;
 	font-size: 16px;
 	display: inline-block;
 	white-space: nowrap;
-	max-width: 120px;
 
 	margin-top: 20px;
 }
