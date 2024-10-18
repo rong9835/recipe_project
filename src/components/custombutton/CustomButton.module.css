@@ -31,8 +31,8 @@
 }
 
 .small {
-	width: 30px;
-	height: 30px;
+	width: 34px;
+	height: 34px;
 }
 /* 사이즈 스타일 끝 */
 
@@ -67,8 +67,6 @@
 	font-size: 16px;
 	width: 280px;
 	height: 50px;
-	margin: auto;
-	padding: 7.5px 68.5px;
 }
 
 .editBtn {
@@ -97,5 +95,13 @@
 .filterBtn {
 	padding: 8px 20px;
 	font-size: 20px;
+}
+
+.allBtn {
+	border: 2px solid #c9532f;
+	display: block;
+	font-size: 16px;
+	width: 280px;
+	height: 50px;
 }
 /* 타입별 스타일 끝 */

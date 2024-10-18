@@ -33,16 +33,97 @@
 .recipeGrid {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
 	gap: 20px;
+	height: 1970px;
 }
 
 .loading {
 	text-align: center;
 	margin: 20px 0;
+	height: 600px;
 }
 
 .pagination {
 	display: flex;
 	justify-content: center;
 	margin: 20px 0;
+}
+
+.recipeListHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.sortingDropdown {
+	border: 1px solid #c9532f;
+	border-radius: 10px;
+	font-size: 22px;
+	padding: 0;
+	display: flex;
+	flex-flow: column wrap;
+	align-items: flex-start;
+	width: 100px;
+	background-color: #ffffff;
+	position: relative;
+	box-sizing: border-box;
+}
+
+.sortingDropdownOptions {
+	display: flex;
+	flex-flow: column wrap;
+	width: 100%;
+	align-items: center;
+	gap: 16px;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	padding: 8px 0;
+	z-index: 10; /* 레이아웃 위로 오게 하기 위해 z-index 설정 */
+	background-color: #ffffff; /* 드롭다운 배경 설정 */
+	border: 1px solid #c9532f; /* 드롭다운 테두리 설정 */
+	border-top: none;
+	border-bottom-left-radius: 10px; /* 드롭다운 모서리 둥글게 설정 */
+	border-bottom-right-radius: 10px;
+	box-sizing: border-box;
+	margin-top: -2px;
+}
+
+.sortingDropdownOption {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+}
+
+.sortingDropdownSelected {
+	display: flex;
+	padding: 0 35px 0 20px;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: 100px;
+}
+
+.sortingDropdown,
+.sortingDropdownOptions,
+.sortingDropdownOption {
+	cursor: pointer;
+}
+
+.sortingDropdownOption:hover {
+	background-color: #fff9e9;
+}
+
+.sortingDropdownOption:last-child {
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.sortingDropdownSelected {
+	background: url('../../assets/icon_down.png') no-repeat center right 10px;
+}
+
+.open {
+	background: url('../../assets/icon_up.png') no-repeat center right 10px;
 }

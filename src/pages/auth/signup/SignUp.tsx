@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './SignUp.module.css';
 import { FirebaseError } from 'firebase/app';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../../../firebase/config';
-import { Link } from 'react-router-dom';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+	collection,
+	doc,
+	getDocs,
+	query,
+	setDoc,
+	where,
+} from 'firebase/firestore';
 
 interface SignUpValues {
 	email: string;
@@ -32,6 +39,7 @@ export default function SignUp() {
 	);
 	const [phoneAvailable, setPhoneAvailable] = useState<boolean | null>(null);
 
+	// 입력 값 받는 함수
 	const signUpInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setSignUpValues({

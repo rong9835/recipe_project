@@ -2,7 +2,7 @@ import React from 'react';
 
 interface RecipeIngredient {
 	name: string;
-	volume: number | string;
+	volume: string;
 }
 
 interface GroupIngredientList {

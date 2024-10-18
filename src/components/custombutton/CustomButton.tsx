@@ -8,13 +8,14 @@ export enum ButtonType {
 	Signup = 'signup',
 	Edit = 'edit',
 	Delete = 'delete',
-	Save = 'save',
+	Move = 'move',
 	Menu = 'menu',
 	Share = 'share',
 	Step = 'step',
 	Back = 'back',
 	Level = 'level',
 	Filter = 'filter',
+	All = 'all',
 }
 
 export interface ButtonProps {
@@ -43,13 +44,14 @@ const CustomButton = ({
 		[ButtonType.Signup]: styles.signupBtn,
 		[ButtonType.Edit]: styles.editBtn,
 		[ButtonType.Delete]: styles.deleteBtn,
-		[ButtonType.Save]: styles.saveBtn,
+		[ButtonType.Move]: styles.moveBtn,
 		[ButtonType.Menu]: styles.menuBtn,
 		[ButtonType.Share]: styles.shareBtn,
 		[ButtonType.Step]: styles.stepBtn,
 		[ButtonType.Back]: styles.backBtn,
 		[ButtonType.Level]: styles.levelBtn,
 		[ButtonType.Filter]: styles.filterBtn,
+		[ButtonType.All]: styles.allBtn,
 	};
 
 	// size가 undefined일 경우에 빈 문자열 반환

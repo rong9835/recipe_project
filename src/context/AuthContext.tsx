@@ -52,6 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 					const fetchedNickname = await getUserNicknameByEmail(
 						currentUser.email!
 					);
+
 					setNickname(fetchedNickname); // 닉네임 설정
 				} catch (error) {
 					console.error('닉네임을 가져오는데 실패했습니다:', error);
