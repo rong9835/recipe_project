@@ -67,8 +67,6 @@
 	font-size: 16px;
 	width: 280px;
 	height: 50px;
-	margin: auto;
-	padding: 7.5px 68.5px;
 }
 
 .editBtn {
@@ -99,6 +97,11 @@
 	font-size: 20px;
 }
 
-.moveBtn {
+.allBtn {
+	border: 2px solid #c9532f;
+	display: block;
+	font-size: 16px;
+	width: 280px;
+	height: 50px;
 }
 /* 타입별 스타일 끝 */

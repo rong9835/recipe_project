@@ -7,6 +7,7 @@
 	width: 387px;
 	height: 609px;
 	background-color: #ffffff;
+	cursor: pointer;
 }
 
 .thumbnailContainer {
@@ -33,7 +34,7 @@
 
 .recipeInfo {
 	margin-top: 16px;
-	padding: 0 17px;
+	padding: 0 18px;
 }
 
 .recipeInfoHeader {
@@ -49,6 +50,12 @@
 .recipeTitle {
 	font-size: 18px;
 	font-weight: bold;
+	overflow: hidden;
+	height: 18px;
+	width: 200px;
+	text-align: left;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .recipeViews {
@@ -89,7 +96,6 @@
 
 .recipeIngredients {
 	display: flex;
-	width: 241px;
 	overflow: hidden;
 }
 
@@ -98,8 +104,20 @@
 	margin-right: 8px;
 	font-size: 16px;
 	background-color: #ffffff;
-	padding: 10px 16px;
 	border-radius: 30px;
+	height: 40px;
+	width: 80px;
+	display: flex;
+	align-items: center;
+}
+
+.ingredientText {
+	display: block;
+	overflow: hidden;
+	text-align: center;
+	width: 80px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .outerCircle {
