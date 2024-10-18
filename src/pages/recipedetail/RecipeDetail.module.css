@@ -451,6 +451,19 @@ textarea::-webkit-scrollbar-thumb {
 	margin-top: 20px;
 }
 
+/* 댓글이 없을 때 */
+.emptyComment {
+	opacity: 50%;
+	text-align: center;
+	align-content: center;
+	padding-top: 130px;
+}
+.emptyComment::after {
+	content: '';
+	display: block;
+	border: 1px solid var(--main-color);
+	margin-top: 130px;
+}
 /* 페이지에서 수정하는 댓글 area */
 .commentBlock > textarea {
 	font-size: 18px;
