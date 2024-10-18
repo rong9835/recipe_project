@@ -237,10 +237,12 @@ export default function RecipeDetail() {
 
 					<div className={styled.recipeTag}>
 						<h4>레시피 태그 | Recipe Tag</h4>
-						{recipeData?.recipe_ingredients.map((ing: any, index: number) => (
-							<Tag className={styled.customTag} key={index}>
-								{ing.name}
-							</Tag>
+						{recipeData?.recipe_tags.map((value: string, index: number) => (
+							<>
+								<Tag className={styled.customTag} key={index}>
+									# {value}
+								</Tag>
+							</>
 						))}
 					</div>
 				</section>
