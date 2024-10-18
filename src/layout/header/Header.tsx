@@ -5,7 +5,7 @@ import logoImg from '../../assets/icon_logo.png';
 import styles from './Header.module.css';
 
 const Header = () => {
-	const { user, logout } = useAuth(); // 현재 유저와 로그아웃 함수 가져오기
+	const { user, logout, nickname } = useAuth(); // 현재 유저와 로그아웃 함수 가져오기
 
 	return (
 		<header id={styles.header}>
@@ -17,7 +17,7 @@ const Header = () => {
 				{user ? (
 					<div>
 						<Link to={'/profile'}>
-							{}
+							{nickname}
 						</Link>
 						<button onClick={logout} className={styles.loginLogoutText}>
 						로그아웃
