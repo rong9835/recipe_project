@@ -49,7 +49,9 @@ const Login = () => {
 			<div className={styles.loginContainer}>
 				<div className={styles.loginBox}>
 					<h1 className={styles.title}>
-						<img src="./src/assets/icon_logo.png" alt="Logo" />
+						<Link to="/">
+							<img src="./src/assets/icon_logo.png" alt="홈으로 가기" />
+						</Link>
 					</h1>
 					<form onSubmit={handleLogin}>
 						<input

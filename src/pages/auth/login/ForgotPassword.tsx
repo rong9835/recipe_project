@@ -118,7 +118,9 @@ const ForgotPassword: React.FC = () => {
 	return (
 		<div className={styles.container}>
 			<h2 className={styles.title}>
-				<img src="./src/assets/icon_logo.png" alt="" />
+				<Link to="/">
+					<img src="./src/assets/icon_logo.png" alt="홈으로 가기" />
+				</Link>
 			</h2>
 			<div className={styles.toggleContainer}>
 				<button
