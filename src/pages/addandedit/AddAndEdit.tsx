@@ -261,6 +261,7 @@ const AddAndEdit = () => {
 						className={styles.formTextArea}
 						value={recipeDesc}
 						onChange={(e) => setRecipeDesc(e.target.value)}
+						maxLength={50}
 						placeholder="요리에 대한 스토리 또는 간단 설명을 작성해주세요."
 					/>
 					<span className={styles.charCounter}>{recipeDesc.length}/50 자</span>
