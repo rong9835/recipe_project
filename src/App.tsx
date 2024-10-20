@@ -12,6 +12,7 @@ import NotFound from './pages/auth/notfound/NotFound';
 import Profile from './pages/auth/profile/Profile';
 import AddAndEdit from './pages/addandedit/AddAndEdit';
 import RecipeAI from './pages/auth/recipeAi/RecipeAI'; 
+import PrivateRoute from './routes/PrivateRoute';
 
 function App() {
 	return (
@@ -20,13 +21,21 @@ function App() {
 				<Layout>
 					<Routes>
 						<Route path="/" element={<Home />} />
-						<Route path="/create" element={<AddAndEdit />} />
-						<Route path="/edit/:id" element={<AddAndEdit />} />
-						<Route path="/profile" element={<Profile />} />
+						<Route
+							path="/create"
+							element={<PrivateRoute element={<AddAndEdit />} />}
+						/>
+						<Route
+							path="/edit/:id"
+							element={<PrivateRoute element={<AddAndEdit />} />}
+						/>
+						<Route
+							path="/profile"
+							element={<PrivateRoute element={<Profile />} />}
+						/>
 						<Route path="/login" element={<Login />} />
 						<Route path="/signup" element={<SignUp />} />
 						<Route path="/forgot-password" element={<ForgotPassword />} />
-						<Route path="/recipedetail" element={<RecipeDetail />} />
 						<Route path="/recipedetail/:id" element={<RecipeDetail />} />
 						<Route path="/recipelist" element={<RecipeList />} />
 						<Route path="/recipe-ai" element={<RecipeAI />} /> 

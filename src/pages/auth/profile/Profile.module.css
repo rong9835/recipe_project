@@ -1,1 +1,164 @@
-/* pr을 위한 push */
+.container{
+    font-family: 'SUIT Variable', sans-serif;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;              
+    justify-content: center;    
+    align-items: center;        
+    flex-direction: column; 
+}
+
+.logo{
+    margin-bottom: 54px;
+    font-size: 28px;
+
+}
+.profileBox{
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    box-sizing: border-box;
+    width: 1280px;
+    height: 600px;
+    display: flex;
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 (필요에 따라) */
+}
+
+.profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 75px;
+    width: 274px;
+    height: 494px;
+}
+.user{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.userImg{
+    width: 200px;
+    height: 200px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin-bottom: 25px;
+}
+.user h2{
+    margin-bottom: 10px;
+    font-family: 'Nanum AInMamSonGeurSsi';
+    font-size: 28px;
+
+}
+.user span{
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+}
+.userPostsContainer {
+    display: flex;
+    flex-direction: column;
+    flex-direction: row;
+    gap: 30px; 
+    margin-top: 15px;
+}
+.userPost img{
+    margin-bottom: 10px;
+}
+.userPost span{
+    font-size: 18px;
+}
+.userPost h3{
+    margin-top: 20px;
+    font-size: 18px;
+    color: #C9532F;
+}
+
+.userDivider {
+    width: 1px; 
+    background-color: #ccc; 
+    height: 100%; 
+}
+
+.userClass img{
+    margin-bottom: 8.5px;
+}
+.userClass span{
+    font-size: 18px;
+}
+.userClass h3{
+    margin-top: 20px;
+    font-size: 18px;
+    color: #C9532F;
+}
+
+.sectionDivider {
+    width: 1px; 
+    height: auto; 
+    background-color: #ccc;
+    margin: 20px 0;
+    align-self: stretch;
+}
+
+.userInformation{
+    width: 750px;
+    height: 494px;
+    text-align: left; 
+    margin-left: 50px;
+}
+.userRecipe span{
+    font-size: 12px;
+}
+.userRecipe button{
+    margin-top: 10px;
+    margin-bottom: 30px;
+    width: 230px;
+    height: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    margin-right: 30px;
+    background-color: white;
+    text-align: left; 
+    padding-left: 1.25rem;
+    font-size: 18px;
+}
+
+.userRecipe button img{
+    float: right;
+    padding-right: 0.75rem;
+
+}
+
+.userInfo {
+    display: flex; 
+    flex-direction: column; 
+}
+
+.userInfo div {
+    display: flex; 
+    gap: 30px; 
+    flex-wrap: wrap; 
+}
+
+
+.userInfo span{
+    font-size: 12px;
+
+}
+.userInfo button{
+    margin-top: 10px;
+    margin-bottom: 30px;
+    width: 230px;
+    height: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: white;
+    text-align: left; 
+    padding-left: 1.25rem;
+    font-size: 18px;
+}
+.userInfo button img{
+    float: right;
+    padding-right: 0.75rem;
+
+}

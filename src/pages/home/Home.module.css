@@ -38,3 +38,10 @@
 	background-color: #fff9e9;
 	border-radius: 10px;
 }
+
+.linkBtnWrapper {
+	display: flex;
+	width: 600px;
+	margin: auto;
+	gap: 40px;
+}

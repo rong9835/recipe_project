@@ -1,14 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Search.module.css';
 import CustomButton, { ButtonType } from '../custombutton/CustomButton';
 
 const Search = () => {
-	const [isOpen, setIsOpen] = useState(false); // 드롭다운 상태
-	const [selectedOption, setSelectedOption] = useState('레시피'); // 선택된 옵션
-	const [searchTerm, setSearchTerm] = useState(''); // 입력된 검색어
-	const [placeholder, setPlaceholder] = useState('검색어를 입력해주세요'); // 초기 placeholder
-	const menuRef = useRef<HTMLDivElement>(null); // 드롭다운 참조
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
+	const [isOpen, setIsOpen] = useState(false);
+	const [selectedOption, setSelectedOption] = useState(
+		queryParams.get('option') || '레시피'
+	);
+	const [searchTerm, setSearchTerm] = useState(queryParams.get('search') || '');
+	const [placeholder, setPlaceholder] = useState('검색어를 입력해주세요');
+	const menuRef = useRef<HTMLDivElement>(null);
+	const navigate = useNavigate();
 
 	const options = ['레시피', '태그', '재료'];
 
@@ -31,6 +36,24 @@ const Search = () => {
 		};
 	}, []);
 
+	// 쿼리 파라미터가 변경될 때 상태 초기화
+	useEffect(() => {
+		const search = queryParams.get('search');
+		const option = queryParams.get('option');
+
+		if (search !== null) {
+			setSearchTerm(search);
+		} else {
+			setSearchTerm('');
+		}
+
+		if (option !== null) {
+			setSelectedOption(option);
+		} else {
+			setSelectedOption('레시피');
+		}
+	}, [location.search]);
+
 	// 옵션을 선택하는 함수
 	const handleOptionSelect = (option: string) => {
 		setSelectedOption(option);
@@ -48,6 +71,13 @@ const Search = () => {
 				break;
 			default:
 				setPlaceholder('검색어를 입력해주세요');
+		}
+	};
+
+	// 엔터 키 누를 시 검색 수행
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			navigate(`/recipelist?search=${searchTerm}&option=${selectedOption}`);
 		}
 	};
 
@@ -86,6 +116,7 @@ const Search = () => {
 				onChange={(e) => setSearchTerm(e.target.value)}
 				placeholder={placeholder}
 				className={styles.searchInput}
+				onKeyDown={handleKeyDown}
 			/>
 			<Link to={`/recipelist?search=${searchTerm}&option=${selectedOption}`}>
 				<CustomButton btnType={ButtonType.Search} color="orange">

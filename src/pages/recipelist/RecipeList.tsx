@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Pagination } from 'antd';
 import RecipeCard from '../../components/recipecard/RecipeCard';
-import { auth, db } from '../../firebase/config';
+import { db } from '../../firebase/config';
 import {
 	collection,
 	getDocs,
@@ -10,15 +10,14 @@ import {
 	orderBy,
 	limit,
 	startAfter,
-	where,
 } from 'firebase/firestore';
 import { Recipe } from '../../type/type';
 import PlusMenuBtn from '../../components/plusmenubutton/PlusMenuBtn';
-import { onAuthStateChanged } from 'firebase/auth';
 import styles from './RecipeList.module.css';
 import CustomButton, {
 	ButtonType,
 } from '../../components/custombutton/CustomButton';
+import { useAuth } from '../../context/AuthContext';
 
 const RecipeList = () => {
 	const [recipes, setRecipes] = useState<Recipe[]>([]); // 레시피 배열
@@ -33,6 +32,7 @@ const RecipeList = () => {
 	const [selectedOption, setSelectedOption] = useState<string>('레시피');
 
 	// URL 파라미터 변경 시 상태 초기화
+	// URL 파라미터에서 검색어와 옵션을 가져와 상태 초기화
 	useEffect(() => {
 		const queryParams = new URLSearchParams(location.search);
 		const searchParam = queryParams.get('search') || '';
@@ -40,7 +40,8 @@ const RecipeList = () => {
 
 		setSearchTerm(searchParam);
 		setSelectedOption(optionParam);
-	}, [location.search]);
+		fetchRecipes(currentPage); // URL 파라미터가 변경될 때마다 데이터를 가져옵니다.
+	}, [location.search]); // URL 파라미터가 변경될 때마다 호출
 
 	// 데이터를 페이징하여 가져오는 함수
 	const fetchRecipes = async (page: number) => {
@@ -49,7 +50,7 @@ const RecipeList = () => {
 			const recipeCollectionRef = collection(db, 'recipes');
 			let recipeQuery = query(
 				recipeCollectionRef,
-				orderBy('add_at', 'desc'),
+				orderBy('recipe_create_time', 'desc'),
 				limit(pageSize)
 			);
 
@@ -75,10 +76,23 @@ const RecipeList = () => {
 					setLoading(false); // 로딩 종료
 					return; // Firestore 쿼리 없이 클라이언트 측 필터링으로 결과를 처리
 				} else if (selectedOption === '태그') {
-					recipeQuery = query(
-						recipeQuery,
-						where('recipe_tags', 'array-contains', searchTerm) // 배열 내 포함
+					const allRecipesSnapshot = await getDocs(recipeCollectionRef);
+					const allRecipes: Recipe[] = allRecipesSnapshot.docs.map((doc) => ({
+						id: doc.id,
+						...doc.data(),
+					})) as Recipe[];
+
+					// 클라이언트 측에서 필터링
+					const filteredRecipes = allRecipes.filter((recipe) =>
+						recipe.recipe_tags.some(
+							(recipe_tag) =>
+								recipe_tag.toLowerCase().includes(searchTerm.toLowerCase()) // 대소문자 구분 없이 포함 여부 확인
+						)
 					);
+
+					setRecipes(filteredRecipes);
+					setLoading(false); // 로딩 종료
+					return;
 				} else if (selectedOption === '재료') {
 					const allRecipesSnapshot = await getDocs(recipeCollectionRef);
 					const allRecipes: Recipe[] = allRecipesSnapshot.docs.map((doc) => ({
@@ -96,7 +110,7 @@ const RecipeList = () => {
 
 					setRecipes(filteredRecipes);
 					setLoading(false); // 로딩 종료
-					return; // Firestore 쿼리 없이 클라이언트 측 필터링으로 결과를 처리
+					return;
 				}
 			}
 
@@ -143,11 +157,12 @@ const RecipeList = () => {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const plusRef = useRef<HTMLUListElement>(null);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const { user } = useAuth();
 	const navigate = useNavigate();
 
 	const handleOptionClick = (path: string) => {
-		if (!isLoggedIn) {
+		if (!user) {
+			alert('로그인 하셔야합니다.');
 			navigate('/login'); // 로그인되지 않았다면 로그인 페이지로 리다이렉트
 		} else {
 			navigate(path); // 로그인된 경우 해당 경로로 이동
@@ -158,8 +173,8 @@ const RecipeList = () => {
 		const currentUrl = window.location.href;
 
 		if (currentUrl.includes('/recipelist')) {
+			document.body.style.backgroundColor = '#fff9e9';
 			document.body.style.marginTop = '200px';
-			document.body.style.backgroundColor = '#FFF9E9';
 		}
 
 		const handleClickOutside = (event: MouseEvent) => {
@@ -170,15 +185,10 @@ const RecipeList = () => {
 
 		document.addEventListener('mousedown', handleClickOutside);
 
-		const unsubscribe = onAuthStateChanged(auth, (user) => {
-			setIsLoggedIn(!!user); // user가 존재하면 true, 아니면 false
-		});
-
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 			document.body.style.backgroundColor = '';
 			document.body.style.marginTop = '';
-			unsubscribe();
 		};
 	}, []);
 
@@ -202,7 +212,6 @@ const RecipeList = () => {
 
 	const handleFilterClick = (fOption: any) => {
 		setSelectedFilter(fOption.value);
-		console.log(selectedFilter);
 	};
 
 	// 필터링된 레시피 생성
@@ -215,9 +224,30 @@ const RecipeList = () => {
 		return false;
 	});
 
+	// 정렬 드롭다운
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태
+	const [sorting, setSorting] = useState<string>('');
+	const [selectedSorting, setSelectedSorting] = useState<string>('정렬');
+
+	const toggleDropdown = () => {
+		setIsDropdownOpen(!isDropdownOpen);
+	};
+
+	const handleSortingSelect = (value: string) => {
+		setSelectedSorting(value); // 선택된 난이도 설정
+		setSorting(value); // 상태 업데이트
+		setIsDropdownOpen(false); // 드롭다운 닫기
+	};
+
+	const sortingOptions = [
+		{ value: 'latest', label: '최신글' },
+		{ value: 'likes', label: '좋아요' },
+		{ value: 'views', label: '조회수' },
+	];
+
 	return (
 		<div>
-			<div>
+			<div className={styles.recipeListHeader}>
 				<div className={styles.filterBtnWrapper}>
 					{filterOptions.map((fOption) => (
 						<CustomButton
@@ -231,14 +261,40 @@ const RecipeList = () => {
 						</CustomButton>
 					))}
 				</div>
-				<div></div>
+				<button
+					type="button"
+					className={styles.sortingDropdown}
+					onClick={toggleDropdown}
+				>
+					<div
+						className={`${styles.sortingDropdownSelected} ${isDropdownOpen ? styles.open : ''}`}
+					>
+						{selectedSorting}
+					</div>
+					{isDropdownOpen && (
+						<ul className={styles.sortingDropdownOptions}>
+							{sortingOptions.map((option) => (
+								<li
+									key={option.value}
+									className={styles.sortingDropdownOption}
+									onClick={() => handleSortingSelect(option.label)}
+								>
+									{option.label}
+								</li>
+							))}
+						</ul>
+					)}
+				</button>
 			</div>
-			<div className={styles.recipeGrid}>
-				{filteredRecipes.map((recipe) => (
-					<RecipeCard key={recipe.id} recipe={recipe} />
-				))}
-			</div>
-			{loading && <div className={styles.loading}>로딩 중...</div>}
+			{loading ? (
+				<div className={styles.loading}>로딩 중...</div>
+			) : (
+				<div className={styles.recipeGrid}>
+					{filteredRecipes.map((recipe) => (
+						<RecipeCard key={recipe.id} recipe={recipe} />
+					))}
+				</div>
+			)}
 			<Pagination
 				className={styles.pagination}
 				current={currentPage}

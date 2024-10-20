@@ -1,7 +1,14 @@
-// useAddRecipe.ts
 import { useCallback } from 'react';
-import { db } from '../firebase/config'; // Firebase 초기화 모듈 경로에 맞게 수정
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { db } from '../firebase/config';
+import {
+	collection,
+	addDoc,
+	doc,
+	getDoc,
+	updateDoc,
+	Timestamp,
+} from 'firebase/firestore';
+import { Recipe } from '../type/type';
 
 const useAddRecipe = () => {
 	const addRecipe = useCallback(async (recipeData: any) => {
@@ -11,12 +18,45 @@ const useAddRecipe = () => {
 				recipe_create_time: Timestamp.now(),
 			});
 			console.log('Document written with ID: ', docRef.id);
+			return docRef.id;
 		} catch (error) {
 			console.error('Error adding document: ', error);
+			throw error;
 		}
 	}, []);
 
-	return { addRecipe };
+	const updateRecipe = useCallback(async (id: string, recipeData: any) => {
+		try {
+			const recipeRef = doc(db, 'recipes', id);
+			await updateDoc(recipeRef, {
+				...recipeData,
+				recipe_update_time: Timestamp.now(),
+			});
+			console.log('Document updated with ID: ', id);
+		} catch (error) {
+			console.error('Error updating document: ', error);
+			throw error;
+		}
+	}, []);
+
+	const getRecipe = useCallback(async (id: string): Promise<Recipe | null> => {
+		try {
+			const recipeRef = doc(db, 'recipes', id);
+			const recipeSnap = await getDoc(recipeRef);
+
+			if (recipeSnap.exists()) {
+				return { id: recipeSnap.id, ...recipeSnap.data() } as Recipe;
+			} else {
+				console.log('No such document!');
+				return null;
+			}
+		} catch (error) {
+			console.error('Error getting document: ', error);
+			throw error;
+		}
+	}, []);
+
+	return { addRecipe, updateRecipe, getRecipe };
 };
 
 export default useAddRecipe;
