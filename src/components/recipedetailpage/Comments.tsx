@@ -87,13 +87,13 @@ const Comments: React.FC<CommentsProps> = ({
 
 	// 댓글 등록하기
 	const addComment = async () => {
-		if (newComment.trim()) {
-			if (users.user === null) {
-				alert('로그인이 필요한 작업입니다 :)');
-				setNewComment('');
-				return;
-			}
+		if (users.user === null) {
+			alert('로그인 후 이용해주세요 :)');
+			setNewComment('');
+			return;
+		}
 
+		if (newComment.trim()) {
 			try {
 				await addDoc(collection(db, 'recipes', recipeId, 'comment'), {
 					comment_description: newComment,
@@ -145,12 +145,27 @@ const Comments: React.FC<CommentsProps> = ({
 							setNewComment(e.target.value),
 							countCommentHandler(e),
 						]}
-						placeholder={`특별한 레시피를 남겨준 ${recipeAuthor} 님에게 따뜻한 댓글을 남겨주세요 ♥`}
+						onClick={() => {
+							if (users.user === null) alert('로그인 후 이용해주세요 :)');
+						}}
+						readOnly={users.user === null}
+						placeholder={
+							users.user === null
+								? '로그인 후 작성 가능합니다.'
+								: `특별한 레시피를 남겨준 ${recipeAuthor} 님에게 따뜻한 댓글을 남겨주세요 ♥`
+						}
 					/>
 					<p className={styled.countComment}>{countNewComment}/300자</p>
 				</label>
 
-				<button onClick={addComment}>등록</button>
+				<button
+					style={{
+						cursor: users.user === null ? 'not-allowed' : 'pointer',
+					}}
+					onClick={addComment}
+				>
+					등록
+				</button>
 			</div>
 
 			<section className={styled.commentList}>
