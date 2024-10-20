@@ -25,11 +25,11 @@ interface Badge {
 
 // 사용자 게시글 수에 따라 배지 제공하기 위한 데이터
 const badgeData: Badge[] = [
-	{ image: './src/assets/icon_spoon.png', name: '스푼 Spoon', count: 0 },
-	{ image: './src/assets/icon_spoon2.png', name: '포크 Fork', count: 10 },
-	{ image: './src/assets/icon_spoon3.png', name: '챕스 Chopsticks', count: 20 },
-	{ image: './src/assets/icon_spoon4.png', name: '터너 Turner', count: 30 },
-	{ image: './src/assets/icon_spoon5.png', name: '나이프 Knife', count: 40 },
+	{ image: '/assets/icon_spoon.png', name: '스푼 Spoon', count: 0 },
+	{ image: '/assets/icon_spoon2.png', name: '포크 Fork', count: 10 },
+	{ image: '/assets/icon_spoon3.png', name: '챕스 Chopsticks', count: 20 },
+	{ image: '/assets/icon_spoon4.png', name: '터너 Turner', count: 30 },
+	{ image: '/assets/icon_spoon5.png', name: '나이프 Knife', count: 40 },
 ];
 
 export default function Profile() {
@@ -174,32 +174,30 @@ export default function Profile() {
 	return (
 		<main className={styles.container}>
 			<div className={styles.logo}>
-				{
-					showEditInfo ? (
-						<>
-							<img src="./src/assets/icon_userInfo.png" alt="정보수정 아이콘" />
-							<h1>정보수정</h1>
-						</>
-					) : showEditPassword ? (
-						<>
-							<img src="./src/assets/icon_userInfo.png" alt="비밀번호 변경 아이콘" />
-							<h1>비밀번호 변경</h1>
-						</>
-					) : (
-						<>
-							<img src="./src/assets/icon_mypage.png" alt="마이페이지 아이콘" />
-							<h1>마이페이지</h1>
-						</>
-					)
-				}
+				{showEditInfo ? (
+					<>
+						<img src="/assets/icon_userInfo.png" alt="정보수정 아이콘" />
+						<h1>정보수정</h1>
+					</>
+				) : showEditPassword ? (
+					<>
+						<img src="/assets/icon_userInfo.png" alt="비밀번호 변경 아이콘" />
+						<h1>비밀번호 변경</h1>
+					</>
+				) : (
+					<>
+						<img src="/assets/icon_mypage.png" alt="마이페이지 아이콘" />
+						<h1>마이페이지</h1>
+					</>
+				)}
 			</div>
 			<div className={styles.profileBox}>
 				<section className={styles.profile}>
 					<div className={styles.user}>
-						<img src="./src/assets/icon_profileImg.png" alt="" />
+						<img src="/assets/icon_profileImg.png" alt="" />
 						<h2>
 							{userNickname}
-							<img src="./src/assets/icon_nicknameImg.png" alt="" />
+							<img src="/assets/icon_nicknameImg.png" alt="" />
 						</h2>
 						{editIntroduction ? (
 							<div className={styles.userEditIntroduction}>
@@ -216,14 +214,14 @@ export default function Profile() {
 								{userIntroduction
 									? userIntroduction
 									: '자기소개를 작성해주세요.'}
-								<img src="./src/assets/icon_infoImg.png" alt="" />
+								<img src="/assets/icon_infoImg.png" alt="" />
 							</span>
 						)}
 					</div>
 					<div className={styles.userPostsContainer}>
 						<div className={styles.userPost}>
 							<div>
-								<img src="./src/assets/icon_posts.png" alt="" />
+								<img src="/assets/icon_posts.png" alt="" />
 							</div>
 							<span>등록된 게시물</span>
 							<h3>{userRecipes.length}</h3>
@@ -247,11 +245,11 @@ export default function Profile() {
 							<div>
 								<button>
 									등록한 레시피
-									<img src="./src/assets/icon_profileButton.png" alt="" />
+									<img src="/assets/icon_profileButton.png" alt="" />
 								</button>
 								<button>
 									좋아요 누른 레시피
-									<img src="./src/assets/icon_profileButton.png" alt="" />
+									<img src="/assets/icon_profileButton.png" alt="" />
 								</button>
 							</div>
 						</div>
@@ -260,15 +258,15 @@ export default function Profile() {
 							<div>
 								<button onClick={() => setShowEditInfo(true)}>
 									정보수정
-									<img src="./src/assets/icon_profileButton.png" alt="" />
+									<img src="/assets/icon_profileButton.png" alt="" />
 								</button>
 								<button onClick={() => setShowEditPassword(true)}>
 									비밀번호 변경
-									<img src="./src/assets/icon_profileButton.png" alt="" />
+									<img src="/assets/icon_profileButton.png" alt="" />
 								</button>
 								<button>
 									회원탈퇴
-									<img src="./src/assets/icon_profileButton.png" alt="" />
+									<img src="/assets/icon_profileButton.png" alt="" />
 								</button>
 							</div>
 						</div>
@@ -281,7 +279,7 @@ export default function Profile() {
 							className={styles.editBack}
 							onClick={() => setShowEditInfo(false)}
 						>
-							<img src="./src/assets/icon_infoback.png" alt="" />
+							<img src="/assets/icon_infoback.png" alt="" />
 							<span>뒤로가기</span>
 						</div>
 						<div className={styles.editInput}>
@@ -330,7 +328,7 @@ export default function Profile() {
 							className={styles.editBack}
 							onClick={() => setShowEditPassword(false)}
 						>
-							<img src="./src/assets/icon_infoback.png" alt="" />
+							<img src="/assets/icon_infoback.png" alt="" />
 							<span>뒤로가기</span>
 						</div>
 						<div className={styles.editInput}>

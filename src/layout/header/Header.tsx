@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Search from '../../components/search/Search';
 import { useAuth } from '../../context/AuthContext'; // AuthContext 경로에 맞게 수정
-import logoImg from '../../assets/icon_logo.png';
+import logoImg from '/assets/icon_logo.png';
 import styles from './Header.module.css';
 
 const Header = () => {

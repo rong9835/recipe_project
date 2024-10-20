@@ -1,6 +1,6 @@
-import backIcon from '../../assets/icon_back.png';
-import heartIcon from '../../assets/icon_heart.png';
-import viewIcon from '../../assets/icon_view.png';
+import backIcon from '/assets/icon_back.png';
+import heartIcon from '/assets/icon_heart.png';
+import viewIcon from '/assets/icon_view.png';
 import styled from './RecipeDetail.module.css';
 
 import { getFirestore, doc, deleteDoc, onSnapshot } from 'firebase/firestore';

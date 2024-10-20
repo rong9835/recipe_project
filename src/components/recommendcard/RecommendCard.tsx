@@ -1,5 +1,5 @@
 import styles from './RecommendCard.module.css';
-import heartImg from '../../assets/icon_heart.svg';
+import heartImg from '/assets/icon_heart.svg';
 
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/config';

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
-import errorIcon from '../../../assets/icon_error.png';
+import errorIcon from '/assets/icon_error.png';
 import { useAuth } from '../../../context/AuthContext';
 import { usePageStyle } from '../../../hooks/usePageStyle'; // 커스텀 훅 import
 
@@ -63,7 +63,7 @@ const Login = () => {
 				<div className={styles.loginBox}>
 					<h1 className={styles.title}>
 						<Link to="/">
-							<img src="./src/assets/icon_logo.png" alt="홈으로 가기" />
+							<img src="/assets/icon_logo.png" alt="홈으로 가기" />
 						</Link>
 					</h1>
 					<form onSubmit={handleLogin}>
@@ -92,7 +92,7 @@ const Login = () => {
 							onClick={handleGoogleLogin}
 							className={styles.googleButton}
 						>
-							<img src="./src/assets/icon_google.png" alt="Google" /> 구글로
+							<img src="/assets/icon_google.png" alt="Google" /> 구글로
 							로그인하기
 						</button>
 						<button type="submit" className={styles.loginButton}>
