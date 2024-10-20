@@ -10,8 +10,8 @@ import {
 	increment,
 } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
-import heartEmpty from '../../../assets/icon_like_heart_empty.svg';
-import heartPull from '../../../assets/icon_like_heart_pull.svg';
+import heartEmpty from '/assets/icon_like_heart_empty.svg';
+import heartPull from '/assets/icon_like_heart_pull.svg';
 import { useAuth } from '../../../context/AuthContext';
 import styled from './LikeButton.module.css';
 import { useState, useEffect } from 'react';

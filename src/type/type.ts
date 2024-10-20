@@ -21,7 +21,7 @@ export interface Recipe {
 	author: Author;
 }
 
-interface RecipeCreateTime {
+export interface RecipeCreateTime {
 	seconds: number;
 	nanoseconds: number;
 }

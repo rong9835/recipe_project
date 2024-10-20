@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import Search from '../../components/search/Search';
 import { useAuth } from '../../context/AuthContext'; // AuthContext 경로에 맞게 수정
-import logoImg from '../../assets/icon_logo.png';
+import logoImg from '/assets/icon_logo.png';
 import styles from './Header.module.css';
 
 const Header = () => {
-	const { user, logout, nickname } = useAuth(); // 현재 유저와 로그아웃 함수 가져오기
+	const { user, logout } = useAuth(); // 현재 유저와 로그아웃 함수 가져오기
 
 	return (
 		<header id={styles.header}>
@@ -16,11 +16,8 @@ const Header = () => {
 				<Search />
 				{user ? (
 					<div>
-						<Link to={'/profile'}>
-							{nickname}
-						</Link>
 						<button onClick={logout} className={styles.loginLogoutText}>
-						로그아웃
+							로그아웃
 						</button>
 					</div>
 				) : (

@@ -153,7 +153,7 @@ export default function SignUp() {
 		<main className={styles.container}>
 			<div className={styles.logo}>
 				<Link to={'/'}>
-					<img src="./src/assets/icon_logo.png" alt="" />
+					<img src="/assets/icon_logo.png" alt="" />
 				</Link>
 			</div>
 			<form onSubmit={signUpFormSubmit}>

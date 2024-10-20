@@ -22,15 +22,22 @@ const Home = () => {
 			}
 		};
 
+		const currentUrl = window.location.href;
+
+		if (currentUrl.includes('/')) {
+			document.body.style.marginTop = '100px';
+		}
+
 		document.addEventListener('mousedown', handleClickOutside);
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
+			document.body.style.marginTop = '';
 		};
 	}, []);
 
 	const options = [
 		{ label: '레시피 작성하기', path: '/create' },
-		{ label: 'AI 추천 레시피', path: '/' },
+		{ label: 'AI 추천 레시피', path: '/recipe-ai' },
 		{ label: '마이페이지', path: '/profile' },
 	];
 
@@ -54,7 +61,7 @@ const Home = () => {
 
 	const handleRecipeList = () => {
 		if (user) {
-			navigate('/recipelist'); // 로그인된 경우 레시피 리스트 페이지로 이동
+			navigate('/recipelist');
 		} else {
 			alert('로그인 하셔야합니다.');
 			navigate('/login'); // 로그인되지 않았다면 로그인 페이지로 리다이렉트

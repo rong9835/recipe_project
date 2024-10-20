@@ -98,11 +98,10 @@
 
 .sortingDropdownSelected {
 	display: flex;
-	padding: 0 35px 0 20px;
+	padding: 0 28px 0 12px;
 	justify-content: center;
 	align-items: center;
 	height: 40px;
-	width: 100px;
 }
 
 .sortingDropdown,
@@ -121,9 +120,13 @@
 }
 
 .sortingDropdownSelected {
-	background: url('../../assets/icon_down.png') no-repeat center right 10px;
+	background: url('/assets/icon_down.png') no-repeat center right 10px;
 }
 
 .open {
-	background: url('../../assets/icon_up.png') no-repeat center right 10px;
+	background: url('/assets/icon_up.png') no-repeat center right 10px;
+}
+
+.notResult {
+	height: 200px;
 }

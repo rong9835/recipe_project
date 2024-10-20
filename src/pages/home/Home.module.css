@@ -1,5 +1,5 @@
 .homeBanner {
-	background-image: url('../../assets/home_banner.png');
+	background-image: url('/assets/home_banner.png');
 	background-size: cover;
 	height: 400px;
 	margin-top: 85px;
