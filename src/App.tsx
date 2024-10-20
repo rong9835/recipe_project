@@ -11,6 +11,7 @@ import ForgotPassword from './pages/auth/login/ForgotPassword';
 import NotFound from './pages/auth/notfound/NotFound';
 import Profile from './pages/auth/profile/Profile';
 import AddAndEdit from './pages/addandedit/AddAndEdit';
+import RecipeAI from './pages/auth/recipeAi/RecipeAI'; 
 
 function App() {
 	return (
@@ -28,6 +29,7 @@ function App() {
 						<Route path="/recipedetail" element={<RecipeDetail />} />
 						<Route path="/recipedetail/:id" element={<RecipeDetail />} />
 						<Route path="/recipelist" element={<RecipeList />} />
+						<Route path="/recipe-ai" element={<RecipeAI />} /> 
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</Layout>
