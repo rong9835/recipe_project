@@ -126,3 +126,7 @@
 .open {
 	background: url('/assets/icon_up.png') no-repeat center right 10px;
 }
+
+.notResult {
+	height: 200px;
+}
