@@ -4,9 +4,6 @@ import viewImg from '../../assets/icon_views.svg';
 import { Recipe } from '../../type/type';
 import { useNavigate } from 'react-router-dom';
 import { Tag } from 'antd';
-import CustomButton, { ButtonType } from '../custombutton/CustomButton';
-import cardArrowImg from '../../assets/icon_card_arrow.svg';
-import ellipsisImg from '../../assets/icon_ellipsis.svg';
 import { useAuth } from '../../context/AuthContext';
 
 interface RecipeCardProps {
