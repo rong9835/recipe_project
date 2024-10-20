@@ -1,6 +1,6 @@
 import styles from './Footer.module.css';
-import githubImg from '../../assets/icon_github.svg';
-import logoGrayImg from '../../assets/logo_gray.svg';
+import githubImg from '/assets/icon_github.svg';
+import logoGrayImg from '/assets/logo_gray.svg';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {

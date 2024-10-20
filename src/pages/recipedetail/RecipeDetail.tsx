@@ -1,9 +1,16 @@
-import backIcon from '../../assets/icon_back.png';
-import heartIcon from '../../assets/icon_heart.png';
-import viewIcon from '../../assets/icon_view.png';
+import backIcon from '/assets/icon_back.png';
+import heartIcon from '/assets/icon_heart.png';
+import viewIcon from '/assets/icon_view.png';
 import styled from './RecipeDetail.module.css';
 
-import { getFirestore, doc, deleteDoc, onSnapshot } from 'firebase/firestore';
+import {
+	getFirestore,
+	doc,
+	deleteDoc,
+	onSnapshot,
+	updateDoc,
+	increment,
+} from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import GroupedIngredientList from '../../components/recipedetailpage/GroupedIngredientList';
@@ -45,6 +52,16 @@ export default function RecipeDetail() {
 					navigate('/404');
 				}
 			});
+
+			// 컴포넌트가 마운트될 때 조회수 증가
+			const incrementViews = async () => {
+				const recipeRef = doc(db, 'recipes', recipeId);
+				await updateDoc(recipeRef, {
+					views: increment(1), // 조회수 1 증가
+				});
+			};
+
+			incrementViews(); // 조회수 업데이트 함수 호출
 
 			return () => unsubscribe();
 		}
@@ -90,9 +107,9 @@ export default function RecipeDetail() {
 		if (isConfirmed && recipeId) {
 			try {
 				const docRef = doc(db, 'recipes', recipeId);
-				await deleteDoc(docRef);
 				alert('삭제되었습니다.');
-				navigate(-1);
+				await deleteDoc(docRef);
+				navigate('/recipelist');
 			} catch (error) {
 				console.error('문서 삭제 오류', error);
 			}
