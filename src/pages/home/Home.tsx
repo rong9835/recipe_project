@@ -22,9 +22,16 @@ const Home = () => {
 			}
 		};
 
+		const currentUrl = window.location.href;
+
+		if (currentUrl.includes('/')) {
+			document.body.style.marginTop = '100px';
+		}
+
 		document.addEventListener('mousedown', handleClickOutside);
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
+			document.body.style.marginTop = '';
 		};
 	}, []);
 

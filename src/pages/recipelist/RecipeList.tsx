@@ -11,7 +11,7 @@ import {
 	limit,
 	startAfter,
 } from 'firebase/firestore';
-import { Recipe } from '../../type/type';
+import { Recipe, RecipeCreateTime } from '../../type/type';
 import PlusMenuBtn from '../../components/plusmenubutton/PlusMenuBtn';
 import styles from './RecipeList.module.css';
 import CustomButton, {
@@ -227,7 +227,7 @@ const RecipeList = () => {
 	// 정렬 드롭다운
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태
 	const [sorting, setSorting] = useState<string>('');
-	const [selectedSorting, setSelectedSorting] = useState<string>('정렬');
+	const [selectedSorting, setSelectedSorting] = useState<string>('최신글');
 
 	const toggleDropdown = () => {
 		setIsDropdownOpen(!isDropdownOpen);
@@ -236,6 +236,11 @@ const RecipeList = () => {
 	const handleSortingSelect = (value: string) => {
 		setSelectedSorting(value); // 선택된 난이도 설정
 		setSorting(value); // 상태 업데이트
+
+		// 정렬된 레시피 목록을 갱신
+		const sorted = sortingRecipes(recipes, value);
+		setRecipes([...sorted]); // 정렬된 레시피로 상태 업데이트
+
 		setIsDropdownOpen(false); // 드롭다운 닫기
 	};
 
@@ -244,6 +249,34 @@ const RecipeList = () => {
 		{ value: 'likes', label: '좋아요' },
 		{ value: 'views', label: '조회수' },
 	];
+
+	const convertToDate = (recipeCreateTime: RecipeCreateTime): Date => {
+		return new Date(
+			recipeCreateTime.seconds * 1000 + recipeCreateTime.nanoseconds / 1000000
+		);
+	};
+
+	// 정렬 함수
+	const sortingRecipes = (recipes: Recipe[], sorting: string) => {
+		switch (sorting) {
+			case '최신글': // 최신글 기준 정렬
+				return recipes.sort(
+					(a, b) =>
+						convertToDate(b.recipe_create_time).getTime() -
+						convertToDate(a.recipe_create_time).getTime()
+				);
+			case '좋아요': // 좋아요 수 기준 정렬
+				return recipes.sort((a, b) => b.hearts - a.hearts);
+			case '조회수': // 조회수 기준 정렬
+				return recipes.sort((a, b) => b.views - a.views);
+			default: // 기본값은 최신글
+				return recipes.sort(
+					(a, b) =>
+						convertToDate(b.recipe_create_time).getTime() -
+						convertToDate(a.recipe_create_time).getTime()
+				);
+		}
+	};
 
 	return (
 		<div>
