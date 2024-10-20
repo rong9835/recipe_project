@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './SignUp.module.css';
 import { FirebaseError } from 'firebase/app';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -38,6 +38,7 @@ export default function SignUp() {
 		null
 	);
 	const [phoneAvailable, setPhoneAvailable] = useState<boolean | null>(null);
+	const navigate = useNavigate();
 
 	// 입력 값 받는 함수
 	const signUpInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +49,7 @@ export default function SignUp() {
 		});
 	};
 
+	// 중복 체크 함수
 	const checkEmailAvailability = async () => {
 		const q = query(
 			collection(db, 'users'),
@@ -60,7 +62,7 @@ export default function SignUp() {
 	const checkNicknameAvailability = async () => {
 		const q = query(
 			collection(db, 'users'),
-			where('nickname', '==', signUpValues.nickname)
+			where('user_nickname', '==', signUpValues.nickname)
 		);
 		const querySnapshot = await getDocs(q);
 		setNicknameAvailable(querySnapshot.empty);
@@ -69,12 +71,13 @@ export default function SignUp() {
 	const checkPhoneAvailability = async () => {
 		const q = query(
 			collection(db, 'users'),
-			where('phone', '==', signUpValues.phone)
+			where('user_phone_number', '==', signUpValues.phone)
 		);
 		const querySnapshot = await getDocs(q);
 		setPhoneAvailable(querySnapshot.empty);
 	};
 
+	// 회원가입 폼 제출 함수
 	const signUpFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setErrMsg('');
@@ -91,6 +94,7 @@ export default function SignUp() {
 			return;
 		}
 
+		// 일치, 중복 여부 체크
 		if (signUpValues.password !== signUpValues.confirmPassword) {
 			setErrMsg('비밀번호가 일치하지 않습니다.');
 			return;
@@ -113,12 +117,29 @@ export default function SignUp() {
 
 		try {
 			setIsLoading(true);
+			// Firebase에서 사용자 계정 생성
 			const userCreate = await createUserWithEmailAndPassword(
 				auth,
 				signUpValues.email,
 				signUpValues.password
 			);
+
+			// Firestore에 사용자 정보 저장하기
+			const userDocRef = doc(db, 'users', userCreate.user.uid);
+			await setDoc(userDocRef, {
+				recipes_total: 0,
+				user_email: signUpValues.email,
+				user_info: '',
+				user_name: signUpValues.name,
+				user_nickname: signUpValues.nickname,
+				user_phone_number: signUpValues.phone,
+				provider: 'normal',
+			});
+
 			console.log('회원가입 성공:', userCreate.user);
+			alert('회원가입이 되었습니다.');
+
+			navigate('/login');
 		} catch (e) {
 			if (e instanceof FirebaseError) {
 				setErrMsg(e.message);
@@ -131,7 +152,9 @@ export default function SignUp() {
 	return (
 		<main className={styles.container}>
 			<div className={styles.logo}>
-				<img src="./src/assets/icon_logo.png" alt="" />
+				<Link to={'/'}>
+					<img src="/assets/icon_logo.png" alt="" />
+				</Link>
 			</div>
 			<form onSubmit={signUpFormSubmit}>
 				<input
@@ -194,10 +217,10 @@ export default function SignUp() {
 					className={styles.input}
 				/>
 				{phoneAvailable === false && <div>{errMsg}</div>}
+				{errMsg && <div>{errMsg}</div>}
 				<button type="submit" disabled={isLoading} className={styles.signupBtn}>
 					회원가입
 				</button>
-				{errMsg && <div>{errMsg}</div>}
 			</form>
 			<div className={styles.pageLogin}>
 				<Link to={'/login'}>로그인하기</Link>

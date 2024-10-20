@@ -4,8 +4,8 @@ import CustomButton, {
 	ButtonType,
 } from '../../components/custombutton/CustomButton';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import pictureIcon from '../../assets/icon_picture.svg';
-import backIcon from '../../assets/icon_back.svg';
+import pictureIcon from '/assets/icon_picture.svg';
+import backIcon from '/assets/icon_back.svg';
 import useThumbnailImgUpload from '../../hooks/useThumbnailImgUpload';
 import useStepImgUpload from '../../hooks/useStepImgUpload';
 import useAddRecipe from '../../hooks/useAddRecipe';
@@ -124,8 +124,6 @@ const AddAndEdit = () => {
 				recipe_tips: recipeTip,
 				thumbnail_url: imageUrl, // 업로드된 이미지 URL
 				views: 0,
-				comments: [], // 댓글 초기화
-				hearted: [], // 좋아요 초기화
 			};
 
 			setIsSubmitDisabled(false);
@@ -218,6 +216,7 @@ const AddAndEdit = () => {
 		};
 
 		fetchRecipe();
+		window.scrollTo(0, 0);
 	}, [id]);
 
 	return (
