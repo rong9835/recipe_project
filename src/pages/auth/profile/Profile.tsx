@@ -174,8 +174,24 @@ export default function Profile() {
 	return (
 		<main className={styles.container}>
 			<div className={styles.logo}>
-				<img src="./src/assets/icon_mypage.png" alt="" />
-				<h1>마이페이지</h1>
+				{
+					showEditInfo ? (
+						<>
+							<img src="./src/assets/icon_userInfo.png" alt="정보수정 아이콘" />
+							<h1>정보수정</h1>
+						</>
+					) : showEditPassword ? (
+						<>
+							<img src="./src/assets/icon_userInfo.png" alt="비밀번호 변경 아이콘" />
+							<h1>비밀번호 변경</h1>
+						</>
+					) : (
+						<>
+							<img src="./src/assets/icon_mypage.png" alt="마이페이지 아이콘" />
+							<h1>마이페이지</h1>
+						</>
+					)
+				}
 			</div>
 			<div className={styles.profileBox}>
 				<section className={styles.profile}>
