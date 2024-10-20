@@ -11,7 +11,7 @@ import ForgotPassword from './pages/auth/login/ForgotPassword';
 import NotFound from './pages/auth/notfound/NotFound';
 import Profile from './pages/auth/profile/Profile';
 import AddAndEdit from './pages/addandedit/AddAndEdit';
-import RecipeAi from './pages/auth/recipeAI/RecipeAi';
+import RecipeAi from './pages/recipeAi/RecipeAi';
 import PrivateRoute from './routes/PrivateRoute';
 
 function App() {
