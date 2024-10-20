@@ -226,7 +226,6 @@ const RecipeList = () => {
 
 	// 정렬 드롭다운
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태
-	const [sorting, setSorting] = useState<string>('');
 	const [selectedSorting, setSelectedSorting] = useState<string>('최신글');
 
 	const toggleDropdown = () => {
@@ -235,7 +234,6 @@ const RecipeList = () => {
 
 	const handleSortingSelect = (value: string) => {
 		setSelectedSorting(value); // 선택된 난이도 설정
-		setSorting(value); // 상태 업데이트
 
 		// 정렬된 레시피 목록을 갱신
 		const sorted = sortingRecipes(recipes, value);
