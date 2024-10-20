@@ -1,6 +1,6 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import Login from './pages/auth/login/Login'; // Login 컴포넌트의 실제 경로에 맞게 수정하세요
+import Login from './pages/auth/login/Login';
 import SignUp from './pages/auth/signup/SignUp';
 import RecipeDetail from './pages/recipedetail/RecipeDetail';
 import Layout from './layout/Layout';
@@ -11,6 +11,7 @@ import ForgotPassword from './pages/auth/login/ForgotPassword';
 import NotFound from './pages/auth/notfound/NotFound';
 import Profile from './pages/auth/profile/Profile';
 import AddAndEdit from './pages/addandedit/AddAndEdit';
+import RecipeAi from './pages/auth/recipeAI/RecipeAi';
 import PrivateRoute from './routes/PrivateRoute';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
 						<Route path="/forgot-password" element={<ForgotPassword />} />
 						<Route path="/recipedetail/:id" element={<RecipeDetail />} />
 						<Route path="/recipelist" element={<RecipeList />} />
+						<Route path="/recipe-ai" element={<RecipeAi />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</Layout>

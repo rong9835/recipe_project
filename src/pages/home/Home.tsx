@@ -7,6 +7,7 @@ import styles from './Home.module.css';
 import { useNavigate } from 'react-router-dom';
 import PlusMenuBtn from '../../components/plusmenubutton/PlusMenuBtn';
 import { useAuth } from '../../context/AuthContext';
+import RecipeList from '../recipelist/RecipeList';
 
 const Home = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -113,6 +114,7 @@ const Home = () => {
 					</ul>
 				)}
 			</div>
+			<RecipeList />
 		</>
 	);
 };

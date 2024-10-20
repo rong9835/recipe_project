@@ -1,59 +1,58 @@
-.container{
+.container {
 	font-family: 'SUIT Variable', sans-serif;
-    width: 100%;
-    min-height: 100vh;
-    display: flex;              
-    justify-content: center;    
-    align-items: center;        
-    flex-direction: column; 
+	width: 100%;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 }
 
-.logo{
-    text-align: center;
-    margin-bottom: 125px;
-    margin-top: 100px;
+.logo {
+	text-align: center;
+	margin-bottom: 125px;
 }
 
-.input{
-    display: flex;
-    width: 500px;
-    height: 75px;
-    margin-bottom: 30px;
-    border: none;
-    border-bottom: 1px solid #C9532F;
-    font-size: 24px;
-    padding-left: 1.25rem;
-    box-sizing: border-box;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
+.input {
+	display: flex;
+	width: 500px;
+	height: 75px;
+	margin-bottom: 30px;
+	border: none;
+	border-bottom: 1px solid #c9532f;
+	font-size: 24px;
+	padding-left: 1.25rem;
+	box-sizing: border-box;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 24px;
 }
-.input::placeholder{
-    color: rgba(0, 0, 0, 0.3);
+.input::placeholder {
+	color: rgba(0, 0, 0, 0.3);
 }
 
 .signupBtn {
-    width: 500px;
-    height: 100px;
-    background-color: #C9532F;
-    display: flex;            
-    justify-content: center;  
-    align-items: center;      
-    border: none;           
-    border-radius: 20px;  
-    margin-top: 80px;
-    color: white;
-    font-size: 38px;
-    cursor: pointer;
+	width: 500px;
+	height: 100px;
+	background-color: #c9532f;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: none;
+	border-radius: 20px;
+	margin-top: 80px;
+	color: white;
+	font-size: 38px;
+	cursor: pointer;
 }
 
-.pageLogin{
-    display: block;
-    margin-top: 44px;
-    margin-bottom: 112px;
+.pageLogin {
+	display: block;
+	margin-top: 44px;
+	margin-bottom: 112px;
 }
 .pageLogin a {
-    text-decoration: none;
-    color: rgba(0, 0, 0, 0.3);
-    font-size: 24px;
+	text-decoration: none;
+	color: rgba(0, 0, 0, 0.3);
+	font-size: 24px;
 }
