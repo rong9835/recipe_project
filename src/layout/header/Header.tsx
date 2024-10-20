@@ -7,6 +7,7 @@ import styles from './Header.module.css';
 const Header = () => {
 	const { user, logout } = useAuth(); // 현재 유저와 로그아웃 함수 가져오기
 
+	console.log(nickname);
 	return (
 		<header id={styles.header}>
 			<div className={styles.customHeader}>
