@@ -11,7 +11,7 @@ import ForgotPassword from './pages/auth/login/ForgotPassword';
 import NotFound from './pages/auth/notfound/NotFound';
 import Profile from './pages/auth/profile/Profile';
 import AddAndEdit from './pages/addandedit/AddAndEdit';
-import RecipeAI from './pages/auth/recipeAi/RecipeAI'; 
+import RecipeAi from './pages/auth/recipeAI/RecipeAi';
 import PrivateRoute from './routes/PrivateRoute';
 
 function App() {
@@ -38,7 +38,7 @@ function App() {
 						<Route path="/forgot-password" element={<ForgotPassword />} />
 						<Route path="/recipedetail/:id" element={<RecipeDetail />} />
 						<Route path="/recipelist" element={<RecipeList />} />
-						<Route path="/recipe-ai" element={<RecipeAI />} /> 
+						<Route path="/recipe-ai" element={<RecipeAi />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</Layout>

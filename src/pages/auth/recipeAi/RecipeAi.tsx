@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './RecipeAi.module.css';
 
-const RecipePage: React.FC = () => {
+const RecipeAi: React.FC = () => {
   const [ingredients, setIngredients] = useState('');
   const [cookingMethod, setCookingMethod] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
@@ -71,4 +71,4 @@ const RecipePage: React.FC = () => {
   );
 };
 
-export default RecipePage;
+export default RecipeAi;

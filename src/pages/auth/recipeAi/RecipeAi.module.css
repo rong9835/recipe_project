@@ -6,6 +6,9 @@
 	bottom: 0;
 	overflow: auto;
 	background-color: #FFF9E9;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .container {
@@ -14,9 +17,11 @@
   margin: 0 auto;
   padding: 50px;
   box-sizing: border-box;
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .header {
@@ -34,7 +39,7 @@
 .main {
   display: flex;
   gap: 4rem; 
-  flex-grow: 1;
+  width: 100%;
 }
 
 .inputSection,
@@ -61,7 +66,8 @@
 }
 
 .input {
-  width: 518px;
+  width: 100%;
+  max-width: 608px;
   height: 120px;
   padding: 0.75rem;
   border: 1px solid #ccc;
