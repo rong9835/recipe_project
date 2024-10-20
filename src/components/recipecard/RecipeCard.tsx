@@ -26,12 +26,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 
 	// 클릭 시 경로 이동 함수
 	const handleNavigate = () => {
-		if (!user) {
-			alert('로그인 하셔야합니다.');
-			navigate('/login');
-		} else {
-			navigate(`/recipedetail/${recipe.id}`);
-		}
+		navigate(`/recipedetail/${recipe.id}`);
 	};
 
 	return (
