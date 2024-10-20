@@ -119,7 +119,7 @@ const ForgotPassword: React.FC = () => {
 		<div className={styles.container}>
 			<h2 className={styles.title}>
 				<Link to="/">
-					<img src="./src/assets/icon_logo.png" alt="홈으로 가기" />
+					<img src="/assets/icon_logo.png" alt="홈으로 가기" />
 				</Link>
 			</h2>
 			<div className={styles.toggleContainer}>

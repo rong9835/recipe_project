@@ -120,9 +120,9 @@
 }
 
 .sortingDropdownSelected {
-	background: url('../../assets/icon_down.png') no-repeat center right 10px;
+	background: url('/assets/icon_down.png') no-repeat center right 10px;
 }
 
 .open {
-	background: url('../../assets/icon_up.png') no-repeat center right 10px;
+	background: url('/assets/icon_up.png') no-repeat center right 10px;
 }

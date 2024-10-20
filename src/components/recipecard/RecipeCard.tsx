@@ -1,6 +1,6 @@
 import styles from './RecipeCard.module.css'; // 필요한 스타일 모듈 임포트
-import heartImg from '../../assets/icon_heart.svg'; // 하트 아이콘 임포트
-import viewImg from '../../assets/icon_views.svg';
+import heartImg from '/assets/icon_heart.svg'; // 하트 아이콘 임포트
+import viewImg from '/assets/icon_views.svg';
 import { Recipe } from '../../type/type';
 import { useNavigate } from 'react-router-dom';
 import { Tag } from 'antd';

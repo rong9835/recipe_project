@@ -4,8 +4,8 @@ import CustomButton, {
 	ButtonType,
 } from '../../components/custombutton/CustomButton';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import pictureIcon from '../../assets/icon_picture.svg';
-import backIcon from '../../assets/icon_back.svg';
+import pictureIcon from '/assets/icon_picture.svg';
+import backIcon from '/assets/icon_back.svg';
 import useThumbnailImgUpload from '../../hooks/useThumbnailImgUpload';
 import useStepImgUpload from '../../hooks/useStepImgUpload';
 import useAddRecipe from '../../hooks/useAddRecipe';
