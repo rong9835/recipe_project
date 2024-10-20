@@ -3,14 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Pagination } from 'antd';
 import RecipeCard from '../../components/recipecard/RecipeCard';
 import { db } from '../../firebase/config';
-import {
-	collection,
-	getDocs,
-	query,
-	orderBy,
-	limit,
-	startAfter,
-} from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { Recipe, RecipeCreateTime } from '../../type/type';
 import PlusMenuBtn from '../../components/plusmenubutton/PlusMenuBtn';
 import styles from './RecipeList.module.css';
@@ -22,7 +15,6 @@ import { useAuth } from '../../context/AuthContext';
 const RecipeList = () => {
 	const [recipes, setRecipes] = useState<Recipe[]>([]); // 레시피 배열
 	const [currentPage, setCurrentPage] = useState(1);
-	const [lastVisible, setLastVisible] = useState<any>(null);
 	const [loading, setLoading] = useState(false);
 	const pageSize = 9; // 페이지당 보여줄 레시피 개수
 	const location = useLocation();
@@ -43,110 +35,66 @@ const RecipeList = () => {
 		fetchRecipes(currentPage); // URL 파라미터가 변경될 때마다 데이터를 가져옵니다.
 	}, [location.search]); // URL 파라미터가 변경될 때마다 호출
 
+	const [filteredCount, setFilteredCount] = useState<number>(0);
+
 	// 데이터를 페이징하여 가져오는 함수
 	const fetchRecipes = async (page: number) => {
 		setLoading(true);
 		try {
 			const recipeCollectionRef = collection(db, 'recipes');
-			let recipeQuery = query(
-				recipeCollectionRef,
-				orderBy('recipe_create_time', 'desc'),
-				limit(pageSize)
-			);
 
-			// 검색어와 옵션에 따라 Firestore 쿼리 수정
-			if (searchTerm) {
-				if (selectedOption === '레시피') {
-					// Firestore에서 처음에는 모든 레시피를 가져오고 클라이언트 측에서 필터링
-					const allRecipesSnapshot = await getDocs(recipeCollectionRef);
-					const allRecipes: Recipe[] = allRecipesSnapshot.docs.map((doc) => ({
-						id: doc.id,
-						...doc.data(),
-					})) as Recipe[];
-
-					// 클라이언트 측에서 필터링
-					const filteredRecipes = allRecipes.filter(
-						(recipe) =>
-							recipe.recipe_name
-								.toLowerCase()
-								.includes(searchTerm.toLowerCase()) // 대소문자 구분 없이 포함 여부 확인
-					);
-
-					setRecipes(filteredRecipes);
-					setLoading(false); // 로딩 종료
-					return; // Firestore 쿼리 없이 클라이언트 측 필터링으로 결과를 처리
-				} else if (selectedOption === '태그') {
-					const allRecipesSnapshot = await getDocs(recipeCollectionRef);
-					const allRecipes: Recipe[] = allRecipesSnapshot.docs.map((doc) => ({
-						id: doc.id,
-						...doc.data(),
-					})) as Recipe[];
-
-					// 클라이언트 측에서 필터링
-					const filteredRecipes = allRecipes.filter((recipe) =>
-						recipe.recipe_tags.some(
-							(recipe_tag) =>
-								recipe_tag.toLowerCase().includes(searchTerm.toLowerCase()) // 대소문자 구분 없이 포함 여부 확인
-						)
-					);
-
-					setRecipes(filteredRecipes);
-					setLoading(false); // 로딩 종료
-					return;
-				} else if (selectedOption === '재료') {
-					const allRecipesSnapshot = await getDocs(recipeCollectionRef);
-					const allRecipes: Recipe[] = allRecipesSnapshot.docs.map((doc) => ({
-						id: doc.id,
-						...doc.data(),
-					})) as Recipe[];
-
-					// 클라이언트 측에서 필터링
-					const filteredRecipes = allRecipes.filter((recipe) =>
-						recipe.recipe_ingredients.some(
-							(ingredient) =>
-								ingredient.name.toLowerCase().includes(searchTerm.toLowerCase()) // 대소문자 구분 없이 포함 여부 확인
-						)
-					);
-
-					setRecipes(filteredRecipes);
-					setLoading(false); // 로딩 종료
-					return;
-				}
-			}
-
-			// 페이지가 1이 아닐 경우 lastVisible을 사용하여 쿼리 수정
-			if (page > 1 && lastVisible) {
-				recipeQuery = query(recipeQuery, startAfter(lastVisible));
-			}
-
-			// Firestore에서 쿼리 실행
-			const recipeSnapshot = await getDocs(recipeQuery);
-			const recipeList: Recipe[] = recipeSnapshot.docs.map((doc) => ({
+			// 전체 레시피를 가져옴
+			const allRecipesSnapshot = await getDocs(recipeCollectionRef);
+			const allRecipes: Recipe[] = allRecipesSnapshot.docs.map((doc) => ({
 				id: doc.id,
 				...doc.data(),
 			})) as Recipe[];
 
-			// 마지막 문서 정보 저장
-			const lastVisibleDoc =
-				recipeSnapshot.docs[recipeSnapshot.docs.length - 1];
-			setLastVisible(lastVisibleDoc);
+			let filteredRecipes: Recipe[];
 
-			// 페이지가 1일 때는 기존 데이터를 덮어쓰고, 이후 페이지는 추가
-			if (page === 1) {
-				setRecipes(recipeList);
+			// 검색어가 있을 경우 필터링
+			if (searchTerm) {
+				filteredRecipes = allRecipes.filter((recipe) => {
+					if (selectedOption === '레시피') {
+						return recipe.recipe_name
+							.toLowerCase()
+							.includes(searchTerm.toLowerCase());
+					} else if (selectedOption === '태그') {
+						return recipe.recipe_tags.some((tag) =>
+							tag.toLowerCase().includes(searchTerm.toLowerCase())
+						);
+					} else if (selectedOption === '재료') {
+						return recipe.recipe_ingredients.some((ingredient) =>
+							ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())
+						);
+					}
+					return false;
+				});
+				setCurrentPage(1);
 			} else {
-				setRecipes((prev) => [...prev, ...recipeList]);
+				// 검색어가 없을 경우 전체 레시피 사용
+				filteredRecipes = allRecipes;
 			}
 
+			// 페이지에 맞게 필터링된 레시피 가져오기
+			const startIndex = (page - 1) * pageSize; // 시작 인덱스
+			const paginatedRecipes = filteredRecipes.slice(
+				startIndex,
+				startIndex + pageSize
+			);
+
+			setRecipes(paginatedRecipes);
+			setFilteredCount(filteredRecipes.length); // 필터링된 레시피 수 업데이트
+			setCurrentPage(page); // 현재 페이지 설정
+
 			// 검색 결과가 없을 때의 처리
-			if (recipeList.length === 0) {
+			if (filteredRecipes.length === 0) {
 				console.log('검색 결과가 없습니다.');
 			}
 		} catch (error) {
 			console.error('Error fetching recipes:', error);
 		} finally {
 			setLoading(false);
-			window.scrollTo(0, 0);
 		}
 	};
 
@@ -154,6 +102,12 @@ const RecipeList = () => {
 	useEffect(() => {
 		fetchRecipes(currentPage);
 	}, [currentPage, searchTerm, selectedOption]); // 검색어와 옵션이 변경될 때도 재호출
+
+	// 검색어가 변경될 때 현재 페이지를 1로 설정
+	useEffect(() => {
+		setCurrentPage(1); // 검색어가 변경될 때 페이지를 1로 초기화
+		fetchRecipes(1); // 초기 로드 시 첫 페이지의 데이터를 가져옴
+	}, [searchTerm]); // 검색어가 변경될 때마다 호출
 
 	const [isOpen, setIsOpen] = useState(false);
 	const plusRef = useRef<HTMLUListElement>(null);
@@ -320,23 +274,24 @@ const RecipeList = () => {
 			{loading ? (
 				<div className={styles.loading}>로딩 중...</div>
 			) : (
-				<div className={styles.recipeGrid}>
-					{filteredRecipes.map((recipe) => (
-						<RecipeCard key={recipe.id} recipe={recipe} />
-					))}
-				</div>
+				<>
+					{filteredRecipes.length > 0 ? (
+						<div className={styles.recipeGrid}>
+							{filteredRecipes.map((recipe) => (
+								<RecipeCard key={recipe.id} recipe={recipe} />
+							))}
+						</div>
+					) : (
+						<div className={styles.notResult}>검색 결과가 없습니다.</div>
+					)}
+				</>
 			)}
 			<Pagination
 				className={styles.pagination}
 				current={currentPage}
 				pageSize={pageSize}
-				total={filteredRecipes.length} // Firestore에서 전체 개수를 가져오는 로직도 추가 가능
-				onChange={(page) => {
-					setCurrentPage(page);
-					if (page > 1) {
-						fetchRecipes(page);
-					}
-				}}
+				total={filteredCount} // 전체 필터링된 레시피 수
+				onChange={(page) => setCurrentPage(page)} // 페이지 변경 시 현재 페이지 업데이트
 			/>
 			<PlusMenuBtn isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
 			{isOpen && (
