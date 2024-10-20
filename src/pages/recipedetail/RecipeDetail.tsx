@@ -79,16 +79,12 @@ export default function RecipeDetail() {
 	};
 
 	// 레시피 수정하기
-	const updateRecipeHandler = (
-		e: React.MouseEvent<HTMLButtonElement>
-	): void => {
+	const updateRecipeHandler = (): void => {
 		navigate(`/edit/${recipeId}`);
 	};
 
 	// 레시피 삭제하기
-	const deleteRecipeHandler = async (
-		e: React.MouseEvent<HTMLButtonElement>
-	) => {
+	const deleteRecipeHandler = async () => {
 		const isConfirmed = window.confirm('정말로 삭제하시겠습니까?');
 
 		if (isConfirmed && recipeId) {

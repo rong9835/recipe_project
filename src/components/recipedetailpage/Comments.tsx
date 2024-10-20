@@ -145,7 +145,7 @@ const Comments: React.FC<CommentsProps> = ({
 							setNewComment(e.target.value),
 							countCommentHandler(e),
 						]}
-						onClick={(e) => {
+						onClick={() => {
 							if (users.user === null) alert('로그인 후 이용해주세요 :)');
 						}}
 						readOnly={users.user === null}

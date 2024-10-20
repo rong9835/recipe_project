@@ -10,15 +10,18 @@ import {
 	increment,
 } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
-import heartEmpty from '../../../assets/icon_heart_empty.png';
-import heartPull from '../../../assets/icon_heart_pull.png';
+import heartEmpty from '../../../assets/icon_like_heart_empty.svg';
+import heartPull from '../../../assets/icon_like_heart_pull.svg';
 import { useAuth } from '../../../context/AuthContext';
 import styled from './LikeButton.module.css';
 import { useState, useEffect } from 'react';
+import Modal from 'react-modal';
 
 const LikeButton = ({ recipeId }: { recipeId: string }) => {
 	const user = useAuth();
 	const [isHearted, setIsHearted] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
+	const [isFadingOut, setIsFadingOut] = useState(false);
 
 	// 이미 좋아요를 눌렀는지 확인
 	const checkIfHearted = async () => {
@@ -75,7 +78,7 @@ const LikeButton = ({ recipeId }: { recipeId: string }) => {
 
 			await updateDoc(recipeDocRef, { hearts: increment(1) });
 
-			alert('좋아요를 눌렀습니다.');
+			openModal();
 			setIsHearted(true);
 		} else {
 			// 좋아요 취소 (해당 문서 삭제)
@@ -102,15 +105,65 @@ const LikeButton = ({ recipeId }: { recipeId: string }) => {
 			await deleteDoc(heartedDocRef);
 			await updateDoc(recipeDocRef, { hearts: increment(-1) });
 
-			alert('좋아요를 취소했습니다.');
+			openModal();
 			setIsHearted(false);
 		}
 	};
 
+	const openModal = () => {
+		setIsOpen(true);
+		setIsFadingOut(false);
+		setTimeout(() => {
+			setIsFadingOut(true);
+		}, 1000);
+		setTimeout(() => {
+			setIsOpen(false);
+		}, 2000);
+	};
+
 	return (
-		<aside className={styled.stickyHeartIcon} onClick={toggleLike}>
-			<img src={isHearted ? heartPull : heartEmpty} alt="좋아요 아이콘" />
-		</aside>
+		<>
+			<aside className={styled.stickyHeartIcon} onClick={toggleLike}>
+				<img src={isHearted ? heartPull : heartEmpty} alt="좋아요 아이콘" />{' '}
+			</aside>
+
+			<Modal
+				isOpen={isOpen}
+				style={{
+					content: {
+						transition: 'opacity 1s',
+						opacity: isFadingOut ? 0 : 1,
+						backgroundColor: 'white',
+						padding: '10px 20px',
+						borderRadius: '10px',
+						textAlign: 'center',
+						position: 'absolute',
+						top: '50%',
+						bottom: '42%',
+						left: '50%',
+						transform: 'translate(-50%, -50%)',
+						width: 'auto',
+						height: 'auto',
+						border: '1px solid #ccc',
+					},
+					overlay: {
+						backgroundColor: 'transparent',
+					},
+				}}
+			>
+				{isHearted ? (
+					<p className={styled.insideModal}>
+						<span className={styled.heart}>♥</span> 좋아요를 눌렀습니다!{' '}
+						<span className={styled.heart}>♥</span>
+					</p>
+				) : (
+					<p className={styled.insideModal}>
+						<span className={styled.heartOff}>♥</span> 좋아요를 취소했습니다!{' '}
+						<span className={styled.heartOff}>♥</span>
+					</p>
+				)}
+			</Modal>
+		</>
 	);
 };
 
