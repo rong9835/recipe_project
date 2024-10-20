@@ -43,10 +43,37 @@
     font-family: 'Nanum AInMamSonGeurSsi';
     font-size: 28px;
 }
+.user h2 > img{
+    margin-left: 5px;
+}
 .user span{
     font-size: 14px;
     color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
 }
+.user span > img{
+    margin-left: 5px;
+}
+
+.userEditIntroduction {
+    display: flex;
+    align-items: center; 
+}
+
+.userEditIntroduction input{
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    height: 25px;
+}
+.userEditIntroduction button{
+    color: white;
+    background-color: #C9532F;
+    margin-left: 5px;
+    width: 40px;
+    height: 25px;
+    border-radius: 10px;
+}
+
+
 .userPostsContainer {
     display: flex;
     flex-direction: column;
@@ -154,4 +181,71 @@
     float: right;
     padding-right: 0.75rem;
 
+}
+
+.userEditInfo{
+    width: 750px;
+    height: 494px;
+    margin-left: 50px;
+}
+
+.editBack{
+    display: flex;
+    align-items: center;
+    text-align: left;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.editBack img{
+    margin-right: 10px;
+}
+
+.editInput{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.editInput input{
+    box-sizing: border-box;
+    width: 595px;
+    height: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+	padding-left: 1.25rem;
+}
+.editInputEmail{
+    background-color: #EEEEEE;
+}
+
+.editBtn button{
+	border: none;
+	border-radius: 30px;
+    width: 110px;
+    height: 40px;
+    background-color: #C9532F;
+    color: white;
+    margin-top: 40px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+
+.editBtn p{
+    margin-top: 20px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.editPwBtn button{
+    border: none;
+	border-radius: 30px;
+    width: 185px;
+    height: 40px;
+    background-color: #C9532F;
+    color: white;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 20px;
 }
