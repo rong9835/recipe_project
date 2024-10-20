@@ -66,7 +66,7 @@
 }
 
 .input {
-  width: 100%;
+  width: 500px;
   max-width: 608px;
   height: 120px;
   padding: 0.75rem;
@@ -113,14 +113,31 @@
 }
 
 .recipeBox {
-  flex-grow: 1;
+  height: 618px; 
+  overflow-y: auto;  
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 1rem;
   background-color: white;
-  font-size: 0.875rem;
+  font-size: 18px;
   line-height: 1.6;
-  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.recipeContent {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  text-align: left;
+  align-self: flex-start;
+}
+
+.recipeGuide {
+  text-align: center;
 }
 
 @media (max-width: 1024px) {

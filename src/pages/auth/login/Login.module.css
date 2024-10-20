@@ -1,7 +1,7 @@
 .loginContainer {
 	width: 100%;
 	max-width: 517px;
-	padding: 20px;
+	padding: 10px;
 	box-sizing: border-box;
 	overflow-y: auto;
 	max-height: 100vh;
