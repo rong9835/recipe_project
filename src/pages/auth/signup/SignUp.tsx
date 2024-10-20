@@ -62,7 +62,7 @@ export default function SignUp() {
 	const checkNicknameAvailability = async () => {
 		const q = query(
 			collection(db, 'users'),
-			where('nickname', '==', signUpValues.nickname)
+			where('user_nickname', '==', signUpValues.nickname)
 		);
 		const querySnapshot = await getDocs(q);
 		setNicknameAvailable(querySnapshot.empty);
@@ -71,7 +71,7 @@ export default function SignUp() {
 	const checkPhoneAvailability = async () => {
 		const q = query(
 			collection(db, 'users'),
-			where('phone', '==', signUpValues.phone)
+			where('user_phone_number', '==', signUpValues.phone)
 		);
 		const querySnapshot = await getDocs(q);
 		setPhoneAvailable(querySnapshot.empty);
@@ -133,6 +133,7 @@ export default function SignUp() {
 				user_name: signUpValues.name,
 				user_nickname: signUpValues.nickname,
 				user_phone_number: signUpValues.phone,
+				provider: 'normal',
 			});
 
 			console.log('회원가입 성공:', userCreate.user);
