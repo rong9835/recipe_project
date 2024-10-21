@@ -15,6 +15,8 @@ const useAddRecipe = () => {
 		try {
 			const docRef = await addDoc(collection(db, 'recipes'), {
 				...recipeData,
+				views: recipeData.views || 0, // 기본값으로 0 설정
+				hearts: recipeData.hearts || 0, // 기본값으로 0 설정
 				recipe_create_time: Timestamp.now(),
 			});
 			console.log('Document written with ID: ', docRef.id);
@@ -31,6 +33,8 @@ const useAddRecipe = () => {
 			await updateDoc(recipeRef, {
 				...recipeData,
 				recipe_update_time: Timestamp.now(),
+				views: recipeData.views, // 기존 views 값 유지
+				hearts: recipeData.hearts, // 기존 hearts 값 유지
 			});
 			console.log('Document updated with ID: ', id);
 		} catch (error) {
