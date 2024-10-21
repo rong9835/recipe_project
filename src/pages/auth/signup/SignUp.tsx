@@ -163,7 +163,7 @@ export default function SignUp() {
 	}, []);
 
 	return (
-		<main className={styles.container}>
+		<div className={styles.container}>
 			<div className={styles.logo}>
 				<Link to={'/'}>
 					<img src="/assets/icon_logo.png" alt="" />
@@ -238,6 +238,6 @@ export default function SignUp() {
 			<div className={styles.pageLogin}>
 				<Link to={'/login'}>로그인하기</Link>
 			</div>
-		</main>
+		</div>
 	);
 }
