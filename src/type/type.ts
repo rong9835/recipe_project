@@ -4,7 +4,6 @@ export interface Recipe {
 	recipe_tags: string[]; // 태그 배열
 	recipe_ingredients: RecipeIngredient[];
 	recipe_difficulty: number;
-	recipe_hearts: number;
 	thumbnail_url: string;
 
 	recipe_create_time: RecipeCreateTime;
@@ -34,4 +33,8 @@ interface Author {
 interface RecipeIngredient {
 	name: string;
 	volume: string;
+}
+
+export interface RecipeCardProps {
+	recipe: Recipe;
 }
