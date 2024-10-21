@@ -3,55 +3,51 @@ import { Link } from 'react-router-dom';
 import styles from './RecipeAi.module.css';
 
 const RecipeAi: React.FC = () => {
-  const [ingredients, setIngredients] = useState('');
-  const [cookingMethod, setCookingMethod] = useState('');
-  const [additionalInfo, setAdditionalInfo] = useState('');
-  const [recommendedRecipe, setRecommendedRecipe] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+	const [ingredients, setIngredients] = useState('');
+	const [cookingMethod, setCookingMethod] = useState('');
+	const [additionalInfo, setAdditionalInfo] = useState('');
+	const [recommendedRecipe, setRecommendedRecipe] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
-  const formatRecipe = (recipe: string) => {
-    return recipe.replace(/\. /g, '.\n');
-  };
+	const formatRecipe = (recipe: string) => {
+		return recipe.replace(/\. /g, '.\n');
+	};
 
-  const handleFindRecipe = async () => {
-    setIsLoading(true);
-    const url = `https://open-api.jejucodingcamp.workers.dev/`;
+	const handleFindRecipe = async () => {
+		setIsLoading(true);
+		const url = import.meta.env.VITE_AI_API_URL;
 
-    const data = [
-      {
-        role: "system",
-        content: "당신은 요리 전문가입니다. 사용자가 제공한 재료, 조리방법, 추가사항을 바탕으로 적절한 레시피를 추천해주세요.",
-      },
-      {
-        role: "user",
-        content: `재료: ${ingredients}\n조리방법: ${cookingMethod}\n추가사항: ${additionalInfo}\n이 정보를 바탕으로 레시피를 추천해주세요.`,
-      },
-    ];
+		const data = [
+			{
+				role: 'system',
+				content:
+					'당신은 요리 전문가입니다. 사용자가 제공한 재료, 조리방법, 추가사항을 바탕으로 적절한 레시피를 추천해주세요.',
+			},
+			{
+				role: 'user',
+				content: `재료: ${ingredients}\n조리방법: ${cookingMethod}\n추가사항: ${additionalInfo}\n이 정보를 바탕으로 레시피를 추천해주세요.`,
+			},
+		];
 
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      
-      const result = await response.json();
-      const recipe = result.choices[0].message.content;
-      setRecommendedRecipe(formatRecipe(recipe));
-    } catch (error) {
-      console.error('Error:', error);
-      setRecommendedRecipe('레시피를 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+		try {
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data),
+			});
 
-  const handleAdditionalInfoKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleFindRecipe();
-    }
-  };
+			const result = await response.json();
+			const recipe = result.choices[0].message.content;
+			setRecommendedRecipe(formatRecipe(recipe));
+		} catch (error) {
+			console.error('Error:', error);
+			setRecommendedRecipe(
+				'레시피를 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.'
+			);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
   return (
     <div className={styles.pageWrapper}>
