@@ -12,7 +12,6 @@
 }
 .logo{
     margin-bottom: 54px;
-    position: relative;
 }
 .logo img{
     margin-bottom: 10px;
@@ -260,4 +259,48 @@
     margin-top: 20px;
     cursor: pointer;
     font-size: 20px;
+}
+
+.post {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    padding-bottom: 13px;
+}
+
+.post span {
+    flex: 1;
+    text-align: center;
+}
+
+.post span:first-child {
+    flex: 2; /* 제목 부분만 2배로 넓게 */
+}
+
+.recipePost {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 10px 0;
+    padding-top: 30px;
+}
+
+.recipePost span {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recipePost span:first-child {
+    flex: 2;
+}
+
+.pagination{
+    display: flex;
+	justify-content: center;
+	margin: 20px 0;
 }

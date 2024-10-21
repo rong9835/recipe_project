@@ -3,6 +3,7 @@ import styles from './Profile.module.css';
 import { auth, db } from '../../../firebase/config';
 import {
 	collection,
+	deleteDoc,
 	doc,
 	getDoc,
 	getDocs,
@@ -12,12 +13,15 @@ import {
 } from 'firebase/firestore';
 import Spoon from './spoon/Spoon';
 import {
+	deleteUser,
 	EmailAuthProvider,
 	reauthenticateWithCredential,
 	signOut,
 	updatePassword,
 } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
+import { Pagination } from 'antd';
+import { FirebaseError } from 'firebase/app';
 
 interface Badge {
 	image: string;
@@ -49,6 +53,17 @@ export default function Profile() {
 	const [newPassword, setNewPassword] = useState<string>('');
 	const [confirmPassword, setConfirmPassword] = useState<string>('');
 	const [newNickname, setNewNickname] = useState(userNickname);
+	const [showUserPosts, setShowUserPosts] = useState<boolean>(false);
+	const [showUserFavorite, setShowUserFavorite] = useState<boolean>(false);
+	const [currentPage, setCurrentPage] = useState(1); 
+	const pageSize = 4; 
+	const filteredCount = userRecipes.length;
+	const currentRecipes = userRecipes.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+	const [currentFavoritePage, setCurrentFavoritePage] = useState(1);
+	const [likedRecipes, setLikedRecipes] = useState<any[]>([]); 
+	const likeCount = likedRecipes.length;
+	const heartedRecipes = likedRecipes.slice((currentFavoritePage - 1) * pageSize, currentFavoritePage * pageSize);
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -65,23 +80,44 @@ export default function Profile() {
 					setUserNickname(userDocSnap.data().user_nickname);
 					setUserPhoneNumber(userDocSnap.data().user_phone_number);
 					setUserIntroduction(userDocSnap.data().user_info);
+
+					// Firestore에서 사용자가 작성한 게시물 가져오기
+					const recipesCollectionRef = collection(db, 'recipes');
+					const q = query(recipesCollectionRef, where('author.user_nickname', '==', userDocSnap.data().user_nickname));
+					const recipesSnapshot = await getDocs(q);
+					const recipesData = recipesSnapshot.docs.map((doc) => ({
+						id: doc.id,
+						...doc.data(),
+					}));
+
+					setUserRecipes(recipesData);
+
+					// 사용자가 좋아요를 누른 게시물 쿼리
+					const likedRecipesData = [];
+
+					// 각 레시피 문서에 대해 hearted 하위 컬렉션 쿼리
+					const allRecipesSnapshot = await getDocs(recipesCollectionRef);
+					for (const recipeDoc of allRecipesSnapshot.docs) {
+						const heartedCollectionRef = collection(recipeDoc.ref, 'hearted'); // 각 레시피 문서의 hearted 하위 컬렉션
+						const likedQuery = query(heartedCollectionRef, where('uid', '==', user.uid)); // 사용자 ID로 쿼리
+						const likedSnapshot = await getDocs(likedQuery);
+
+						if (!likedSnapshot.empty) {
+							likedRecipesData.push({
+								id: recipeDoc.id,
+								...recipeDoc.data(),
+							});
+						}
+					}
+
+					setLikedRecipes(likedRecipesData);
+
 				} else {
 					setUserNickname('Unknown User');
 				}
 			} else {
 				setUserNickname('Unknown User');
 			}
-
-			// Firestore에서 사용자가 작성한 게시물 가져오기
-			const recipesCollectionRef = collection(db, 'recipes');
-			const q = query(recipesCollectionRef, where('email', '==', user?.email));
-			const recipesSnapshot = await getDocs(q);
-
-			const recipesData = recipesSnapshot.docs.map((doc) => ({
-				id: doc.id,
-				...doc.data(),
-			}));
-			setUserRecipes(recipesData);
 		};
 
 		fetchUserData();
@@ -181,6 +217,39 @@ export default function Profile() {
 		}
 	};
 
+	// 회원탈퇴 함수
+	const handleDeleteAccount = async () => {
+		const user = auth.currentUser;
+
+		if (user) {
+			const confirmDelete = window.confirm('정말로 계정과 데이터를 삭제하시겠습니까?');
+
+			if(confirmDelete){
+				try {
+					// Firestore에서 사용자의 데이터 삭제
+					const userDocRef = doc(db, 'users', user.uid);
+					await deleteDoc(userDocRef);
+		
+					// Firebase Auth에서 사용자 삭제
+					await deleteUser(user);
+		
+					alert('계정과 데이터가 성공적으로 삭제되었습니다.');
+				} catch (error) {
+					console.error('계정 삭제 오류:', error);
+					if (error instanceof FirebaseError) { // FirebaseError 인스턴스인지 확인
+						if (error.code === 'auth/requires-recent-login') {
+							alert('최근 로그인 정보가 필요합니다. 다시 로그인 후 시도해 주세요.');
+						} else {
+							alert('계정 삭제 중 오류가 발생했습니다: ' + error.message);
+						}
+					} else {
+						alert('알 수 없는 오류가 발생했습니다.');
+					}
+				}
+			}
+		}
+	};
+
 	return (
 		<main className={styles.container}>
 			<div className={styles.wrapper}>
@@ -194,6 +263,16 @@ export default function Profile() {
 						<>
 							<img src="/assets/icon_userInfo.png" alt="비밀번호 변경 아이콘" />
 							<h1>비밀번호 변경</h1>
+						</>
+					) : showUserPosts ? (
+						<>
+							<img src="/assets/icon_myRecipe.png" alt="자신이 등록한 레시피 아이콘" />
+							<h1>등록한 레시피</h1>
+						</>
+					) : showUserFavorite ? (
+						<>
+							<img src="/assets/icon_favorite.png" alt="자신이 좋아요 누른 레시피 아이콘" />
+							<h1>좋아요 누른 레시피</h1>
 						</>
 					) : (
 						<>
@@ -251,17 +330,17 @@ export default function Profile() {
 						</div>
 					</section>
 					<div className={styles.sectionDivider}></div>
-					{!showEditInfo && !showEditPassword ? (
+					{!showEditInfo && !showEditPassword && !showUserPosts && !showUserFavorite ? (
 						// 기본 화면: 회원 정보 및 버튼들
 						<section className={styles.userInformation}>
 							<div className={styles.userRecipe}>
 								<span>레시피 | Recipe</span>
 								<div>
-									<button>
+									<button onClick={() => setShowUserPosts(true)}>
 										등록한 레시피
 										<img src="/assets/icon_profileButton.png" alt="" />
 									</button>
-									<button>
+									<button onClick={() => setShowUserFavorite(true)}>
 										좋아요 누른 레시피
 										<img src="/assets/icon_profileButton.png" alt="" />
 									</button>
@@ -278,7 +357,7 @@ export default function Profile() {
 										비밀번호 변경
 										<img src="/assets/icon_profileButton.png" alt="" />
 									</button>
-									<button>
+									<button onClick={handleDeleteAccount}>
 										회원탈퇴
 										<img src="/assets/icon_profileButton.png" alt="" />
 									</button>
@@ -286,7 +365,7 @@ export default function Profile() {
 							</div>
 						</section>
 					) : null}
-					{showEditInfo && !showEditPassword ? (
+					{showEditInfo && !showEditPassword && !showUserPosts && !showUserFavorite ? (
 						// 정보 수정 화면
 						<section className={styles.userEditInfo}>
 							<div
@@ -335,7 +414,7 @@ export default function Profile() {
 							</div>
 						</section>
 					) : null}
-					{!showEditInfo && showEditPassword ? (
+					{!showEditInfo && showEditPassword && !showUserPosts && !showUserFavorite ? (
 						// 비밀번호 변경 화면
 						<section className={styles.userEditInfo}>
 							<div
@@ -372,6 +451,80 @@ export default function Profile() {
 							<div className={styles.editPwBtn}>
 								<button onClick={userPasswordChange}>비밀번호 변경하기</button>
 							</div>
+						</section>
+					) : null}
+					{!showEditInfo && !showEditPassword && showUserPosts && !showUserFavorite ? (
+						// 등록한 레시피 화면
+						<section className={styles.userEditInfo}>
+							<div
+								className={styles.editBack}
+								onClick={() => setShowUserPosts(false)}
+							>
+								<img src="/assets/icon_infoback.png" alt="" />
+								<span>뒤로가기</span>
+							</div>
+							<div className={styles.post}>
+								<span>제목</span>
+								<span>작성일</span>
+								<span>좋아요</span>
+								<span>조회수</span>
+							</div>
+							<div>
+								{
+									currentRecipes.map((recipe) => (
+										<Link to={`/recipedetail/${recipe.id}`} key={recipe.id}>
+											<div className={styles.recipePost}>
+												<span>{recipe.recipe_name}</span>
+												<span>{new Date(recipe.recipe_create_time?.seconds * 1000).toLocaleDateString()}</span>
+												<span>{recipe.hearts || 0}</span>
+												<span>{recipe.views || 0}</span>
+												<img src="/assets/icon_profileButton.png" alt="" />
+											</div>
+										</Link>
+									))
+								}
+							</div>
+							<Pagination
+								className={styles.pagination}
+								current={currentPage}
+								pageSize={pageSize}
+								total={filteredCount} // 전체 필터링된 레시피 수
+								onChange={(page) => setCurrentPage(page)} // 페이지 변경 시 현재 페이지 업데이트
+							/>
+						</section>
+					) : null}
+					{!showEditInfo && !showEditPassword && !showUserPosts && showUserFavorite ? (
+						// 좋아요 누른 레시피 화면
+						<section className={styles.userEditInfo}>
+							<div
+								className={styles.editBack}
+								onClick={() => setShowUserFavorite(false)}
+							>
+								<img src="/assets/icon_infoback.png" alt="" />
+								<span>뒤로가기</span>
+							</div>
+							<div>
+								{
+									heartedRecipes.map((recipe) => (
+										<Link to={`/recipedetail/${recipe.id}`} key={recipe.id}>
+											<div className={styles.recipePost}>
+												<span>{recipe.recipe_name}</span>
+												<span>{new Date(recipe.recipe_create_time?.seconds * 1000).toLocaleDateString()}</span>
+												<span>{recipe.hearts || 0}</span>
+												<span>{recipe.views || 0}</span>
+												<img src="/assets/icon_profileButton.png" alt="" />
+											</div>
+										</Link>
+									))
+								}
+							</div>
+							<Pagination
+								className={styles.pagination}
+								current={currentFavoritePage}
+								pageSize={pageSize}
+								total={likeCount} // 전체 필터링된 레시피 수
+								onChange={(page) => setCurrentFavoritePage(page)} // 페이지 변경 시 현재 페이지 업데이트
+							/>
 						</section>
 					) : null}
 				</div>
