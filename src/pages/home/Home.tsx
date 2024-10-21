@@ -14,6 +14,7 @@ const Home = () => {
 	const plusRef = useRef<HTMLUListElement>(null);
 	const { user } = useAuth(); // user 정보를 가져옵니다.
 	const navigate = useNavigate();
+	const recipeListRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -37,7 +38,7 @@ const Home = () => {
 
 	const options = [
 		{ label: '레시피 작성하기', path: '/create' },
-		{ label: 'AI 추천 레시피', path: '/recipe-ai' },
+		{ label: 'AI 추천 레시피(BETA)', path: '/recipe-ai' },
 		{ label: '마이페이지', path: '/profile' },
 	];
 
@@ -60,11 +61,14 @@ const Home = () => {
 	};
 
 	const handleRecipeList = () => {
-		if (user) {
-			navigate('/recipelist');
-		} else {
-			alert('로그인 하셔야합니다.');
-			navigate('/login'); // 로그인되지 않았다면 로그인 페이지로 리다이렉트
+		if (recipeListRef.current) {
+			const { top } = recipeListRef.current.getBoundingClientRect();
+			const offset = 140;
+
+			window.scrollTo({
+				top: top + window.scrollY - offset,
+				behavior: 'smooth',
+			});
 		}
 	};
 
@@ -121,7 +125,12 @@ const Home = () => {
 					</ul>
 				)}
 			</div>
-			<RecipeList />
+
+			<div className={styles.backgroundWrap} ref={recipeListRef}>
+				<section className={styles.listWrap}>
+					<RecipeList />
+				</section>
+			</div>
 		</>
 	);
 };

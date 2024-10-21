@@ -7,10 +7,55 @@ const RecipeAi: React.FC = () => {
 	const [cookingMethod, setCookingMethod] = useState('');
 	const [additionalInfo, setAdditionalInfo] = useState('');
 	const [recommendedRecipe, setRecommendedRecipe] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
-	const handleFindRecipe = () => {
-		// 여기에 AI 레시피 추천 로직을 구현할 예정입니다.
-		setRecommendedRecipe('AI가 추천한 레시피가 여기에 표시됩니다.');
+	const formatRecipe = (recipe: string) => {
+		return recipe.replace(/\. /g, '.\n');
+	};
+
+	const handleFindRecipe = async () => {
+		setIsLoading(true);
+		const url = import.meta.env.VITE_AI_API_URL;
+
+		const data = [
+			{
+				role: 'system',
+				content:
+					'당신은 요리 전문가입니다. 사용자가 제공한 재료, 조리방법, 추가사항을 바탕으로 적절한 레시피를 추천해주세요.',
+			},
+			{
+				role: 'user',
+				content: `재료: ${ingredients}\n조리방법: ${cookingMethod}\n추가사항: ${additionalInfo}\n이 정보를 바탕으로 레시피를 추천해주세요.`,
+			},
+		];
+
+		try {
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data),
+			});
+
+			const result = await response.json();
+			const recipe = result.choices[0].message.content;
+			setRecommendedRecipe(formatRecipe(recipe));
+		} catch (error) {
+			console.error('Error:', error);
+			setRecommendedRecipe(
+				'레시피를 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.'
+			);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	const handleAdditionalInfoKeyDown = (
+		e: React.KeyboardEvent<HTMLTextAreaElement>
+	) => {
+		if (e.key === 'Enter' && !e.shiftKey) {
+			e.preventDefault();
+			handleFindRecipe();
+		}
 	};
 
 	return (
@@ -60,20 +105,36 @@ const RecipeAi: React.FC = () => {
 							<textarea
 								id="additionalInfo"
 								className={styles.input}
-								placeholder="예: 저염식, 글루텐 프리, 매운맛 선호"
+								placeholder="예: 저염식, 글루텐 프리, 매운맛 선호, 10분 이내 요리"
 								value={additionalInfo}
 								onChange={(e) => setAdditionalInfo(e.target.value)}
+								onKeyDown={handleAdditionalInfoKeyDown}
 							/>
 						</div>
-						<button className={styles.findButton} onClick={handleFindRecipe}>
-							레시피 찾기
+						<button
+							className={styles.findButton}
+							onClick={handleFindRecipe}
+							disabled={isLoading}
+						>
+							{isLoading ? '레시피 찾는 중...' : '레시피 찾기'}
 						</button>
 					</section>
 					<section className={styles.recipeSection}>
 						<h2 className={styles.recipeTitle}>AI 추천 레시피</h2>
 						<div className={styles.recipeBox}>
-							{recommendedRecipe ||
-								'레시피 찾기 버튼을 클릭하면 AI가 추천한 레시피가 여기에 표시됩니다.'}
+							{isLoading ? (
+								<div className={styles.recipeGuide}>
+									레시피를 생성하고 있습니다...
+								</div>
+							) : recommendedRecipe ? (
+								<div className={styles.recipeContent}>{recommendedRecipe}</div>
+							) : (
+								<div className={styles.recipeGuide}>
+									레시피 찾기 버튼을 클릭하면
+									<br />
+									AI가 추천한 레시피가 여기에 표시됩니다.
+								</div>
+							)}
 						</div>
 					</section>
 				</main>

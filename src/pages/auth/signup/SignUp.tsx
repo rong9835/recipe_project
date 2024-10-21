@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './SignUp.module.css';
 import { FirebaseError } from 'firebase/app';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -149,8 +149,21 @@ export default function SignUp() {
 		}
 	};
 
+	// url에 따른 스타일링
+	useEffect(() => {
+		const currentUrl = window.location.href;
+
+		if (currentUrl.includes('/signup')) {
+			document.body.style.backgroundColor = '#fff9e9';
+		}
+
+		return () => {
+			document.body.style.backgroundColor = '';
+		};
+	}, []);
+
 	return (
-		<main className={styles.container}>
+		<div className={styles.container}>
 			<div className={styles.logo}>
 				<Link to={'/'}>
 					<img src="/assets/icon_logo.png" alt="" />
@@ -225,6 +238,6 @@ export default function SignUp() {
 			<div className={styles.pageLogin}>
 				<Link to={'/login'}>로그인하기</Link>
 			</div>
-		</main>
+		</div>
 	);
 }

@@ -22,7 +22,7 @@ const Footer = () => {
 							<Link to="/create">레시피 작성</Link>
 						</li>
 						<li className={styles.footerMenuText}>
-							<Link to="/">AI 레시피 추천</Link>
+							<Link to="/recipe-ai">AI 레시피 추천(BETA)</Link>
 						</li>
 					</ul>
 					<ul className={styles.githubLink}>
@@ -44,7 +44,7 @@ const Footer = () => {
 					</ul>
 				</div>
 				<div className={styles.footerCopyright}>
-					&copy; 2024. 프로젝트 다 팀 All Rights Reserved.
+					&copy; 2024.레시피 연구소 팀 All Rights Reserved.
 				</div>
 			</div>
 		</div>
