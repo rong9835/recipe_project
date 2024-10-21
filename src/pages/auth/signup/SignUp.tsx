@@ -153,7 +153,7 @@ export default function SignUp() {
 	useEffect(() => {
 		const currentUrl = window.location.href;
 
-		if (currentUrl.includes('/login')) {
+		if (currentUrl.includes('/signup')) {
 			document.body.style.backgroundColor = '#fff9e9';
 		}
 
