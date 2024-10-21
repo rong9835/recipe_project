@@ -38,7 +38,7 @@ const Home = () => {
 
 	const options = [
 		{ label: '레시피 작성하기', path: '/create' },
-		{ label: 'AI 추천 레시피', path: '/recipe-ai' },
+		{ label: 'AI 추천 레시피(BETA)', path: '/recipe-ai' },
 		{ label: '마이페이지', path: '/profile' },
 	];
 
