@@ -59,15 +59,6 @@ const Home = () => {
 		}
 	};
 
-	const handleRecipeList = () => {
-		if (user) {
-			navigate('/recipelist');
-		} else {
-			alert('로그인 하셔야합니다.');
-			navigate('/login'); // 로그인되지 않았다면 로그인 페이지로 리다이렉트
-		}
-	};
-
 	return (
 		<>
 			<div id={styles.home}>
@@ -93,12 +84,7 @@ const Home = () => {
 						>
 							내 레시피 공유하기
 						</CustomButton>
-						<CustomButton
-							btnType={ButtonType.All}
-							color="ivory"
-							shape="rad20"
-							onClick={() => handleRecipeList()}
-						>
+						<CustomButton btnType={ButtonType.All} color="ivory" shape="rad20">
 							전체 레시피 확인하기
 						</CustomButton>
 					</div>
@@ -121,7 +107,9 @@ const Home = () => {
 					</ul>
 				)}
 			</div>
-			<RecipeList />
+			<div>
+				<RecipeList />
+			</div>
 		</>
 	);
 };
