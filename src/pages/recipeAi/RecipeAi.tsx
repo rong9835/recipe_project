@@ -65,7 +65,7 @@ const RecipeAi: React.FC = () => {
 					<h1 className={styles.title}>
 						<Link to="/">
 							<img
-								src="./src/assets/icon_logo.png"
+								src="/assets/icon_logo.png"
 								alt="홈으로 가기"
 								className={styles.logo}
 							/>
