@@ -403,6 +403,10 @@ textarea::-webkit-scrollbar-thumb {
 	width: 90px;
 	height: 200px;
 }
+
+.commentBtn:hover {
+	opacity: 80%;
+}
 /* 댓글 스타일 끝 */
 
 /* 댓글 리스트 스타일 시작 */
