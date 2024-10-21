@@ -6,13 +6,11 @@ import { db } from '../../firebase/config';
 import { useEffect, useState } from 'react';
 import { Tag } from 'antd'; // antd의 Tag 컴포넌트 임포트
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 
 const RecommendCard = () => {
 	const [topRecipes, setTopRecipes] = useState<any[]>([]);
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
-	const { user } = useAuth();
 
 	const getTopHeartsRecipes = async () => {
 		try {
@@ -94,12 +92,22 @@ const RecommendCard = () => {
 									<div className={styles.recipeName}>{recipe.recipe_name}</div>
 									<div className={styles.recipeTags}>
 										{/* antd의 Tag 컴포넌트를 사용하여 태그들을 분할하여 표시 */}
-										{recipe.recipe_ingredients.map(
-											(ing: any, index: number) => (
-												<Tag className={styles.customTag} key={index}>
-													{ing.name}
+										{recipe.recipe_ingredients
+											.slice(0, 3)
+											.map((ingredient: any, index: number) => (
+												<Tag key={index} className={styles.ingredient}>
+													<span className={styles.ingredientText}>
+														{ingredient.name}
+													</span>
 												</Tag>
-											)
+											))}
+
+										{recipe.recipe_ingredients.length > 4 && (
+											<Tag className={styles.ingredient}>
+												<span className={styles.ingredientText}>
+													+{recipe.recipe_ingredients.length - 3}
+												</span>
+											</Tag>
 										)}
 									</div>
 								</div>

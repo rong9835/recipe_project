@@ -24,7 +24,6 @@ const RecipeList = () => {
 	const [selectedOption, setSelectedOption] = useState<string>('레시피');
 
 	// URL 파라미터 변경 시 상태 초기화
-	// URL 파라미터에서 검색어와 옵션을 가져와 상태 초기화
 	useEffect(() => {
 		const queryParams = new URLSearchParams(location.search);
 		const searchParam = queryParams.get('search') || '';
@@ -76,9 +75,12 @@ const RecipeList = () => {
 				filteredRecipes = allRecipes;
 			}
 
+			// 정렬된 레시피 목록을 갱신 (최신순으로 정렬)
+			const sortedRecipes = sortingRecipes(filteredRecipes, selectedSorting);
+
 			// 페이지에 맞게 필터링된 레시피 가져오기
 			const startIndex = (page - 1) * pageSize; // 시작 인덱스
-			const paginatedRecipes = filteredRecipes.slice(
+			const paginatedRecipes = sortedRecipes.slice(
 				startIndex,
 				startIndex + pageSize
 			);
@@ -188,7 +190,7 @@ const RecipeList = () => {
 	};
 
 	const handleSortingSelect = (value: string) => {
-		setSelectedSorting(value); // 선택된 난이도 설정
+		setSelectedSorting(value); // 선택된 정렬 기준 설정
 
 		// 정렬된 레시피 목록을 갱신
 		const sorted = sortingRecipes(recipes, value);
