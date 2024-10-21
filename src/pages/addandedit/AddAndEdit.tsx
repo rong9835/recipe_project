@@ -136,6 +136,7 @@ const AddAndEdit = () => {
 			}
 			navigate('/recipelist');
 		} else if (isSubmitDisabled) {
+			setIsSubmitDisabled(true);
 			alert('모든 필드를 입력해주세요.');
 			return;
 		}
