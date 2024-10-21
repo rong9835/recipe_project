@@ -9,7 +9,7 @@ export const usePageStyle = () => {
             root: document.getElementById('root')?.style.cssText || '',
         };
 
-        // HTML, body, #root 스타일 설정
+        // HTML과 body 스타일 설정
         document.documentElement.style.cssText = `
             height: 100%;
             overflow: hidden;
@@ -25,16 +25,14 @@ export const usePageStyle = () => {
         `;
 
         // root 요소 스타일 설정
-        const rootElement = document.getElementById('root');
+        const rootElement = document.getElementById('root') as HTMLElement | null;
         if (rootElement) {
-            rootElement.style.cssText = `
-                height: 100%;
-                overflow-y: auto;
-            `;
+            rootElement.style.height = '100%';
+            rootElement.style.overflowY = 'auto';
         }
 
         // loginContainer 스타일 수정
-        const loginContainer = document.querySelector('.loginContainer');
+        const loginContainer = document.querySelector('.loginContainer') as HTMLElement | null;
         if (loginContainer) {
             loginContainer.style.maxHeight = 'none';
             loginContainer.style.height = 'auto';
