@@ -97,7 +97,6 @@ const RecipeList = () => {
 			console.error('Error fetching recipes:', error);
 		} finally {
 			setLoading(false);
-			window.scrollTo(0, 0);
 		}
 	};
 
@@ -125,10 +124,9 @@ const RecipeList = () => {
 			navigate(path); // 로그인된 경우 해당 경로로 이동
 		}
 	};
+	const currentUrl = window.location.href;
 
 	useEffect(() => {
-		const currentUrl = window.location.href;
-
 		if (currentUrl.includes('/recipelist')) {
 			document.body.style.backgroundColor = '#fff9e9';
 			document.body.style.marginTop = '200px';
@@ -233,8 +231,23 @@ const RecipeList = () => {
 		}
 	};
 
+	const recipeListRef = useRef<HTMLDivElement>(null);
+
+	const handlePageClick = (page: number) => {
+		setCurrentPage(page);
+		if (recipeListRef.current) {
+			const { top } = recipeListRef.current.getBoundingClientRect();
+			const offset = 200;
+
+			window.scrollTo({
+				top: top + window.scrollY - offset,
+				behavior: 'smooth',
+			});
+		}
+	};
+
 	return (
-		<div>
+		<div ref={recipeListRef}>
 			<div className={styles.recipeListHeader}>
 				<div className={styles.filterBtnWrapper}>
 					{filterOptions.map((fOption) => (
@@ -294,7 +307,7 @@ const RecipeList = () => {
 				current={currentPage}
 				pageSize={pageSize}
 				total={filteredCount} // 전체 필터링된 레시피 수
-				onChange={(page) => setCurrentPage(page)} // 페이지 변경 시 현재 페이지 업데이트
+				onChange={handlePageClick} // 페이지 변경 시 현재 페이지 업데이트
 			/>
 			<PlusMenuBtn isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
 			{isOpen && (
