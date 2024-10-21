@@ -64,6 +64,7 @@ export default function Profile() {
 	const [likedRecipes, setLikedRecipes] = useState<any[]>([]); 
 	const likeCount = likedRecipes.length;
 	const heartedRecipes = likedRecipes.slice((currentFavoritePage - 1) * pageSize, currentFavoritePage * pageSize);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -176,46 +177,44 @@ export default function Profile() {
 	// 비밀번호 변경 부분
 	const userPasswordChange = async () => {
 		const user = auth.currentUser;
-		const navigate = useNavigate();
-
+	
 		if (!user) {
-			alert('사용자가 로그인되어 있지 않습니다. 다시 로그인 후 시도해주세요.');
-			return;
+		  	alert('사용자가 로그인되어 있지 않습니다. 다시 로그인 후 시도해주세요.');
+		  	return;
 		}
-
 		if (newPassword !== confirmPassword) {
-			alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
-			return;
+		  	alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+		  	return;
 		}
-
+	  
 		try {
-			const credential = EmailAuthProvider.credential(
-				user?.email!,
-				nowPassword
-			);
-			await reauthenticateWithCredential(user, credential);
-
-			await updatePassword(user, newPassword);
+		  	const credential = EmailAuthProvider.credential(user?.email!, nowPassword);
+		  	await reauthenticateWithCredential(user, credential); // 현재 비밀번호 확인
+	  
+			await updatePassword(user, newPassword); // 새 비밀번호 설정
 			setNowPassword('');
 			setNewPassword('');
 			setConfirmPassword('');
 			setShowEditPassword(false);
-
+		
 			alert('비밀번호가 변경되었습니다.');
-
-			await signOut(auth);
+		
+			// 비밀번호 변경 후 로그아웃 및 페이지 이동
+			await signOut(auth); // 로그아웃을 기다림
 			alert('비밀번호가 변경되어 로그아웃되었습니다. 다시 로그인해주세요.');
-
+		
+			// 로그아웃이 완료된 후에 페이지 이동
 			navigate('/login');
 		} catch (error: any) {
-			if (error.code === 'auth/wrong-password') {
-				alert('현재 비밀번호가 잘못되었습니다. 다시 입력해주세요.');
-			} else {
-				console.error('비밀번호 변경 오류:', error);
-				alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
-			}
+		  	if (error.code === 'auth/wrong-password') {
+			alert('현재 비밀번호가 잘못되었습니다. 다시 입력해주세요.');
+		} else {
+			console.error('비밀번호 변경 오류:', error);
+			alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
+		  	}
 		}
 	};
+	  
 
 	// 회원탈퇴 함수
 	const handleDeleteAccount = async () => {
@@ -236,7 +235,7 @@ export default function Profile() {
 					alert('계정과 데이터가 성공적으로 삭제되었습니다.');
 				} catch (error) {
 					console.error('계정 삭제 오류:', error);
-					if (error instanceof FirebaseError) { // FirebaseError 인스턴스인지 확인
+					if (error instanceof FirebaseError) { 
 						if (error.code === 'auth/requires-recent-login') {
 							alert('최근 로그인 정보가 필요합니다. 다시 로그인 후 시도해 주세요.');
 						} else {
@@ -488,8 +487,8 @@ export default function Profile() {
 								className={styles.pagination}
 								current={currentPage}
 								pageSize={pageSize}
-								total={filteredCount} // 전체 필터링된 레시피 수
-								onChange={(page) => setCurrentPage(page)} // 페이지 변경 시 현재 페이지 업데이트
+								total={filteredCount} 
+								onChange={(page) => setCurrentPage(page)} 
 							/>
 						</section>
 					) : null}
@@ -522,8 +521,8 @@ export default function Profile() {
 								className={styles.pagination}
 								current={currentFavoritePage}
 								pageSize={pageSize}
-								total={likeCount} // 전체 필터링된 레시피 수
-								onChange={(page) => setCurrentFavoritePage(page)} // 페이지 변경 시 현재 페이지 업데이트
+								total={likeCount} 
+								onChange={(page) => setCurrentFavoritePage(page)} 
 							/>
 						</section>
 					) : null}
