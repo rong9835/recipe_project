@@ -90,7 +90,7 @@ const RecipeAi: React.FC = () => {
               <textarea
                 id="additionalInfo"
                 className={styles.input}
-                placeholder="예: 저염식, 글루텐 프리, 매운맛 선호"
+                placeholder="예: 저염식, 글루텐 프리, 매운맛 선호, 10분 이내 요리"
                 value={additionalInfo}
                 onChange={(e) => setAdditionalInfo(e.target.value)}
                 onKeyDown={handleAdditionalInfoKeyDown}
