@@ -45,3 +45,23 @@
 	margin: auto;
 	gap: 40px;
 }
+
+.backgroundWrap {
+	width: 100vw;
+	margin-left: calc(-50vw + 50%);
+	background-color: var(--sub-color);
+	display: flex;
+	justify-content: center;
+	margin-top: 50px;
+}
+
+.listWrap {
+	width: 1280px;
+	display: flex;
+	justify-content: space-around;
+	padding: 50px;
+}
+
+.listWrap:first-child {
+	max-width: 1280px;
+}
