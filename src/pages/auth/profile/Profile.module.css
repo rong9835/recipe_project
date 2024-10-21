@@ -1,306 +1,307 @@
-.container{
-    font-family: 'SUIT Variable', sans-serif;
-    width: 100%;
-    display: flex;              
-    justify-content: center;    
-    align-items: center;        
-    flex-direction: column; 
+.container {
+	font-family: 'SUIT Variable', sans-serif;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 }
 
-.wrapper{
-    width: 1280px;
+.wrapper {
+	width: 1280px;
 }
-.logo{
-    margin-bottom: 54px;
+.logo {
+	margin-bottom: 54px;
 }
-.logo img{
-    margin-bottom: 10px;
+.logo img {
+	margin-bottom: 10px;
 }
-.logo h1{
-    font-size: 28px;
+.logo h1 {
+	font-size: 28px;
 }
-.backIcon{
-    float: left;
-}
-
-.profileBox{
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    box-sizing: border-box;
-    width: 1280px;
-    height: 600px;
-    display: flex;
-    justify-content: center; /* 수평 가운데 정렬 */
-    align-items: center; /* 수직 가운데 정렬 (필요에 따라) */
+.backIcon {
+	float: left;
 }
 
-.profile{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-right: 75px;
-    width: 274px;
-    height: 494px;
+.profileBox {
+	border: 1px solid rgba(0, 0, 0, 0.5);
+	border-radius: 10px;
+	box-sizing: border-box;
+	width: 1280px;
+	height: 600px;
+	display: flex;
+	justify-content: center; /* 수평 가운데 정렬 */
+	align-items: center; /* 수직 가운데 정렬 (필요에 따라) */
 }
-.user{
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
+
+.profile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-right: 75px;
+	width: 274px;
+	height: 494px;
 }
-.user h2{
-    margin-top: 25px;
-    margin-bottom: 10px;
-    font-family: 'Nanum AInMamSonGeurSsi';
-    font-size: 28px;
+.user {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
 }
-.user h2 > img{
-    margin-left: 5px;
+.user h2 {
+	margin-top: 25px;
+	margin-bottom: 10px;
+	font-family: 'Nanum AInMamSonGeurSsi';
+	font-size: 28px;
 }
-.user span{
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.5);
-    cursor: pointer;
+.user h2 > img {
+	margin-left: 5px;
 }
-.user span > img{
-    margin-left: 5px;
+.user span {
+	font-size: 14px;
+	color: rgba(0, 0, 0, 0.5);
+	cursor: pointer;
+}
+.user span > img {
+	margin-left: 5px;
 }
 
 .userEditIntroduction {
-    display: flex;
-    align-items: center; 
+	display: flex;
+	align-items: center;
 }
 
-.userEditIntroduction input{
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    height: 25px;
+.userEditIntroduction input {
+	border: 1px solid rgba(0, 0, 0, 0.5);
+	height: 25px;
 }
-.userEditIntroduction button{
-    color: white;
-    background-color: #C9532F;
-    margin-left: 5px;
-    width: 40px;
-    height: 25px;
-    border-radius: 10px;
+.userEditIntroduction button {
+	color: white;
+	background-color: #c9532f;
+	margin-left: 5px;
+	width: 40px;
+	height: 25px;
+	border-radius: 10px;
 }
-
 
 .userPostsContainer {
-    display: flex;
-    flex-direction: column;
-    flex-direction: row;
-    gap: 30px; 
-    margin-top: 15px;
+	display: flex;
+	flex-direction: column;
+	flex-direction: row;
+	gap: 30px;
+	margin-top: 15px;
 }
-.userPost img{
-    margin-bottom: 10px;
+.userPost img {
+	margin-bottom: 10px;
 }
-.userPost span{
-    font-size: 18px;
+.userPost span {
+	font-size: 18px;
 }
-.userPost h3{
-    margin-top: 20px;
-    font-size: 18px;
-    color: #C9532F;
+.userPost h3 {
+	margin-top: 20px;
+	font-size: 18px;
+	color: #c9532f;
 }
 
 .userDivider {
-    width: 1px; 
-    background-color: #ccc; 
-    height: 100%; 
+	width: 1px;
+	background-color: #ccc;
+	height: 100%;
 }
 
-.userClass img{
-    margin-bottom: 8.5px;
-    cursor: pointer;
+.userClass img {
+	margin-bottom: 8.5px;
+	cursor: pointer;
 }
-.userClass span{
-    font-size: 18px;
+.userClass span {
+	font-size: 18px;
 }
-.userClass h3{
-    margin-top: 20px;
-    font-size: 18px;
-    color: #C9532F;
+.userClass h3 {
+	margin-top: 20px;
+	font-size: 18px;
+	color: #c9532f;
 }
 
 .sectionDivider {
-    width: 1px; 
-    height: auto; 
-    background-color: #ccc;
-    margin: 20px 0;
-    align-self: stretch;
+	width: 1px;
+	height: auto;
+	background-color: #ccc;
+	margin: 20px 0;
+	align-self: stretch;
 }
 
-.userInformation{
-    width: 750px;
-    height: 494px;
-    text-align: left; 
-    margin-left: 50px;
+.userInformation {
+	width: 750px;
+	height: 494px;
+	text-align: left;
+	margin-left: 50px;
 }
-.userRecipe span{
-    font-size: 12px;
+.userRecipe span {
+	font-size: 12px;
 }
-.userRecipe button{
-    margin-top: 10px;
-    margin-bottom: 30px;
-    width: 230px;
-    height: 50px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    margin-right: 30px;
-    background-color: white;
-    text-align: left; 
-    padding-left: 1.25rem;
-    font-size: 18px;
+.userRecipe button {
+	margin-top: 10px;
+	margin-bottom: 30px;
+	width: 230px;
+	height: 50px;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+	margin-right: 30px;
+	background-color: white;
+	text-align: left;
+	padding-left: 1.25rem;
+	font-size: 18px;
 }
 
-.userRecipe button img{
-    float: right;
-    padding-right: 0.75rem;
-
+.userRecipe button img {
+	float: right;
+	padding-right: 0.75rem;
 }
 
 .userInfo {
-    display: flex; 
-    flex-direction: column; 
+	display: flex;
+	flex-direction: column;
 }
 
 .userInfo div {
-    display: flex; 
-    gap: 30px; 
-    flex-wrap: wrap; 
+	display: flex;
+	gap: 30px;
+	flex-wrap: wrap;
 }
 
-
-.userInfo span{
-    font-size: 12px;
-
+.userInfo span {
+	font-size: 12px;
 }
-.userInfo button{
-    margin-top: 10px;
-    margin-bottom: 30px;
-    width: 230px;
-    height: 50px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    background-color: white;
-    text-align: left; 
-    padding-left: 1.25rem;
-    font-size: 18px;
+.userInfo button {
+	margin-top: 10px;
+	margin-bottom: 30px;
+	width: 230px;
+	height: 50px;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+	background-color: white;
+	text-align: left;
+	padding-left: 1.25rem;
+	font-size: 18px;
 }
-.userInfo button img{
-    float: right;
-    padding-right: 0.75rem;
-
+.userInfo button img {
+	float: right;
+	padding-right: 0.75rem;
 }
 
-.userEditInfo{
-    width: 750px;
-    height: 494px;
-    margin-left: 50px;
+.userEditInfo {
+	width: 750px;
+	height: 494px;
+	margin-left: 50px;
 }
 
-.editBack{
-    display: flex;
-    align-items: center;
-    text-align: left;
-    margin-bottom: 20px;
-    cursor: pointer;
+.editBack {
+	display: flex;
+	align-items: center;
+	text-align: left;
+	margin-bottom: 20px;
+	cursor: pointer;
 }
-.editBack img{
-    margin-right: 10px;
-}
-
-.editInput{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+.editBack img {
+	margin-right: 10px;
 }
 
-.editInput input{
-    box-sizing: border-box;
-    width: 595px;
-    height: 50px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
+.editInput {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
+}
+
+.editInput input {
+	box-sizing: border-box;
+	width: 595px;
+	height: 50px;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
 	padding-left: 1.25rem;
 }
-.editInputEmail{
-    background-color: #EEEEEE;
+.editInputEmail {
+	background-color: #eeeeee;
 }
 
-.editBtn button{
+.editBtn button {
 	border: none;
 	border-radius: 30px;
-    width: 110px;
-    height: 40px;
-    background-color: #C9532F;
-    color: white;
-    margin-top: 40px;
-    cursor: pointer;
-    font-size: 20px;
+	width: 110px;
+	height: 40px;
+	background-color: #c9532f;
+	color: white;
+	margin-top: 40px;
+	cursor: pointer;
+	font-size: 20px;
 }
 
-
-.editBtn p{
-    margin-top: 20px;
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.3);
+.editBtn p {
+	margin-top: 20px;
+	font-size: 14px;
+	color: rgba(0, 0, 0, 0.3);
 }
 
-.editPwBtn button{
-    border: none;
+.editPwBtn button {
+	border: none;
 	border-radius: 30px;
-    width: 185px;
-    height: 40px;
-    background-color: #C9532F;
-    color: white;
-    margin-top: 20px;
-    cursor: pointer;
-    font-size: 20px;
+	width: 185px;
+	height: 40px;
+	background-color: #c9532f;
+	color: white;
+	margin-top: 20px;
+	cursor: pointer;
+	font-size: 20px;
 }
 
 .post {
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-    padding-bottom: 13px;
+	display: flex;
+	justify-content: space-between;
+	text-align: center;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	padding-bottom: 13px;
 }
 
 .post span {
-    flex: 1;
-    text-align: center;
+	flex: 1;
+	text-align: center;
 }
 
 .post span:first-child {
-    flex: 2; /* 제목 부분만 2배로 넓게 */
+	flex: 2; /* 제목 부분만 2배로 넓게 */
 }
 
 .recipePost {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-    padding: 10px 0;
-    padding-top: 30px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	padding: 10px 0;
+	padding-top: 30px;
 }
 
 .recipePost span {
-    flex: 1;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+	flex: 1;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .recipePost span:first-child {
-    flex: 2;
+	flex: 2;
 }
 
-.pagination{
-    display: flex;
+.pagination {
+	display: flex;
 	justify-content: center;
 	margin: 20px 0;
+}
+
+.logoText {
+	font-family: 'Ainmom';
+	color: #c9532f;
+	font-size: 28px;
+	line-height: 2;
 }
