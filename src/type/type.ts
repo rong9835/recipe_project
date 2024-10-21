@@ -35,3 +35,7 @@ interface RecipeIngredient {
 	name: string;
 	volume: string;
 }
+
+export interface RecipeCardProps {
+	recipe: Recipe;
+}
