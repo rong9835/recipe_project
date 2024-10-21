@@ -14,8 +14,10 @@ import Spoon from './spoon/Spoon';
 import {
 	EmailAuthProvider,
 	reauthenticateWithCredential,
+	signOut,
 	updatePassword,
 } from 'firebase/auth';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface Badge {
 	image: string;
@@ -46,6 +48,7 @@ export default function Profile() {
 	const [nowPassword, setNowPassword] = useState<string>('');
 	const [newPassword, setNewPassword] = useState<string>('');
 	const [confirmPassword, setConfirmPassword] = useState<string>('');
+	const [newNickname, setNewNickname] = useState(userNickname);
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -106,10 +109,11 @@ export default function Profile() {
 			try {
 				await updateDoc(userDocRef, {
 					user_name: userName,
-					user_nickname: userNickname,
+					user_nickname: newNickname,
 					user_phone_number: userPhoneNumber,
 				});
 				alert('사용자 정보가 업데이트되었습니다.');
+				setUserNickname(newNickname);
 				setShowEditInfo(false);
 			} catch (error) {
 				console.error('사용자 정보 업데이트 오류:', error);
@@ -136,6 +140,7 @@ export default function Profile() {
 	// 비밀번호 변경 부분
 	const userPasswordChange = async () => {
 		const user = auth.currentUser;
+		const navigate = useNavigate();
 
 		if (!user) {
 			alert('사용자가 로그인되어 있지 않습니다. 다시 로그인 후 시도해주세요.');
@@ -161,6 +166,11 @@ export default function Profile() {
 			setShowEditPassword(false);
 
 			alert('비밀번호가 변경되었습니다.');
+
+			await signOut(auth);
+			alert('비밀번호가 변경되어 로그아웃되었습니다. 다시 로그인해주세요.');
+
+			navigate('/login');
 		} catch (error: any) {
 			if (error.code === 'auth/wrong-password') {
 				alert('현재 비밀번호가 잘못되었습니다. 다시 입력해주세요.');
@@ -173,193 +183,198 @@ export default function Profile() {
 
 	return (
 		<main className={styles.container}>
-			<div className={styles.logo}>
-				{showEditInfo ? (
-					<>
-						<img src="/assets/icon_userInfo.png" alt="정보수정 아이콘" />
-						<h1>정보수정</h1>
-					</>
-				) : showEditPassword ? (
-					<>
-						<img src="/assets/icon_userInfo.png" alt="비밀번호 변경 아이콘" />
-						<h1>비밀번호 변경</h1>
-					</>
-				) : (
-					<>
-						<img src="/assets/icon_mypage.png" alt="마이페이지 아이콘" />
-						<h1>마이페이지</h1>
-					</>
-				)}
-			</div>
-			<div className={styles.profileBox}>
-				<section className={styles.profile}>
-					<div className={styles.user}>
-						<img src="/assets/icon_profileImg.png" alt="" />
-						<h2>
-							{userNickname}
-							<img src="/assets/icon_nicknameImg.png" alt="" />
-						</h2>
-						{editIntroduction ? (
-							<div className={styles.userEditIntroduction}>
+			<div className={styles.wrapper}>
+				<div className={styles.logo}>
+					{showEditInfo ? (
+						<>
+							<img src="/assets/icon_userInfo.png" alt="정보수정 아이콘" />
+							<h1>정보수정</h1>
+						</>
+					) : showEditPassword ? (
+						<>
+							<img src="/assets/icon_userInfo.png" alt="비밀번호 변경 아이콘" />
+							<h1>비밀번호 변경</h1>
+						</>
+					) : (
+						<>
+							<Link to={'/'}>
+								<img src="/assets/icon_back.png" alt="홈으로 이동하는 아이콘" className={styles.backIcon}/>
+							</Link>
+							<img src="/assets/icon_mypage.png" alt="마이페이지 아이콘" />
+							<h1>마이페이지</h1>
+						</>
+					)}
+				</div>
+				<div className={styles.profileBox}>
+					<section className={styles.profile}>
+						<div className={styles.user}>
+							<img src="/assets/icon_profileImg.png" alt="" />
+							<h2>
+								{userNickname}
+								<img src="/assets/icon_nicknameImg.png" alt="" />
+							</h2>
+							{editIntroduction ? (
+								<div className={styles.userEditIntroduction}>
+									<input
+										type="text"
+										value={userIntroduction || ''}
+										onChange={(e) => setUserIntroduction(e.target.value)}
+									/>
+									<button onClick={userIntroductionUpdate}>저장</button>
+									<button onClick={() => setEditIntroduction(false)}>취소</button>
+								</div>
+							) : (
+								<span onClick={() => setEditIntroduction(true)}>
+									{userIntroduction
+										? userIntroduction
+										: '자기소개를 작성해주세요.'}
+									<img src="/assets/icon_infoImg.png" alt="" />
+								</span>
+							)}
+						</div>
+						<div className={styles.userPostsContainer}>
+							<div className={styles.userPost}>
+								<div>
+									<img src="/assets/icon_posts.png" alt="" />
+								</div>
+								<span>등록된 게시물</span>
+								<h3>{userRecipes.length}</h3>
+							</div>
+							<div className={styles.userDivider}></div>
+							<div className={styles.userClass}>
+								<div onClick={() => setSpoonModalOpen(true)}>
+									<img src={currentBadge.image} alt={currentBadge.name} />
+								</div>
+								<span>뱃지 등급</span>
+								<h3>{currentBadge.name}</h3>
+							</div>
+						</div>
+					</section>
+					<div className={styles.sectionDivider}></div>
+					{!showEditInfo && !showEditPassword ? (
+						// 기본 화면: 회원 정보 및 버튼들
+						<section className={styles.userInformation}>
+							<div className={styles.userRecipe}>
+								<span>레시피 | Recipe</span>
+								<div>
+									<button>
+										등록한 레시피
+										<img src="/assets/icon_profileButton.png" alt="" />
+									</button>
+									<button>
+										좋아요 누른 레시피
+										<img src="/assets/icon_profileButton.png" alt="" />
+									</button>
+								</div>
+							</div>
+							<div className={styles.userInfo}>
+								<span>회원정보 | User Info</span>
+								<div>
+									<button onClick={() => setShowEditInfo(true)}>
+										정보수정
+										<img src="/assets/icon_profileButton.png" alt="" />
+									</button>
+									<button onClick={() => setShowEditPassword(true)}>
+										비밀번호 변경
+										<img src="/assets/icon_profileButton.png" alt="" />
+									</button>
+									<button>
+										회원탈퇴
+										<img src="/assets/icon_profileButton.png" alt="" />
+									</button>
+								</div>
+							</div>
+						</section>
+					) : null}
+					{showEditInfo && !showEditPassword ? (
+						// 정보 수정 화면
+						<section className={styles.userEditInfo}>
+							<div
+								className={styles.editBack}
+								onClick={() => setShowEditInfo(false)}
+							>
+								<img src="/assets/icon_infoback.png" alt="" />
+								<span>뒤로가기</span>
+							</div>
+							<div className={styles.editInput}>
+								<span>이메일</span>
+								<input
+									type="email"
+									className={styles.editInputEmail}
+									readOnly
+									value={userEmail || ''}
+								/>
+							</div>
+							<div className={styles.editInput}>
+								<span>이름</span>
 								<input
 									type="text"
-									value={userIntroduction || ''}
-									onChange={(e) => setUserIntroduction(e.target.value)}
+									value={userName || ''}
+									onChange={(e) => setUserName(e.target.value)}
 								/>
-								<button onClick={userIntroductionUpdate}>저장</button>
-								<button onClick={() => setEditIntroduction(false)}>취소</button>
 							</div>
-						) : (
-							<span onClick={() => setEditIntroduction(true)}>
-								{userIntroduction
-									? userIntroduction
-									: '자기소개를 작성해주세요.'}
-								<img src="/assets/icon_infoImg.png" alt="" />
-							</span>
-						)}
-					</div>
-					<div className={styles.userPostsContainer}>
-						<div className={styles.userPost}>
-							<div>
-								<img src="/assets/icon_posts.png" alt="" />
+							<div className={styles.editInput}>
+								<span>닉네임</span>
+								<input
+									type="text"
+									value={newNickname || ''}
+									onChange={(e) => setNewNickname(e.target.value)}
+								/>
 							</div>
-							<span>등록된 게시물</span>
-							<h3>{userRecipes.length}</h3>
-						</div>
-						<div className={styles.userDivider}></div>
-						<div className={styles.userClass}>
-							<div onClick={() => setSpoonModalOpen(true)}>
-								<img src={currentBadge.image} alt={currentBadge.name} />
+							<div className={styles.editInput}>
+								<span>연락처</span>
+								<input
+									type="tel"
+									value={userPhoneNumber || ''}
+									onChange={(e) => setUserPhoneNumber(e.target.value)}
+								/>
 							</div>
-							<span>뱃지 등급</span>
-							<h3>{currentBadge.name}</h3>
-						</div>
-					</div>
-				</section>
-				<div className={styles.sectionDivider}></div>
-				{!showEditInfo && !showEditPassword ? (
-					// 기본 화면: 회원 정보 및 버튼들
-					<section className={styles.userInformation}>
-						<div className={styles.userRecipe}>
-							<span>레시피 | Recipe</span>
-							<div>
-								<button>
-									등록한 레시피
-									<img src="/assets/icon_profileButton.png" alt="" />
-								</button>
-								<button>
-									좋아요 누른 레시피
-									<img src="/assets/icon_profileButton.png" alt="" />
-								</button>
+							<div className={styles.editBtn}>
+								<button onClick={userInfoUpdate}>수정완료</button>
+								<p>회원탈퇴</p>
 							</div>
-						</div>
-						<div className={styles.userInfo}>
-							<span>회원정보 | User Info</span>
-							<div>
-								<button onClick={() => setShowEditInfo(true)}>
-									정보수정
-									<img src="/assets/icon_profileButton.png" alt="" />
-								</button>
-								<button onClick={() => setShowEditPassword(true)}>
-									비밀번호 변경
-									<img src="/assets/icon_profileButton.png" alt="" />
-								</button>
-								<button>
-									회원탈퇴
-									<img src="/assets/icon_profileButton.png" alt="" />
-								</button>
+						</section>
+					) : null}
+					{!showEditInfo && showEditPassword ? (
+						// 비밀번호 변경 화면
+						<section className={styles.userEditInfo}>
+							<div
+								className={styles.editBack}
+								onClick={() => setShowEditPassword(false)}
+							>
+								<img src="/assets/icon_infoback.png" alt="" />
+								<span>뒤로가기</span>
 							</div>
-						</div>
-					</section>
-				) : null}
-				{showEditInfo && !showEditPassword ? (
-					// 정보 수정 화면
-					<section className={styles.userEditInfo}>
-						<div
-							className={styles.editBack}
-							onClick={() => setShowEditInfo(false)}
-						>
-							<img src="/assets/icon_infoback.png" alt="" />
-							<span>뒤로가기</span>
-						</div>
-						<div className={styles.editInput}>
-							<span>이메일</span>
-							<input
-								type="email"
-								className={styles.editInputEmail}
-								readOnly
-								value={userEmail || ''}
-							/>
-						</div>
-						<div className={styles.editInput}>
-							<span>이름</span>
-							<input
-								type="text"
-								value={userName || ''}
-								onChange={(e) => setUserName(e.target.value)}
-							/>
-						</div>
-						<div className={styles.editInput}>
-							<span>닉네임</span>
-							<input
-								type="text"
-								value={userNickname || ''}
-								onChange={(e) => setUserNickname(e.target.value)}
-							/>
-						</div>
-						<div className={styles.editInput}>
-							<span>연락처</span>
-							<input
-								type="tel"
-								value={userPhoneNumber || ''}
-								onChange={(e) => setUserPhoneNumber(e.target.value)}
-							/>
-						</div>
-						<div className={styles.editBtn}>
-							<button onClick={userInfoUpdate}>수정완료</button>
-							<p>회원탈퇴</p>
-						</div>
-					</section>
-				) : null}
-				{!showEditInfo && showEditPassword ? (
-					// 비밀번호 변경 화면
-					<section className={styles.userEditInfo}>
-						<div
-							className={styles.editBack}
-							onClick={() => setShowEditPassword(false)}
-						>
-							<img src="/assets/icon_infoback.png" alt="" />
-							<span>뒤로가기</span>
-						</div>
-						<div className={styles.editInput}>
-							<span>현재 비밀번호</span>
-							<input
-								type="password"
-								value={nowPassword}
-								onChange={(e) => setNowPassword(e.target.value)}
-							/>
-						</div>
-						<div className={styles.editInput}>
-							<span>새 비밀번호</span>
-							<input
-								type="password"
-								value={newPassword}
-								onChange={(e) => setNewPassword(e.target.value)}
-							/>
-						</div>
-						<div className={styles.editInput}>
-							<span>새 비밀번호 확인</span>
-							<input
-								type="password"
-								value={confirmPassword}
-								onChange={(e) => setConfirmPassword(e.target.value)}
-							/>
-						</div>
-						<div className={styles.editPwBtn}>
-							<button onClick={userPasswordChange}>비밀번호 변경하기</button>
-						</div>
-					</section>
-				) : null}
+							<div className={styles.editInput}>
+								<span>현재 비밀번호</span>
+								<input
+									type="password"
+									value={nowPassword}
+									onChange={(e) => setNowPassword(e.target.value)}
+								/>
+							</div>
+							<div className={styles.editInput}>
+								<span>새 비밀번호</span>
+								<input
+									type="password"
+									value={newPassword}
+									onChange={(e) => setNewPassword(e.target.value)}
+								/>
+							</div>
+							<div className={styles.editInput}>
+								<span>새 비밀번호 확인</span>
+								<input
+									type="password"
+									value={confirmPassword}
+									onChange={(e) => setConfirmPassword(e.target.value)}
+								/>
+							</div>
+							<div className={styles.editPwBtn}>
+								<button onClick={userPasswordChange}>비밀번호 변경하기</button>
+							</div>
+						</section>
+					) : null}
+				</div>
 			</div>
 			{spoonModalOpen && <Spoon onClose={() => setSpoonModalOpen(false)} />}
 		</main>

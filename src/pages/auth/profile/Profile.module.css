@@ -7,12 +7,21 @@
     flex-direction: column; 
 }
 
+.wrapper{
+    width: 1280px;
+}
 .logo{
     margin-bottom: 54px;
-    font-size: 28px;
+    position: relative;
 }
 .logo img{
     margin-bottom: 10px;
+}
+.logo h1{
+    font-size: 28px;
+}
+.backIcon{
+    float: left;
 }
 
 .profileBox{
