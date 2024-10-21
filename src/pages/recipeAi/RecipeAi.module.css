@@ -1,160 +1,177 @@
 .pageWrapper {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	overflow: auto;
-	background-color: #FFF9E9;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+  background-color: #FFF9E9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 50px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+max-width: 1200px;
+width: 100%;
+margin: 0 auto;
+padding: 50px;
+box-sizing: border-box;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+height: 100%;
 }
 
 .header {
-  text-align: center;
-  margin-bottom: 2rem;
+text-align: center;
+margin-bottom: 2rem;
 }
 
 .logo {
-  width: 200px;
-  height: 81px;
-  max-width: 100%;
-  object-fit: contain;
+width: 200px;
+height: 81px;
+max-width: 100%;
+object-fit: contain;
 }
 
 .main {
-  display: flex;
-  gap: 4rem; 
-  width: 100%;
+display: flex;
+gap: 4rem; 
+width: 100%;
 }
 
 .inputSection,
 .recipeSection {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+flex: 1;
+display: flex;
+flex-direction: column;
+gap: 1.5rem;
 }
 
 .recipeSection {
-  gap: 0;
+gap: 0;
 }
 
 .inputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+display: flex;
+flex-direction: column;
+gap: 0.5rem;
 }
 
 .label {
-  font-size: 24px;
-  font-weight: 600;
+font-size: 24px;
+font-weight: 600;
 }
 
 .input {
-  width: 100%;
-  max-width: 608px;
-  height: 120px;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: none;
-  font-size: 18px;
-  line-height: 1.5;
-  transition: border-color 0.3s ease;
+width: 100%;
+max-width: 608px;
+height: 120px;
+padding: 0.75rem;
+border: 1px solid #ccc;
+border-radius: 4px;
+resize: none;
+font-size: 18px;
+line-height: 1.5;
+transition: border-color 0.3s ease;
 }
 
 .input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+outline: none;
+border-color: #007bff;
+box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
 .input::placeholder {
-  color: #aaa;
+color: #aaa;
 }
 
 .findButton {
-  padding: 1rem 1rem;
-  background-color: #c9532f;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 24px;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-  margin-top: 1rem;
+padding: 1rem 1rem;
+background-color: #c9532f;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+font-size: 24px;
+font-weight: 600;
+transition: background-color 0.3s ease;
+margin-top: 1rem;
 }
 
 .findButton:hover {
-  background-color: #b54600;
+background-color: #b54600;
 }
 
 .recipeTitle {
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.5rem;
+font-size: 24px;
+font-weight: 600;
+color: #333;
+margin-bottom: 0.5rem;
 }
 
 .recipeBox {
-  flex-grow: 1;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 1rem;
-  background-color: white;
-  font-size: 0.875rem;
-  line-height: 1.6;
-  overflow-y: auto;
+height: 618px; 
+overflow-y: auto;  
+border: 1px solid #ccc;
+border-radius: 4px;
+padding: 1rem;
+background-color: white;
+font-size: 18px;
+line-height: 1.6;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.recipeContent {
+white-space: pre-wrap;
+word-wrap: break-word;
+width: 100%;
+overflow-wrap: break-word;
+word-break: break-word;
+text-align: left;
+align-self: flex-start;
+}
+
+.recipeGuide {
+text-align: center;
 }
 
 @media (max-width: 1024px) {
-  .main {
-    gap: 3rem;
-  }
+.main {
+  gap: 3rem;
+}
 }
 
 @media (max-width: 768px) {
-  .main {
-    flex-direction: column;
-    gap: 2rem;
-  }
+.main {
+  flex-direction: column;
+  gap: 2rem;
+}
 
-  .input {
-    height: 100px;
-  }
+.input {
+  height: 100px;
+}
 }
 
 @media (max-width: 480px) {
-  .container {
-    padding: 10px;
-  }
+.container {
+  padding: 10px;
+}
 
-  .logo {
-    width: 150px;
-    height: 61px;
-  }
+.logo {
+  width: 150px;
+  height: 61px;
+}
 
-  .input {
-    height: 80px;
-  }
+.input {
+  height: 80px;
+}
 
-  .findButton {
-    padding: 0.5rem 0.75rem;
-  }
+.findButton {
+  padding: 0.5rem 0.75rem;
+}
 }
