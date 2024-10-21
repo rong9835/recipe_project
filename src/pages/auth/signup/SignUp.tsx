@@ -53,7 +53,7 @@ export default function SignUp() {
 	const checkEmailAvailability = async () => {
 		const q = query(
 			collection(db, 'users'),
-			where('email', '==', signUpValues.email)
+			where('user_email', '==', signUpValues.email)
 		);
 		const querySnapshot = await getDocs(q);
 		setEmailAvailable(querySnapshot.empty);
