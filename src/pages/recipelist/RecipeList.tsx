@@ -95,6 +95,7 @@ const RecipeList = () => {
 			console.error('Error fetching recipes:', error);
 		} finally {
 			setLoading(false);
+			window.scrollTo(0, 0);
 		}
 	};
 

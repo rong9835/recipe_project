@@ -44,6 +44,7 @@ const RecommendCard = () => {
 				console.error('Error fetching recipes:', error);
 			} finally {
 				setLoading(false); // 데이터를 다 불러온 후 로딩 상태를 false로 설정
+				window.scrollTo(0, 0);
 			}
 		};
 
