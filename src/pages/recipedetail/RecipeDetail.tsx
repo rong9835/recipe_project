@@ -109,7 +109,7 @@ export default function RecipeDetail() {
 				const docRef = doc(db, 'recipes', recipeId);
 				alert('삭제되었습니다.');
 				await deleteDoc(docRef);
-				navigate('/recipelist');
+				navigate('/'); // 삭제 후 홈으로 이동
 			} catch (error) {
 				console.error('문서 삭제 오류', error);
 			}
