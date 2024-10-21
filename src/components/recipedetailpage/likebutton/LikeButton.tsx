@@ -17,6 +17,8 @@ import styled from './LikeButton.module.css';
 import { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 
+Modal.setAppElement('#root');
+
 const LikeButton = ({ recipeId }: { recipeId: string }) => {
 	const user = useAuth();
 	const [isHearted, setIsHearted] = useState(false);
