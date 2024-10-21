@@ -1,6 +1,7 @@
 .pageContainer {
-	min-height: 90vh;
+	min-height: 100vh;
 	display: flex;
+	overflow: hidden;  /* 전체 페이지 스크롤 방지 */
 }
 
 .loginContainer {
@@ -8,11 +9,10 @@
 	max-width: 517px;
 	padding: 10px;
 	box-sizing: border-box;
-	overflow-y: auto;
-	max-height: 100vh;
 	display: flex;
 	flex-direction: column;
 	margin: auto;
+	overflow: hidden;  /* 로그인 컨테이너 내부 스크롤 방지 */
 }
 
 .loginBox {
@@ -131,7 +131,6 @@
 
 @media (max-height: 800px) {
 	.loginContainer {
-		align-items: flex-start;
-		padding-top: 10px;
+			padding-top: 10px;
 	}
 }
