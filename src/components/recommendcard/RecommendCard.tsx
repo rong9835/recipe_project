@@ -61,12 +61,7 @@ const RecommendCard = () => {
 	};
 
 	const handleClickEvent = (id: string) => {
-		if (!user) {
-			alert('로그인 하셔야합니다.');
-			navigate('/login');
-		} else {
-			navigate(`/recipedetail/${id}`);
-		}
+		navigate(`/recipedetail/${id}`);
 	};
 
 	return (
