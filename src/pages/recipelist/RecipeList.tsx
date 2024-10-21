@@ -18,6 +18,9 @@ const RecipeList = () => {
 	const [loading, setLoading] = useState(false);
 	const pageSize = 9; // 페이지당 보여줄 레시피 개수
 	const location = useLocation();
+	// 정렬 드롭다운
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태
+	const [selectedSorting, setSelectedSorting] = useState<string>('최신글');
 
 	// URL 파라미터에서 검색어와 옵션을 가져와 상태 초기화
 	const [searchTerm, setSearchTerm] = useState<string>('');
@@ -103,7 +106,8 @@ const RecipeList = () => {
 	// 페이지 변경 시 데이터를 다시 불러옴
 	useEffect(() => {
 		fetchRecipes(currentPage);
-	}, [currentPage, searchTerm, selectedOption]); // 검색어와 옵션이 변경될 때도 재호출
+	}, [currentPage, searchTerm, selectedOption, selectedSorting]); // 정렬 기준도 포함
+	// 검색어와 옵션이 변경될 때도 재호출
 
 	// 검색어가 변경될 때 현재 페이지를 1로 설정
 	useEffect(() => {
@@ -178,10 +182,6 @@ const RecipeList = () => {
 		}
 		return false;
 	});
-
-	// 정렬 드롭다운
-	const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태
-	const [selectedSorting, setSelectedSorting] = useState<string>('최신글');
 
 	const toggleDropdown = () => {
 		setIsDropdownOpen(!isDropdownOpen);
