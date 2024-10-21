@@ -14,6 +14,7 @@ const Home = () => {
 	const plusRef = useRef<HTMLUListElement>(null);
 	const { user } = useAuth(); // user 정보를 가져옵니다.
 	const navigate = useNavigate();
+	const recipeListRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -59,6 +60,18 @@ const Home = () => {
 		}
 	};
 
+	const handleRecipeList = () => {
+		if (recipeListRef.current) {
+			const { top } = recipeListRef.current.getBoundingClientRect();
+			const offset = 140;
+
+			window.scrollTo({
+				top: top + window.scrollY - offset,
+				behavior: 'smooth',
+			});
+		}
+	};
+
 	return (
 		<>
 			<div id={styles.home}>
@@ -84,7 +97,12 @@ const Home = () => {
 						>
 							내 레시피 공유하기
 						</CustomButton>
-						<CustomButton btnType={ButtonType.All} color="ivory" shape="rad20">
+						<CustomButton
+							btnType={ButtonType.All}
+							color="ivory"
+							shape="rad20"
+							onClick={() => handleRecipeList()}
+						>
 							전체 레시피 확인하기
 						</CustomButton>
 					</div>
@@ -107,8 +125,11 @@ const Home = () => {
 					</ul>
 				)}
 			</div>
-			<div>
-				<RecipeList />
+
+			<div className={styles.backgroundWrap} ref={recipeListRef}>
+				<section className={styles.listWrap}>
+					<RecipeList />
+				</section>
 			</div>
 		</>
 	);

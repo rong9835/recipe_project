@@ -77,8 +77,8 @@
 	align-items: center;
 	gap: 16px;
 	position: absolute;
-	top: 100%;
-	left: 0;
+	top: 34px;
+	left: -1px;
 	padding: 8px 0;
 	z-index: 10; /* 레이아웃 위로 오게 하기 위해 z-index 설정 */
 	background-color: #ffffff; /* 드롭다운 배경 설정 */
@@ -86,7 +86,6 @@
 	border-top: none;
 	border-bottom-left-radius: 10px; /* 드롭다운 모서리 둥글게 설정 */
 	border-bottom-right-radius: 10px;
-	box-sizing: border-box;
 	margin-top: -2px;
 }
 
