@@ -173,6 +173,7 @@ h4 em::before {
 
 	display: flex;
 	flex-wrap: wrap;
+	gap: 25px;
 }
 
 .cookingIngredientList ul {
@@ -188,14 +189,14 @@ h4 em::before {
 /* 2개의 ul일 때 */
 .cookingIngredientList ul:first-child:nth-last-child(2),
 .cookingIngredientList ul:first-child:nth-last-child(2) ~ ul {
-	width: 50%;
+	width: 48%;
 }
 
 /* 3개 이상의 ul일 때 */
 .cookingIngredientList ul:first-child:nth-last-child(n + 3),
 .cookingIngredientList ul:first-child:nth-last-child(n + 3) ~ ul {
-	width: calc(33.333% - 20px);
-	margin-right: 30px;
+	width: calc(30%);
+	margin-right: 10px;
 }
 
 .cookingIngredientList ul:first-child:nth-last-child(n + 3) ~ ul:nth-child(3n),
