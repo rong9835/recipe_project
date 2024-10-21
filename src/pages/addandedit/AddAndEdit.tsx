@@ -23,6 +23,8 @@ const AddAndEdit = () => {
 	const [recipeTip, setRecipeTip] = useState('');
 	const [recipeDesc, setRecipeDesc] = useState('');
 	const [tags, setTags] = useState<string[]>([]);
+	const [views, setViews] = useState<number>(0);
+	const [hearts, setHearts] = useState<number>(0);
 	const { imageUrl, uploadImage, setImageUrl } = useThumbnailImgUpload();
 
 	const handleThumbnailImgChange = (
@@ -104,7 +106,7 @@ const AddAndEdit = () => {
 				author: {
 					user_nickname: nickname ? nickname : user?.displayName, // 예시 이메일
 				}, // 적절한 author 데이터 설정
-				hearts: 0, // 예시값
+				hearts: hearts, // 예시값
 				recipe_difficulty: parseInt(difficulty.replace(/\D/g, ''), 10),
 				recipe_ingredients: ingredients.map((ing) => ({
 					name: ing.name,
@@ -123,7 +125,7 @@ const AddAndEdit = () => {
 				},
 				recipe_tips: recipeTip,
 				thumbnail_url: imageUrl, // 업로드된 이미지 URL
-				views: 0,
+				views: views,
 			};
 
 			setIsSubmitDisabled(false);
@@ -211,6 +213,8 @@ const AddAndEdit = () => {
 					setTags(recipeData.recipe_tags);
 					// Assuming you have a way to set the thumbnail image URL
 					setImageUrl(recipeData.thumbnail_url);
+					setViews(recipeData.views);
+					setHearts(recipeData.hearts);
 				}
 			}
 		};
