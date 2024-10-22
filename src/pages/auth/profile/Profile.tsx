@@ -580,6 +580,12 @@ export default function Profile() {
 								<img src="/assets/icon_infoback.png" alt="" />
 								<span>뒤로가기</span>
 							</div>
+							<div className={styles.post}>
+								<span>제목</span>
+								<span>작성일</span>
+								<span>좋아요</span>
+								<span>조회수</span>
+							</div>
 							<div>
 								{heartedRecipes.map((recipe) => (
 									<Link to={`/recipedetail/${recipe.id}`} key={recipe.id}>
