@@ -10,6 +10,7 @@ import {
 	query,
 	updateDoc,
 	where,
+	writeBatch,
 } from 'firebase/firestore';
 import Spoon from './spoon/Spoon';
 import {
@@ -31,17 +32,17 @@ interface Badge {
 
 // 사용자 게시글 수에 따라 배지 제공하기 위한 데이터
 const badgeData: Badge[] = [
-	{ image: '/assets/icon_spoon.png', name: '스푼 Spoon', count: 0 },
-	{ image: '/assets/icon_spoon2.png', name: '포크 Fork', count: 10 },
-	{ image: '/assets/icon_spoon3.png', name: '챕스 Chopsticks', count: 20 },
-	{ image: '/assets/icon_spoon4.png', name: '터너 Turner', count: 30 },
-	{ image: '/assets/icon_spoon5.png', name: '나이프 Knife', count: 40 },
+	{ image: '/assets/member_step1.svg', name: '스푼 Spoon', count: 0 },
+	{ image: '/assets/member_step2.svg', name: '포크 Fork', count: 10 },
+	{ image: '/assets/member_step3.svg', name: '챕스 Chopsticks', count: 20 },
+	{ image: '/assets/member_step4.svg', name: '터너 Turner', count: 30 },
+	{ image: '/assets/member_step5.svg', name: '나이프 Knife', count: 40 },
 ];
 
 export default function Profile() {
 	const [userEmail, setUserEmail] = useState<string | null>(null);
 	const [userName, setUserName] = useState<string | null>(null);
-	const [userNickname, setUserNickname] = useState<string | null>(null);
+	const [userNickname, setUserNickname] = useState<string>('');
 	const [userPhoneNumber, setUserPhoneNumber] = useState<string | null>(null);
 	const [userRecipes, setUserRecipes] = useState<any[]>([]);
 	const [spoonModalOpen, setSpoonModalOpen] = useState<boolean>(false);
@@ -52,7 +53,7 @@ export default function Profile() {
 	const [nowPassword, setNowPassword] = useState<string>('');
 	const [newPassword, setNewPassword] = useState<string>('');
 	const [confirmPassword, setConfirmPassword] = useState<string>('');
-	const [newNickname, setNewNickname] = useState(userNickname);
+	const [newNickname, setNewNickname] = useState('');
 	const [showUserPosts, setShowUserPosts] = useState<boolean>(false);
 	const [showUserFavorite, setShowUserFavorite] = useState<boolean>(false);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -89,14 +90,22 @@ export default function Profile() {
 					setUserIntroduction(userDocSnap.data().user_info);
 
 					// Firestore에서 사용자가 작성한 게시물 가져오기
+
+					/*
+                    -2024-10-22
+                    -author : hye's
+                    
+                    -현재 닉네임변경시에 레시피에 등록되어있는 author.user_nickname도 바뀌는게 아니기떄문에  user_uid로 게시물을 찾도록변경
+                    
+                    -현재 정보수정에 닉네임이 변경될경우 기존 레시피's에있는 닉네임도 변경을 해주어야함
+
+                    -이기능을 위해서 현재 레시피 등록함수에 author객체안에 user_uid : user.uid 코드추가
+                    
+                    */
 					const recipesCollectionRef = collection(db, 'recipes');
 					const q = query(
 						recipesCollectionRef,
-						where(
-							'author.user_nickname',
-							'==',
-							userDocSnap.data().user_nickname
-						)
+						where('author.user_uid', '==', user.uid)
 					);
 					const recipesSnapshot = await getDocs(q);
 					const recipesData = recipesSnapshot.docs.map((doc) => ({
@@ -135,9 +144,9 @@ export default function Profile() {
 				setUserNickname('Unknown User');
 			}
 		};
-
+		setNewNickname(userNickname);
 		fetchUserData();
-	}, []);
+	}, [showEditInfo]);
 
 	// 게시글 수를 기준으로 현재 배지를 반환하는 함수
 	const getCurrentBadge = (postsCount: number): Badge => {
@@ -165,6 +174,28 @@ export default function Profile() {
 					user_phone_number: userPhoneNumber,
 				});
 				alert('사용자 정보가 업데이트되었습니다.');
+				/*
+                -2024-10-22
+                -author : hye's
+                -현재 사용자가 닉네임을 바꾸었다면 그에 해당하는 uid로 레시피's를 찾아서 작성자의 이름도 변경되도록함
+                -batch > 여러문서를 한번에 묶어서 실행함
+                */
+
+				const recipesQuery = query(
+					collection(db, 'recipes'),
+					where('author.user_uid', '==', user.uid)
+				);
+				const querySnapshot = await getDocs(recipesQuery);
+
+				const batch = writeBatch(db);
+				querySnapshot.forEach((docSnapshot) => {
+					batch.update(docSnapshot.ref, {
+						'author.user_nickname': newNickname,
+					});
+				});
+
+				await batch.commit();
+
 				setUserNickname(newNickname);
 				setShowEditInfo(false);
 			} catch (error) {
@@ -413,7 +444,7 @@ export default function Profile() {
 								<span>이메일</span>
 								<input
 									type="email"
-									className={styles.editInputEmail}
+									className={styles.editReadOnly}
 									readOnly
 									value={userEmail || ''}
 								/>
@@ -422,8 +453,9 @@ export default function Profile() {
 								<span>이름</span>
 								<input
 									type="text"
+									className={styles.editReadOnly}
 									value={userName || ''}
-									onChange={(e) => setUserName(e.target.value)}
+									readOnly
 								/>
 							</div>
 							<div className={styles.editInput}>
